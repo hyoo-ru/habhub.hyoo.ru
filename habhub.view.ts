@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	export class $mol_app_habhub extends $.$mol_app_habhub {
+	export class $hyoo_habhub extends $.$hyoo_habhub {
 		
 		uriSource(){
 			return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=reactions'

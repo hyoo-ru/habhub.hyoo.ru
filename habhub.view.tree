@@ -1,4 +1,4 @@
-$mol_app_habhub $mol_book
+$hyoo_habhub $mol_book
 	pages /
 		<= Menu_page $mol_page
 			minimal_width 400
