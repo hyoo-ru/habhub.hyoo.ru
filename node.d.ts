@@ -1732,7 +1732,7 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_check extends $.$mol_check {
-        event_click(next?: Event): void;
+        click(next?: Event): void;
         sub(): any[];
     }
 }
