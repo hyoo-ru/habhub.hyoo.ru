@@ -1,4 +1,6 @@
 $hyoo_habhub $mol_book
+	attr *
+		mol_theme \$mol_theme_auto
 	pages /
 		<= Menu_page $mol_page
 			minimal_width 400
