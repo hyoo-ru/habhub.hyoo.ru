@@ -34,7 +34,7 @@ namespace $.$$ {
 		}
 		
 		Placeholder() {
-			return this.gist_current() ? null : super.Placeholder()
+			return this.gist_current() ? null as any : super.Placeholder()
 		}
 
 		menu_rows() : $mol_view[] {
