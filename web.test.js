@@ -1555,19 +1555,6 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
-        'const returns stored value'() {
-            const foo = { bar: $.$mol_const(Math.random()) };
-            $.$mol_assert_equal(foo.bar(), foo.bar());
-            $.$mol_assert_equal(foo.bar(), foo.bar['()']);
-        },
-    });
-})($ || ($ = {}));
-//const.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
         'parse and serial'() {
             $.$mol_assert_equal(new $.$mol_time_duration('P42.1Y').toString(), 'P42.1YT');
             $.$mol_assert_equal(new $.$mol_time_duration('P42.1M').toString(), 'P42.1MT');
@@ -1718,6 +1705,19 @@ var $;
     });
 })($ || ($ = {}));
 //arg.web.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'const returns stored value'() {
+            const foo = { bar: $.$mol_const(Math.random()) };
+            $.$mol_assert_equal(foo.bar(), foo.bar());
+            $.$mol_assert_equal(foo.bar(), foo.bar['()']);
+        },
+    });
+})($ || ($ = {}));
+//const.test.js.map
 ;
 "use strict";
 var $;

@@ -1665,119 +1665,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_const(value) {
-        var getter = (() => value);
-        getter['()'] = value;
-        getter[Symbol.toStringTag] = value;
-        return getter;
-    }
-    $.$mol_const = $mol_const;
-})($ || ($ = {}));
-//const.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    console.warn('$mol_http is deprecated. Use $mol_fetch instead.');
-    class $mol_http extends $.$mol_object {
-        static resource(uri) {
-            const resolver = $.$mol_dom_context.document.createElement('a');
-            resolver.href = uri;
-            return this.resource_absolute(resolver.href);
-        }
-        static resource_absolute(uri) {
-            return $mol_http.make({
-                uri: $.$mol_const(uri)
-            });
-        }
-        uri() { return ''; }
-        method_get() { return 'Get'; }
-        method_put() { return 'Put'; }
-        credentials() {
-            return null;
-        }
-        headers() {
-            return {};
-        }
-        response_type() {
-            return '';
-        }
-        response(next, force) {
-            const creds = this.credentials();
-            const method = (next === void 0) ? this.method_get() : this.method_put();
-            const uri = this.uri();
-            const headers = this.headers();
-            return $.$mol_fetch.response(uri, {
-                credentials: creds ? 'include' : undefined,
-                method,
-                headers,
-                body: next
-            });
-        }
-        text(next, force) {
-            return this.response(next, force).text();
-        }
-        xml(next, force) {
-            return this.response(next, force).xml();
-        }
-        json(next, force) {
-            const next2 = next && JSON.stringify(next, null, '\t');
-            return this.response(next2, force).json();
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_http.prototype, "json", null);
-    __decorate([
-        $.$mol_mem_key
-    ], $mol_http, "resource_absolute", null);
-    $.$mol_http = $mol_http;
-})($ || ($ = {}));
-//http.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_deprecated(message) {
-        return (host, field, descr) => {
-            const value = descr.value;
-            descr.value = function $mol_deprecated_wrapper(...args) {
-                console.warn(`${host.constructor.name}::${field} is deprecated. ${message}`);
-                return value.call(this, ...args);
-            };
-        };
-    }
-    $.$mol_deprecated = $mol_deprecated;
-})($ || ($ = {}));
-//deprecated.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_http_resource extends $.$mol_http {
-        static item(uri) {
-            return $.$mol_http.resource(uri);
-        }
-    }
-    __decorate([
-        $.$mol_deprecated('Use $mol_http.resource insted.')
-    ], $mol_http_resource, "item", null);
-    $.$mol_http_resource = $mol_http_resource;
-    class $mol_http_resource_json {
-        static item(uri) {
-            return $.$mol_http.resource(uri);
-        }
-    }
-    __decorate([
-        $.$mol_deprecated('Use $mol_http.resource insted.')
-    ], $mol_http_resource_json, "item", null);
-    $.$mol_http_resource_json = $mol_http_resource_json;
-})($ || ($ = {}));
-//resource.js.map
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_merge_dict(target, source) {
         let result = {};
         for (let key in target)
@@ -1809,7 +1696,7 @@ var $;
             return this.uri();
         }
         method_put() {
-            return 'Put';
+            return 'PUT';
         }
         json(next, force) {
             let json;
@@ -1821,9 +1708,13 @@ var $;
                     return json;
             }
             cache[uri] = undefined;
-            const resource = $.$mol_http.resource(this.resource_url());
-            resource.method_put = $.$mol_const(this.method_put());
-            return this.json_update(resource.json(next, force));
+            return $.$mol_fetch.json(this.resource_url(), {
+                method: next ? this.method_put() : 'GET',
+                body: next && JSON.stringify(next),
+                headers: {
+                    'content-type': 'application/json',
+                },
+            });
         }
         json_update(patch) {
             const uri = this.uri();
@@ -1849,7 +1740,7 @@ var $;
             descr.value = function (next) {
                 const val = this.json(next === undefined ? undefined : Object.assign(Object.assign({}, this.json()), { [field]: next }))[field];
                 if (val === undefined)
-                    return value();
+                    return value.call(this);
                 if (make)
                     return make(val);
                 return val;
@@ -2469,11 +2360,14 @@ var $;
             if (!force && cache.token)
                 return cache.token;
             const auth_uri = `${this.token_uri()}?code=${this.code(undefined, force)}&client_id=${this.id()}&client_secret=${this.secret()}`;
-            const resource = $.$mol_http.resource(auth_uri);
-            resource.headers = () => ({ 'Accept': 'application/json' });
-            const response = resource.json();
-            if (response.error_description)
-                throw new Error(response.error_description);
+            const response = $.$mol_fetch.json(auth_uri, {
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+            if (response.error_description) {
+                return $.$mol_fail(new Error(response.error_description));
+            }
             const token = response.access_token;
             this.cache(Object.assign(Object.assign({}, cache), { token }));
             return token;
@@ -2667,13 +2561,15 @@ var $;
         add(config, next, force) {
             if (!config)
                 return;
-            const resource = $.$mol_http.resource(this.uri() + '?');
-            resource.method_put = $.$mol_const('POST');
-            resource.headers = $.$mol_const({
-                'Authorization': `token ${$.$mol_github_auth.token(['public_repo'])}`
-            });
             try {
-                const json = resource.json({ body: config.text }, force);
+                const json = $.$mol_fetch.json(this.uri() + '?', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${$.$mol_github_auth.token(['public_repo'])}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ body: config.text })
+                });
                 const comment = $.$mol_github_comment.item(json.url);
                 comment.json_update(json);
                 this.json(undefined, $.$mol_mem_force_cache);
@@ -2993,6 +2889,19 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_const(value) {
+        var getter = (() => value);
+        getter['()'] = value;
+        getter[Symbol.toStringTag] = value;
+        return getter;
+    }
+    $.$mol_const = $mol_const;
+})($ || ($ = {}));
+//const.js.map
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_dom_render_attributes(el, attrs) {
         for (let name in attrs) {
             let val = attrs[name];
@@ -3145,6 +3054,22 @@ var $;
     $.$mol_func_name_from = $mol_func_name_from;
 })($ || ($ = {}));
 //name.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_deprecated(message) {
+        return (host, field, descr) => {
+            const value = descr.value;
+            descr.value = function $mol_deprecated_wrapper(...args) {
+                console.warn(`${host.constructor.name}::${field} is deprecated. ${message}`);
+                return value.call(this, ...args);
+            };
+        };
+    }
+    $.$mol_deprecated = $mol_deprecated;
+})($ || ($ = {}));
+//deprecated.js.map
 ;
 "use strict";
 //extract.js.map
@@ -4912,9 +4837,6 @@ var $;
         }
         Head() {
             return ((obj) => {
-                obj.attr = () => ({
-                    "mol_theme": "$mol_theme_base",
-                });
                 obj.sub = () => this.head();
                 return obj;
             })(new this.$.$mol_view());
@@ -4956,9 +4878,6 @@ var $;
         }
         Foot() {
             return ((obj) => {
-                obj.attr = () => ({
-                    "mol_theme": "$mol_theme_base",
-                });
                 obj.sub = () => this.foot();
                 return obj;
             })(new this.$.$mol_view());
@@ -5029,7 +4948,7 @@ var $;
             boxSizing: 'border-box',
             background: "var(--mol_theme_back)",
             color: "var(--mol_theme_text)",
-            zIndex: '0',
+            zIndex: '1',
             overflow: 'hidden',
             boxShadow: `inset 0 0 0 .5px ${"var(--mol_theme_line)"}`,
             ':focus': {
@@ -5044,6 +4963,9 @@ var $;
                 margin: 0,
                 minHeight: calc(`1.5em + 2rem`),
                 padding: rem(.5),
+                background: "var(--mol_theme_back)",
+                boxShadow: `0 0 .5rem hsla(0,0%,0%,.25)`,
+                zIndex: '0',
             },
             Title: {
                 flex: {
@@ -5054,6 +4976,7 @@ var $;
                 padding: rem(.5),
                 wordBreak: 'normal',
                 cursor: 'default',
+                fontWeight: 'bolder',
                 ':empty': {
                     display: 'none',
                 },
@@ -5080,6 +5003,9 @@ var $;
                 flex: 'none',
                 margin: 0,
                 overflow: 'hidden',
+                background: "var(--mol_theme_back)",
+                boxShadow: `0 0 .5rem hsla(0,0%,0%,.25)`,
+                zIndex: '1',
             },
         });
     })($$ = $.$$ || ($.$$ = {}));
@@ -7306,13 +7232,15 @@ var $;
         add(config, next, force) {
             if (!config)
                 return;
-            const resource = $.$mol_http.resource(this.uri() + '?');
-            resource.method_put = $.$mol_const('POST');
-            resource.headers = $.$mol_const({
-                'Authorization': `token ${$.$mol_github_auth.token(['public_repo'])}`
-            });
             try {
-                const json = resource.json({ title: config.title, body: config.text }, force);
+                const json = $.$mol_fetch.json(this.uri() + '?', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${$.$mol_github_auth.token(['public_repo'])}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title: config.title, body: config.text })
+                });
                 const comment = $.$mol_github_issue.item(json.url);
                 comment.json_update(json);
                 this.json(undefined, $.$mol_mem_force_cache);

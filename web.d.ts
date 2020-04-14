@@ -375,7 +375,7 @@ declare namespace $ {
         mime(): string | null;
         stream(): ReadableStream<Uint8Array> | null;
         text(): string;
-        json(): any;
+        json(): unknown;
         buffer(): ArrayBuffer;
         xml(): Document;
         xhtml(): Document;
@@ -386,7 +386,7 @@ declare namespace $ {
         static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
         static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array> | null;
         static text(input: RequestInfo, init?: RequestInit): string;
-        static json(input: RequestInfo, init?: RequestInit): any;
+        static json(input: RequestInfo, init?: RequestInit): unknown;
         static buffer(input: RequestInfo, init?: RequestInit): void;
         static xml(input: RequestInfo, init?: RequestInit): Document;
         static xhtml(input: RequestInfo, init?: RequestInit): Document;
@@ -395,64 +395,22 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_const<Value>(value: Value): {
-        (): Value;
-        '()': Value;
-    };
-}
-
-declare namespace $ {
-    class $mol_http extends $mol_object {
-        static resource(uri: string): $mol_http;
-        static resource_absolute(uri: string): $mol_http;
-        uri(): string;
-        method_get(): string;
-        method_put(): string;
-        credentials(): {
-            login?: string | undefined;
-            password?: string | undefined;
-        };
-        headers(): {};
-        response_type(): '' | 'text' | 'document' | 'json' | 'blob' | 'arraybuffer';
-        response(next?: any, force?: $mol_mem_force): $mol_fetch_response;
-        text(next?: string, force?: $mol_mem_force): string;
-        xml(next?: string, force?: $mol_mem_force): Document;
-        json<Content>(next?: Content, force?: $mol_mem_force): Content;
-    }
-}
-
-declare namespace $ {
-    function $mol_deprecated(message: string): <Method extends (this: Host, ...args: readonly any[]) => any, Host extends { [key in Field]: Method; }, Field extends keyof Host>(host: Host, field: Field, descr: TypedPropertyDescriptor<Method>) => void;
-}
-
-declare namespace $ {
-    class $mol_http_resource extends $mol_http {
-        static item(uri: string): $mol_http;
-    }
-    class $mol_http_resource_json {
-        static item(uri: string): $mol_http;
-    }
-}
-
-declare namespace $ {
     function $mol_merge_dict<Target, Source>(target: Target, source: Source): Target & Source;
 }
 
 declare namespace $ {
-    class $mol_model<Raw> extends $mol_object {
-        static item<Raw, Instance extends $mol_model<Raw>>(this: {
+    class $mol_model<Raw extends Object> extends $mol_object {
+        static item<Instance extends $mol_model<{}>>(this: {
             new (): Instance;
         }, uri: string): Instance;
-        static cache<Raw>(): {
-            [key: string]: Raw;
-        };
+        static cache<Raw extends Object>(): {};
         uri(): string;
         resource_url(): string;
         method_put(): string;
-        json(next?: Raw, force?: $mol_mem_force): Raw;
-        json_update(patch: Partial<Raw>): Raw & Partial<Raw>;
+        json(next?: Partial<Raw>, force?: $mol_mem_force): Raw;
+        json_update(patch: Partial<Raw>): any;
     }
-    function $mol_model_prop<Value, Json>(field: string, make: (json: Json) => Value): <Raw, Host extends $mol_model<Raw>>(host: Host, prop: string, descr: TypedPropertyDescriptor<(next?: Value | undefined) => Value>) => void;
+    function $mol_model_prop<Value, Json>(field: string, make: (json: Json) => Value): <Raw extends Object, Host extends $mol_model<Raw>>(host: Host, prop: string, descr: TypedPropertyDescriptor<(next?: Value | undefined) => Value>) => void;
 }
 
 declare namespace $ {
@@ -663,16 +621,16 @@ declare namespace $ {
 
 declare namespace $ {
     interface $mol_github_comment_json extends $mol_github_entity_json {
-        issue_url?: string;
-        user?: $mol_github_user_json;
-        author_association?: string;
-        body?: string;
+        issue_url: string;
+        user: $mol_github_user_json;
+        author_association: string;
+        body: string;
     }
     class $mol_github_comment extends $mol_github_entity<$mol_github_comment_json> {
-        json_update(patch: Partial<$mol_github_comment_json>): $mol_github_comment_json & Partial<$mol_github_comment_json>;
-        issue(): any;
-        user(): any;
-        text(next?: string): string | undefined;
+        json_update(patch: Partial<$mol_github_comment_json>): any;
+        issue(): $mol_github_issue;
+        user(): $mol_github_user;
+        text(next?: string): string;
     }
 }
 
@@ -699,23 +657,23 @@ declare namespace $ {
         closed_by: $mol_github_user_json;
     }
     class $mol_github_issue extends $mol_model<$mol_github_issue_json> {
-        json_update(patch: Partial<$mol_github_issue_json>): $mol_github_issue_json & Partial<$mol_github_issue_json>;
+        json_update(patch: Partial<$mol_github_issue_json>): any;
         repository(): $mol_github_repository;
-        author(): any;
+        author(): $mol_github_user;
         title(): string;
         text(): string;
-        closer(): any;
-        assignees(): any[];
-        labels(): any[];
+        closer(): $mol_github_user;
+        assignees(): $mol_github_user[];
+        labels(): $mol_github_label[];
         moment_closed(): $mol_time_moment;
         comments(): $mol_github_issue_comments;
     }
     class $mol_github_issue_comments extends $mol_model<$mol_github_comment_json[]> {
-        json_update(patch: $mol_github_repository_json[]): $mol_github_repository_json[];
-        items(next?: $mol_github_comment[], force?: $mol_mem_force): any[];
+        json_update(patch: Partial<$mol_github_repository_json[]>): ($mol_github_repository_json | undefined)[];
+        items(next?: $mol_github_comment[], force?: $mol_mem_force): $mol_github_comment[];
         add(config: {
             text: string;
-        }, next?: $mol_github_comment, force?: $mol_mem_force): any;
+        }, next?: $mol_github_comment, force?: $mol_mem_force): $mol_github_comment | undefined;
     }
 }
 
@@ -726,8 +684,8 @@ declare namespace $ {
         total_count: number;
     }
     class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
-        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json & Partial<$mol_github_search_issues_json>;
-        items(next?: $mol_github_issue[], force?: $mol_mem_force): any[];
+        json_update(patch: $mol_github_search_issues_json): any;
+        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
         resource_url(): string;
     }
 }
@@ -819,6 +777,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_const<Value>(value: Value): {
+        (): Value;
+        '()': Value;
+    };
+}
+
+declare namespace $ {
     function $mol_dom_render_attributes(el: Element, attrs: {
         [key: string]: string | number | boolean | null;
     }): void;
@@ -847,6 +812,10 @@ declare namespace $ {
 declare namespace $ {
     function $mol_func_name(func: Function): string;
     function $mol_func_name_from<Target extends Function>(target: Target, source: Function): Target;
+}
+
+declare namespace $ {
+    function $mol_deprecated(message: string): <Method extends (this: Host, ...args: readonly any[]) => any, Host extends { [key in Field]: Method; }, Field extends keyof Host>(host: Host, field: Field, descr: TypedPropertyDescriptor<Method>) => void;
 }
 
 declare namespace $ {
@@ -2147,14 +2116,14 @@ declare namespace $ {
 declare namespace $.$$ {
     class $hyoo_habhub extends $.$hyoo_habhub {
         uriSource(): string;
-        gists(): any[];
+        gists(): $mol_github_issue[];
         gists_dict(): {
             [key: string]: $mol_github_issue;
         };
         gist(id: number): $mol_github_issue;
         gist_current(): $mol_github_issue;
         pages(): $mol_page[];
-        Placeholder(): $mol_book_placeholder | null;
+        Placeholder(): any;
         menu_rows(): $mol_view[];
         gist_title(id: number): string;
         gist_arg(id: number): {
@@ -2240,18 +2209,18 @@ declare namespace $ {
         subscribers_count?: number;
     }
     class $mol_github_repository extends $mol_github_entity<$mol_github_repository_json> {
-        json_update(patch: Partial<$mol_github_repository_json>): $mol_github_repository_json & Partial<$mol_github_repository_json>;
-        owner(): any;
+        json_update(patch: Partial<$mol_github_repository_json>): any;
+        owner(): $mol_github_user;
         name(): string;
         name_full(): string;
         issues(): $mol_github_repository_issues;
     }
     class $mol_github_repository_issues extends $mol_model<$mol_github_issue_json[]> {
         json_update(patch: $mol_github_issue_json[]): $mol_github_issue_json[];
-        items(next?: $mol_github_issue[], force?: $mol_mem_force): any[];
+        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
         add(config: {
             title: string;
             text?: string;
-        }, next?: $mol_github_issue, force?: $mol_mem_force): any;
+        }, next?: $mol_github_issue, force?: $mol_mem_force): $mol_github_issue | undefined;
     }
 }
