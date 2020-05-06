@@ -1948,6 +1948,31 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.$mol_test({
+        'memoize field'() {
+            class Foo {
+                static get two() {
+                    return ++this.one;
+                }
+                static set two(next) { }
+            }
+            Foo.one = 1;
+            __decorate([
+                $.$mol_memo.field
+            ], Foo, "two", null);
+            $.$mol_assert_equal(Foo.two, 2);
+            $.$mol_assert_equal(Foo.two, 2);
+            Foo.two = 3;
+            $.$mol_assert_equal(Foo.two, 3);
+            $.$mol_assert_equal(Foo.two, 3);
+        },
+    });
+})($ || ($ = {}));
+//memo.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_style_sheet_test1 extends $.$mol_view {
         Item() { return new $.$mol_view; }
     }
@@ -2203,31 +2228,6 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //button.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'memoize field'() {
-            class Foo {
-                static get two() {
-                    return ++this.one;
-                }
-                static set two(next) { }
-            }
-            Foo.one = 1;
-            __decorate([
-                $.$mol_memo.field
-            ], Foo, "two", null);
-            $.$mol_assert_equal(Foo.two, 2);
-            $.$mol_assert_equal(Foo.two, 2);
-            Foo.two = 3;
-            $.$mol_assert_equal(Foo.two, 3);
-            $.$mol_assert_equal(Foo.two, 3);
-        },
-    });
-})($ || ($ = {}));
-//memo.test.js.map
 ;
 "use strict";
 var $;

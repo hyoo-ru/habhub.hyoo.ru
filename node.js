@@ -3132,6 +3132,9 @@ var $;
         static hsla(hue, saturation, lightness, alpha) {
             return new $mol_style_func('hsla', [hue, per(saturation), per(lightness), alpha]);
         }
+        static rgba(red, green, blue, alpha) {
+            return new $mol_style_func('rgba', [red, green, blue, alpha]);
+        }
     }
     $.$mol_style_func = $mol_style_func;
 })($ || ($ = {}));
@@ -3519,36 +3522,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_plugin extends $.$mol_view {
-        dom_node(next) {
-            const node = next || $.$mol_owning_get(this, $.$mol_view).dom_node();
-            $.$mol_dom_render_attributes(node, this.attr_static());
-            const events = this.event();
-            for (let event_name in events) {
-                node.addEventListener(event_name, $.$mol_log2.func($.$mol_fiber_root(events[event_name])), { passive: false });
-            }
-            return node;
-        }
-        attr_static() {
-            return {};
-        }
-        event() {
-            return {};
-        }
-        render() {
-            this.dom_node_actual();
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_plugin.prototype, "dom_node", null);
-    $.$mol_plugin = $mol_plugin;
-})($ || ($ = {}));
-//plugin.js.map
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_after_timeout extends $.$mol_object2 {
         constructor(delay, task) {
             super();
@@ -3580,748 +3553,22 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_meter extends $.$mol_plugin {
-        zoom() {
-            return 1;
-        }
-        width(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        height(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        left(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        right(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        bottom(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        top(val, force) {
-            return (val !== void 0) ? val : 0;
+    class $mol_memo extends $.$mol_wrapper {
+        static wrap(task) {
+            const store = new WeakMap();
+            return function (next) {
+                var _a;
+                if (next === undefined && store.has(this))
+                    return store.get(this);
+                const val = (_a = task.call(this, next)) !== null && _a !== void 0 ? _a : next;
+                store.set(this, val);
+                return val;
+            };
         }
     }
-    __decorate([
-        $.$mol_mem
-    ], $mol_meter.prototype, "width", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_meter.prototype, "height", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_meter.prototype, "left", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_meter.prototype, "right", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_meter.prototype, "bottom", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_meter.prototype, "top", null);
-    $.$mol_meter = $mol_meter;
+    $.$mol_memo = $mol_memo;
 })($ || ($ = {}));
-//meter.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_meter extends $.$mol_meter {
-            rect() {
-                const node = this.dom_node();
-                const win = this.$.$mol_dom_context;
-                if (node !== $.$mol_dom_context.document.body) {
-                    new $.$mol_after_frame($.$mol_atom2.current.fresh);
-                    try {
-                        const { left, top, right, bottom, width, height } = node.getBoundingClientRect();
-                        return { left, top, right, bottom, width, height, zoom: win.devicePixelRatio || 1 };
-                    }
-                    catch (error) {
-                    }
-                }
-                const size = $.$mol_window.size();
-                return {
-                    zoom: win.devicePixelRatio || 1,
-                    left: 0,
-                    top: 0,
-                    right: size.width,
-                    bottom: size.height,
-                    width: size.width,
-                    height: size.height,
-                };
-            }
-            top() {
-                return this.rect().top;
-            }
-            bottom() {
-                return this.rect().bottom;
-            }
-            left() {
-                return this.rect().left;
-            }
-            right() {
-                return this.rect().right;
-            }
-            width() {
-                return this.rect().width;
-            }
-            height() {
-                return this.rect().height;
-            }
-            zoom() {
-                return this.rect().zoom;
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "rect", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "top", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "bottom", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "left", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "right", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "width", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "height", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_meter.prototype, "zoom", null);
-        $$.$mol_meter = $mol_meter;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//meter.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_touch extends $.$mol_plugin {
-        start_zoom(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        start_distance(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        zoom(val, force) {
-            return (val !== void 0) ? val : 1;
-        }
-        start_pan(val, force) {
-            return (val !== void 0) ? val : [0, 0];
-        }
-        pan(val, force) {
-            return (val !== void 0) ? val : [0, 0];
-        }
-        pos(val, force) {
-            return (val !== void 0) ? val : [NaN, NaN];
-        }
-        start_pos(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_precision() {
-            return 16;
-        }
-        swipe_right(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_bottom(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_left(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_top(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_from_right(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_from_bottom(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_from_left(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_from_top(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_to_right(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_to_bottom(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_to_left(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        swipe_to_top(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        style() {
-            return (Object.assign(Object.assign({}, super.style()), { "touch-action": "none" }));
-        }
-        event() {
-            return (Object.assign(Object.assign({}, super.event()), { "touchstart": (event) => this.event_start(event), "touchmove": (event) => this.event_move(event), "touchend": (event) => this.event_end(event), "mousedown": (event) => this.event_start(event), "mousemove": (event) => this.event_move(event), "mouseup": (event) => this.event_end(event), "mouseleave": (event) => this.event_leave(event), "wheel": (event) => this.event_wheel(event) }));
-        }
-        event_start(event, force) {
-            return (event !== void 0) ? event : null;
-        }
-        event_move(event, force) {
-            return (event !== void 0) ? event : null;
-        }
-        event_end(event, force) {
-            return (event !== void 0) ? event : null;
-        }
-        event_leave(event, force) {
-            return (event !== void 0) ? event : null;
-        }
-        event_wheel(event, force) {
-            return (event !== void 0) ? event : null;
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "start_zoom", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "start_distance", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "zoom", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "start_pan", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "pan", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "pos", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "start_pos", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_right", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_bottom", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_left", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_top", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_from_right", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_from_bottom", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_from_left", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_from_top", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_to_right", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_to_bottom", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_to_left", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "swipe_to_top", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "event_start", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "event_move", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "event_end", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "event_leave", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_touch.prototype, "event_wheel", null);
-    $.$mol_touch = $mol_touch;
-})($ || ($ = {}));
-//touch.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_touch extends $.$mol_touch {
-            rect() {
-                return this.dom_node().getBoundingClientRect();
-            }
-            event_start(event) {
-                if (event.defaultPrevented)
-                    return;
-                this.start_pan(this.pan());
-                let pos;
-                if (event instanceof MouseEvent) {
-                    if (event.buttons === 1) {
-                        pos = [event.pageX, event.pageY];
-                        this.start_pos(pos);
-                    }
-                }
-                else if (event instanceof TouchEvent) {
-                    if (event.touches.length === 1) {
-                        pos = [event.touches[0].pageX, event.touches[0].pageY];
-                        this.start_pos(pos);
-                    }
-                    if (event.touches.length === 2) {
-                        const distance = ((event.touches[1].pageX - event.touches[0].pageX) ** 2 + (event.touches[1].pageY - event.touches[0].pageY) ** 2) ** .5;
-                        this.start_distance(distance);
-                        this.start_zoom(this.zoom());
-                    }
-                }
-            }
-            event_leave(event) {
-                if (event.defaultPrevented)
-                    return;
-                if (event instanceof MouseEvent)
-                    this.pos(super.pos());
-            }
-            event_move(event) {
-                if (event.defaultPrevented)
-                    return;
-                const start_pan = this.start_pan();
-                let pos;
-                let cursor_pos;
-                if (event instanceof MouseEvent) {
-                    cursor_pos = [event.pageX, event.pageY];
-                    if (event.buttons === 1)
-                        pos = cursor_pos;
-                    else
-                        this.start_pos(null);
-                }
-                else if (event instanceof TouchEvent) {
-                    cursor_pos = [event.touches[0].pageX, event.touches[0].pageY];
-                    if (event.touches.length === 1)
-                        pos = cursor_pos;
-                    else
-                        this.start_pos(null);
-                }
-                if (cursor_pos) {
-                    const { left, top } = this.rect();
-                    this.pos([
-                        Math.max(0, Math.round(cursor_pos[0] - left)),
-                        Math.max(0, Math.round(cursor_pos[1] - top)),
-                    ]);
-                }
-                if (pos) {
-                    const start_pos = this.start_pos();
-                    if (!start_pos)
-                        return;
-                    if (this.pan !== $mol_touch.prototype.pan) {
-                        this.pan([start_pan[0] + pos[0] - start_pos[0], start_pan[1] + pos[1] - start_pos[1]]);
-                        event.preventDefault();
-                    }
-                    if (typeof TouchEvent === 'undefined')
-                        return;
-                    if (!(event instanceof TouchEvent))
-                        return;
-                    const precision = this.swipe_precision();
-                    if ((this.swipe_right !== $mol_touch.prototype.swipe_right
-                        || this.swipe_from_left !== $mol_touch.prototype.swipe_from_left
-                        || this.swipe_to_right !== $mol_touch.prototype.swipe_to_right)
-                        && pos[0] - start_pos[0] > precision * 2
-                        && Math.abs(pos[1] - start_pos[1]) < precision) {
-                        this.swipe_right(event);
-                        event.preventDefault();
-                    }
-                    if ((this.swipe_left !== $mol_touch.prototype.swipe_left
-                        || this.swipe_from_right !== $mol_touch.prototype.swipe_from_right
-                        || this.swipe_to_left !== $mol_touch.prototype.swipe_to_left)
-                        && start_pos[0] - pos[0] > precision * 2
-                        && Math.abs(pos[1] - start_pos[1]) < precision) {
-                        this.swipe_left(event);
-                        event.preventDefault();
-                    }
-                    if ((this.swipe_bottom !== $mol_touch.prototype.swipe_bottom
-                        || this.swipe_from_top !== $mol_touch.prototype.swipe_from_top
-                        || this.swipe_to_bottom !== $mol_touch.prototype.swipe_to_bottom)
-                        && pos[1] - start_pos[1] > precision * 2
-                        && Math.abs(pos[0] - start_pos[0]) < precision) {
-                        this.swipe_bottom(event);
-                        event.preventDefault();
-                    }
-                    if ((this.swipe_top !== $mol_touch.prototype.swipe_top
-                        || this.swipe_from_bottom !== $mol_touch.prototype.swipe_from_bottom
-                        || this.swipe_to_top !== $mol_touch.prototype.swipe_to_top)
-                        && start_pos[1] - pos[1] > precision * 2
-                        && Math.abs(pos[0] - start_pos[0]) < precision) {
-                        this.swipe_top(event);
-                        event.preventDefault();
-                    }
-                }
-                if (typeof TouchEvent === 'undefined')
-                    return;
-                if (!(event instanceof TouchEvent))
-                    return;
-                if (event.touches.length === 2) {
-                    if (this.zoom === $mol_touch.prototype.zoom)
-                        return;
-                    const pos0 = [event.touches[0].pageX, event.touches[0].pageY];
-                    const pos1 = [event.touches[1].pageX, event.touches[1].pageY];
-                    const distance = ((pos1[0] - pos0[0]) ** 2 + (pos1[1] - pos0[1]) ** 2) ** .5;
-                    const center = [pos1[0] / 2 + pos0[0] / 2, pos1[1] / 2 + pos0[1] / 2];
-                    const start_zoom = this.start_zoom();
-                    const mult = distance / this.start_distance();
-                    this.zoom(start_zoom * mult);
-                    const pan = [(start_pan[0] - center[0]) * mult + center[0], (start_pan[1] - center[1]) * mult + center[1]];
-                    this.pan(pan);
-                    event.preventDefault();
-                }
-            }
-            swipe_left(event) {
-                if (this.rect().right - this.start_pos()[0] < this.swipe_precision() * 2)
-                    this.swipe_from_right(event);
-                else
-                    this.swipe_to_left(event);
-                this.event_end(event);
-            }
-            swipe_right(event) {
-                if (this.start_pos()[0] - this.rect().left < this.swipe_precision() * 2)
-                    this.swipe_from_left(event);
-                else
-                    this.swipe_to_right(event);
-                this.event_end(event);
-            }
-            swipe_top(event) {
-                if (this.rect().bottom - this.start_pos()[1] < this.swipe_precision() * 2)
-                    this.swipe_from_bottom(event);
-                else
-                    this.swipe_to_top(event);
-                this.event_end(event);
-            }
-            swipe_bottom(event) {
-                if (this.start_pos()[1] - this.rect().top < this.swipe_precision() * 2)
-                    this.swipe_from_top(event);
-                else
-                    this.swipe_to_bottom(event);
-                this.event_end(event);
-            }
-            event_end(event) {
-                this.start_pos(null);
-            }
-            event_wheel(event) {
-                if (this.pan === $mol_touch.prototype.pan && this.zoom === $mol_touch.prototype.zoom)
-                    return;
-                if (this.pan !== $mol_touch.prototype.pan) {
-                    event.preventDefault();
-                }
-                const zoom_prev = this.zoom() || 0.001;
-                const zoom_next = zoom_prev * (1 - .1 * Math.sign(event.deltaY));
-                const mult = zoom_next / zoom_prev;
-                this.zoom(zoom_next);
-                const pan_prev = this.pan();
-                const center = [event.offsetX, event.offsetY];
-                const pan_next = [(pan_prev[0] - center[0]) * mult + center[0], (pan_prev[1] - center[1]) * mult + center[1]];
-                this.pan(pan_next);
-            }
-        }
-        $$.$mol_touch = $mol_touch;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//touch.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_dom_render_events(el, events) {
-        for (let name in events) {
-            el.addEventListener(name, $.$mol_log_group(el.id + ' ' + name, events[name]), { passive: false });
-        }
-    }
-    $.$mol_dom_render_events = $mol_dom_render_events;
-    function $mol_dom_render_events_async(el, events) {
-        for (let name in events) {
-            el.addEventListener(name, $.$mol_log_group(el.id + ' ' + name, events[name]), { passive: true });
-        }
-    }
-    $.$mol_dom_render_events_async = $mol_dom_render_events_async;
-})($ || ($ = {}));
-//events.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_ghost extends $.$mol_view {
-        Sub() {
-            return ((obj) => {
-                return obj;
-            })(new this.$.$mol_view());
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_ghost.prototype, "Sub", null);
-    $.$mol_ghost = $mol_ghost;
-})($ || ($ = {}));
-//ghost.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_ghost extends $.$mol_ghost {
-            dom_node() {
-                const node = this.Sub().dom_node();
-                $.$mol_dom_render_attributes(node, this.attr_static());
-                $.$mol_dom_render_events(node, this.event());
-                return node;
-            }
-            dom_node_actual() {
-                this.dom_node();
-                const node = this.Sub().dom_node_actual();
-                const attr = this.attr();
-                const style = this.style();
-                const fields = this.field();
-                $.$mol_dom_render_attributes(node, attr);
-                $.$mol_dom_render_styles(node, style);
-                $.$mol_dom_render_fields(node, fields);
-                return node;
-            }
-            dom_tree() {
-                const Sub = this.Sub();
-                const node = Sub.dom_tree();
-                this.dom_node_actual();
-                return node;
-            }
-            title() {
-                return this.Sub().title();
-            }
-            minimal_width() {
-                return this.Sub().minimal_width();
-            }
-            minimal_height() {
-                return this.Sub().minimal_height();
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $mol_ghost.prototype, "dom_node", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_ghost.prototype, "dom_node_actual", null);
-        $$.$mol_ghost = $mol_ghost;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//ghost.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_book extends $.$mol_view {
-        sub() {
-            return this.pages_wrapped();
-        }
-        pages_wrapped() {
-            return [];
-        }
-        minimal_width() {
-            return 0;
-        }
-        pages() {
-            return [];
-        }
-        plugins() {
-            return [this.Meter(), this.Touch()];
-        }
-        width() {
-            return this.Meter().width();
-        }
-        Meter() {
-            return ((obj) => {
-                return obj;
-            })(new this.$.$mol_meter());
-        }
-        Touch() {
-            return ((obj) => {
-                obj.swipe_from_left = (val) => this.event_front_up(val);
-                obj.swipe_to_left = (val) => this.event_front_down(val);
-                return obj;
-            })(new this.$.$mol_touch());
-        }
-        event_front_up(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        event_front_down(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        Page(index) {
-            return ((obj) => {
-                obj.Sub = () => this.page(index);
-                obj.visible = () => this.page_visible(index);
-                return obj;
-            })(new this.$.$mol_book_page());
-        }
-        page(index) {
-            return null;
-        }
-        page_visible(index) {
-            return true;
-        }
-        Placeholder() {
-            return ((obj) => {
-                obj.title = () => this.title();
-                return obj;
-            })(new this.$.$mol_book_placeholder());
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_book.prototype, "Meter", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_book.prototype, "Touch", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_book.prototype, "event_front_up", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_book.prototype, "event_front_down", null);
-    __decorate([
-        $.$mol_mem_key
-    ], $mol_book.prototype, "Page", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_book.prototype, "Placeholder", null);
-    $.$mol_book = $mol_book;
-})($ || ($ = {}));
-(function ($) {
-    class $mol_book_placeholder extends $.$mol_view {
-        minimal_width() {
-            return 400;
-        }
-        attr() {
-            return (Object.assign(Object.assign({}, super.attr()), { "tabindex": null }));
-        }
-    }
-    $.$mol_book_placeholder = $mol_book_placeholder;
-})($ || ($ = {}));
-(function ($) {
-    class $mol_book_page extends $.$mol_ghost {
-        attr_static() {
-            return (Object.assign(Object.assign({}, super.attr_static()), { "tabindex": 0, "mol_book_page_visible": true }));
-        }
-        attr() {
-            return (Object.assign(Object.assign({}, super.attr()), { "mol_book_page_focused": this.focused(), "mol_book_page_visible": this.visible() }));
-        }
-        visible() {
-            return true;
-        }
-    }
-    $.$mol_book_page = $mol_book_page;
-})($ || ($ = {}));
-//book.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_book extends $.$mol_book {
-            pages_extended() {
-                return [this.Placeholder(), ...this.pages()];
-            }
-            break_point() {
-                const pages = this.pages_extended();
-                const limit = this.width();
-                let width = 0;
-                for (var break_point = pages.length; break_point > 0; --break_point) {
-                    const page = pages[break_point - 1];
-                    if (!page)
-                        continue;
-                    const page_width = page.minimal_width();
-                    if (width + page_width > limit)
-                        break;
-                    width += page_width;
-                }
-                if (width === 0)
-                    --break_point;
-                return break_point;
-            }
-            page(index) {
-                return this.pages_extended()[index];
-            }
-            page_visible(index) {
-                return index >= this.break_point();
-            }
-            pages_wrapped() {
-                const pages = this.pages_extended();
-                const extended = [];
-                for (let i = 1; i < pages.length; ++i) {
-                    if (pages[i])
-                        extended.push(this.Page(i));
-                }
-                if (pages[0])
-                    extended.push(this.Page(0));
-                return extended;
-            }
-            title() {
-                return this.pages().map(page => page.title()).reverse().join(' | ');
-            }
-            event_front_up(event) {
-                if (!event)
-                    return;
-                if (event.defaultPrevented)
-                    return;
-                this.page(1).focused(true);
-            }
-            event_front_down(event) {
-                if (!event)
-                    return;
-                if (event.defaultPrevented)
-                    return;
-                this.page(1).focused(false);
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $mol_book.prototype, "pages_extended", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_book.prototype, "break_point", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_book.prototype, "pages_wrapped", null);
-        $$.$mol_book = $mol_book;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//book.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_style_attach("mol/book/book.view.css", "[mol_book] {\n\tdisplay: flex;\n\tflex-flow: row nowrap;\n\talign-items: stretch;\n\tjustify-content: flex-start;\n\toverflow: hidden;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n\tmargin: 0;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\ttransform: translateZ( 0 );\n}\n\n[mol_book] > *:not([mol_book_page_visible]) {\n\tposition: absolute; \n\tleft: 0;\n\ttop: 0;\n}\n\n[mol_book] > [mol_book_page_focused]:not([mol_book_page_visible]) ~ * {\n\topacity: .2;\n\tpointer-events: none;\n\tz-index: -1;\n}\n\n[mol_book] > *:not([mol_book_page_visible]):not([mol_book_page_focused]) {\n\ttransform: translate3d( -100% , 0 , 0 );\n}\n\n[mol_book] > *:not([mol_book_page_visible]):not([mol_book_page_focused]) + *:before {\n\tcontent : '•••';\n\tposition: absolute;\n\ttop: 1rem;\n\tleft: 0;\n\tz-index: 2;\n\tpointer-events: none;\n\tcolor: var(--mol_skin_base_text);\n\ttransform: rotate(90deg);\n}\n\n[mol_book] > * {\n\tposition: relative;\n\t/* animation: mol_book_page_show linear .2s; */\n\ttransition-timing-function: linear;\n\tz-index: 0;\n\tmin-height: 100%;\n\tmax-height: 100%;\n}\n\n[mol_book_placeholder] {\n\tflex: 1000 1 400px;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\tbackground: var(--mol_theme_field);\n\tz-index: -1;\n}\n\n[mol_book_placeholder]:hover {\n\toutline: none;\n}\n\n/*\n@keyframes mol_book_page_show {\n\tfrom {\n\t\ttransform: translateX( 100% );\n\t\topacity: 0;\n\t\tz-index: -1;\n\t}\n}\n\n[mol_book_page]:not(:first-child) {\n\tanimation: mol_book_page_show .25s ease-out;\n}\n*/\n");
-})($ || ($ = {}));
-//book.view.css.js.map
+//memo.js.map
 ;
 "use strict";
 //error.js.map
@@ -4597,6 +3844,200 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_scroll extends $.$mol_view {
+        minimal_height() {
+            return 0;
+        }
+        _event_scroll_timer(val, force) {
+            return (val !== void 0) ? val : null;
+        }
+        field() {
+            return (Object.assign(Object.assign({}, super.field()), { "scrollTop": this.scroll_top(), "scrollLeft": this.scroll_left() }));
+        }
+        scroll_top(val, force) {
+            return (val !== void 0) ? val : 0;
+        }
+        scroll_left(val, force) {
+            return (val !== void 0) ? val : 0;
+        }
+        event() {
+            return (Object.assign(Object.assign({}, super.event()), { "scroll": (event) => this.event_scroll(event) }));
+        }
+        event_scroll(event, force) {
+            return (event !== void 0) ? event : null;
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_scroll.prototype, "_event_scroll_timer", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_scroll.prototype, "scroll_top", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_scroll.prototype, "scroll_left", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_scroll.prototype, "event_scroll", null);
+    $.$mol_scroll = $mol_scroll;
+})($ || ($ = {}));
+//scroll.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_scroll extends $.$mol_scroll {
+            scroll_top(next) {
+                return $.$mol_state_session.value(`${this}.scroll_top()`, next) || 0;
+            }
+            scroll_left(next) {
+                return $.$mol_state_session.value(`${this}.scroll_left()`, next) || 0;
+            }
+            _event_scroll_timer(next) {
+                return next;
+            }
+            event_scroll(next) {
+                var _a;
+                (_a = this._event_scroll_timer()) === null || _a === void 0 ? void 0 : _a.destructor();
+                const el = this.dom_node();
+                this._event_scroll_timer(new $.$mol_after_timeout(200, $.$mol_fiber_solid.func(() => {
+                    this.scroll_top(Math.max(0, el.scrollTop));
+                    this.scroll_left(Math.max(0, el.scrollLeft));
+                })));
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_scroll.prototype, "scroll_top", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_scroll.prototype, "scroll_left", null);
+        __decorate([
+            $.$mol_memo.method
+        ], $mol_scroll.prototype, "_event_scroll_timer", null);
+        $$.$mol_scroll = $mol_scroll;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//scroll.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { per, rem } = $.$mol_style_unit;
+        $.$mol_style_define($$.$mol_scroll, {
+            display: 'block',
+            overflow: 'auto',
+            flex: 'auto',
+            alignSelf: 'stretch',
+            boxSizing: 'border-box',
+            willChange: 'scroll-position',
+            transform: 'translateZ(0)',
+            maxHeight: per(100),
+            maxWidth: per(100),
+            webkitOverflowScrolling: 'touch',
+            '::-webkit-scrollbar': {
+                width: rem(.5),
+                height: rem(.5),
+            },
+            '::-webkit-scrollbar-corner': {
+                background: {
+                    color: $.$mol_theme.line,
+                },
+            },
+            '::-webkit-scrollbar-track': {
+                background: {
+                    color: $.$mol_theme.line,
+                },
+            },
+            '::-webkit-scrollbar-thumb': {
+                background: {
+                    color: $.$mol_theme.control,
+                },
+            },
+            '@media': {
+                'print': {
+                    overflow: 'visible',
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//scroll.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_book2 extends $.$mol_scroll {
+        sub() {
+            return this.pages();
+        }
+        pages() {
+            return [];
+        }
+        minimal_width() {
+            return 0;
+        }
+        Placeholder() {
+            return ((obj) => {
+                return obj;
+            })(new this.$.$mol_view());
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_book2.prototype, "Placeholder", null);
+    $.$mol_book2 = $mol_book2;
+})($ || ($ = {}));
+//book2.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_book2 extends $.$mol_book2 {
+            title() {
+                return this.pages().map(page => page.title()).reverse().join(' | ');
+            }
+            sub() {
+                var _a;
+                const next = [...this.pages().slice(), this.Placeholder()];
+                const prev = (_a = $.$mol_mem_cached(() => this.sub())) !== null && _a !== void 0 ? _a : [];
+                for (let i = 1; i++;) {
+                    const p = prev[prev.length - i];
+                    const n = next[next.length - i];
+                    if (!n)
+                        break;
+                    if (p === n)
+                        continue;
+                    new $.$mol_after_frame(() => n.dom_node().scrollIntoView({ behavior: 'smooth' }));
+                    break;
+                }
+                return next;
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_book2.prototype, "sub", null);
+        $$.$mol_book2 = $mol_book2;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//book2.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/book2/book2.view.css", "[mol_book2] {\n\tdisplay: flex;\n\tflex-flow: row nowrap;\n\talign-items: stretch;\n\toverflow: hidden;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n\tmargin: 0;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\ttransform: translateZ(0);\n\ttransition: none;\n\toverflow: auto;\n\tscroll-snap-type: x proximity;\n}\n\n[mol_book2] > * {\n\tflex: none;\n\tscroll-snap-stop: always;\n\tscroll-snap-align: start;\n\tposition: relative;\n\tz-index: 0;\n\tmin-height: 100%;\n\tmax-height: 100%;\n\tmax-width: 100%;\n}\n\n[mol_book2_placeholder] {\n\tflex: 1 1 0;\n\t/* background: var(--mol_theme_back); */\n}\n");
+})($ || ($ = {}));
+//book2.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
     let $mol_keyboard_code;
     (function ($mol_keyboard_code) {
         $mol_keyboard_code[$mol_keyboard_code["backspace"] = 8] = "backspace";
@@ -4794,7 +4235,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/button/button.view.css", "[mol_button] {\n\tborder: none;\n\tfont: inherit;\n\tbackground-color: none;\n\tdisplay: inline-flex;\n\tflex-shrink: 0;\n\ttext-decoration: inherit;\n\tcursor: inherit;\n\tposition: relative;\n\tbox-sizing: border-box;\n\tword-break: normal;\n\tcursor: default;\n}\n[mol_button]:focus {\n\toutline: none;\n}\n\n[mol_button_typed] {\n\tjustify-content: center;\n\talign-content: center;\n\talign-items: center;\n\tvertical-align: middle;\n\ttext-align: center;\n\tpadding: .5rem 1rem;\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_button_typed][disabled] {\n\tcolor: var(--mol_theme_text);\n\tpointer-events: none;\n}\n\n[mol_button_minor] {\n\tcolor: var(--mol_theme_control);\n}\n\n[mol_button_major][disabled] {\n\topacity: .5;\n}\n\n[mol_button_typed]:hover ,\n[mol_button_typed]:focus {\n\tcursor: pointer;\n\tbackground-color: var(--mol_theme_hover);\n}\n");
+    $.$mol_style_attach("mol/button/button.view.css", "[mol_button] {\n\tborder: none;\n\tfont: inherit;\n\tbackground-color: none;\n\tdisplay: inline-flex;\n\tflex-shrink: 0;\n\ttext-decoration: inherit;\n\tcursor: inherit;\n\tposition: relative;\n\tbox-sizing: border-box;\n\tword-break: normal;\n\tcursor: default;\n}\n[mol_button]:focus {\n\toutline: none;\n}\n\n[mol_button_typed] {\n\tjustify-content: center;\n\talign-content: center;\n\talign-items: center;\n\tvertical-align: middle;\n\ttext-align: center;\n\tpadding: .5rem .75rem;\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_button_typed][disabled] {\n\tcolor: var(--mol_theme_text);\n\tpointer-events: none;\n}\n\n[mol_button_minor] {\n\tcolor: var(--mol_theme_control);\n}\n\n[mol_button_major][disabled] {\n\topacity: .5;\n}\n\n[mol_button_typed]:hover ,\n[mol_button_typed]:focus {\n\tcursor: pointer;\n\tbackground-color: var(--mol_theme_hover);\n}\n");
 })($ || ($ = {}));
 //button.view.css.js.map
 ;
@@ -4819,153 +4260,6 @@ var $;
     $.$mol_button_minor = $mol_button_minor;
 })($ || ($ = {}));
 //button_types.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_memo extends $.$mol_wrapper {
-        static wrap(task) {
-            const store = new WeakMap();
-            return function (next) {
-                var _a;
-                if (next === undefined && store.has(this))
-                    return store.get(this);
-                const val = (_a = task.call(this, next)) !== null && _a !== void 0 ? _a : next;
-                store.set(this, val);
-                return val;
-            };
-        }
-    }
-    $.$mol_memo = $mol_memo;
-})($ || ($ = {}));
-//memo.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_scroll extends $.$mol_view {
-        minimal_height() {
-            return 0;
-        }
-        _event_scroll_timer(val, force) {
-            return (val !== void 0) ? val : null;
-        }
-        field() {
-            return (Object.assign(Object.assign({}, super.field()), { "scrollTop": this.scroll_top(), "scrollLeft": this.scroll_left() }));
-        }
-        scroll_top(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        scroll_left(val, force) {
-            return (val !== void 0) ? val : 0;
-        }
-        event() {
-            return (Object.assign(Object.assign({}, super.event()), { "scroll": (event) => this.event_scroll(event) }));
-        }
-        event_scroll(event, force) {
-            return (event !== void 0) ? event : null;
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_scroll.prototype, "_event_scroll_timer", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_scroll.prototype, "scroll_top", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_scroll.prototype, "scroll_left", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_scroll.prototype, "event_scroll", null);
-    $.$mol_scroll = $mol_scroll;
-})($ || ($ = {}));
-//scroll.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_scroll extends $.$mol_scroll {
-            scroll_top(next) {
-                return $.$mol_state_session.value(`${this}.scroll_top()`, next) || 0;
-            }
-            scroll_left(next) {
-                return $.$mol_state_session.value(`${this}.scroll_left()`, next) || 0;
-            }
-            _event_scroll_timer(next) {
-                return next;
-            }
-            event_scroll(next) {
-                var _a;
-                (_a = this._event_scroll_timer()) === null || _a === void 0 ? void 0 : _a.destructor();
-                const el = this.dom_node();
-                this._event_scroll_timer(new $.$mol_after_timeout(200, $.$mol_fiber_solid.func(() => {
-                    this.scroll_top(Math.max(0, el.scrollTop));
-                    this.scroll_left(Math.max(0, el.scrollLeft));
-                })));
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $mol_scroll.prototype, "scroll_top", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_scroll.prototype, "scroll_left", null);
-        __decorate([
-            $.$mol_memo.method
-        ], $mol_scroll.prototype, "_event_scroll_timer", null);
-        $$.$mol_scroll = $mol_scroll;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//scroll.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        const { per, rem } = $.$mol_style_unit;
-        $.$mol_style_define($$.$mol_scroll, {
-            display: 'block',
-            overflow: 'auto',
-            flex: 'auto',
-            alignSelf: 'stretch',
-            boxSizing: 'border-box',
-            willChange: 'scroll-position',
-            transform: 'translateZ(0)',
-            maxHeight: per(100),
-            maxWidth: per(100),
-            webkitOverflowScrolling: 'touch',
-            '::-webkit-scrollbar': {
-                width: rem(.5),
-                height: rem(.5),
-            },
-            '::-webkit-scrollbar-corner': {
-                background: {
-                    color: $.$mol_theme.line,
-                },
-            },
-            '::-webkit-scrollbar-track': {
-                background: {
-                    color: $.$mol_theme.line,
-                },
-            },
-            '::-webkit-scrollbar-thumb': {
-                background: {
-                    color: $.$mol_theme.control,
-                },
-            },
-            '@media': {
-                'print': {
-                    overflow: 'visible',
-                },
-            },
-        });
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//scroll.view.css.js.map
 ;
 "use strict";
 var $;
@@ -5099,8 +4393,7 @@ var $;
                 flex: 'none',
                 position: 'relative',
                 margin: 0,
-                minHeight: calc(`1.5em + 2rem`),
-                padding: rem(.5),
+                padding: rem(.75),
                 background: {
                     color: $.$mol_theme.back,
                 },
@@ -5113,7 +4406,7 @@ var $;
                     shrink: 1,
                     basis: per(50),
                 },
-                padding: rem(.5),
+                padding: [rem(.5), rem(.75)],
                 wordBreak: 'normal',
                 cursor: 'default',
                 textShadow: '0 0',
@@ -5125,6 +4418,8 @@ var $;
                 flex: 'auto',
                 display: 'flex',
                 justifyContent: 'flex-end',
+                alignItems: 'flex-start',
+                flexWrap: 'wrap',
                 ':empty': {
                     display: 'none',
                 },
@@ -5788,12 +5083,13 @@ var $;
 var $;
 (function ($) {
     const { rem } = $.$mol_style_unit;
+    const { rgba } = $.$mol_style_func;
     $.$mol_style_define($.$mol_link, {
         textDecoration: 'none',
         color: $.$mol_theme.control,
         stroke: 'currentcolor',
         cursor: 'pointer',
-        padding: [rem(.5), rem(1)],
+        padding: [rem(.5), rem(.75)],
         boxSizing: 'border-box',
         position: 'relative',
         ':hover': {
@@ -6138,7 +5434,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\talign-items: flex-start;\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tpadding: .5rem;\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n");
+    $.$mol_style_attach("mol/check/check.css", "[mol_check] {\n\tflex: 0 0 auto;\n\tjustify-content: flex-start;\n\talign-content: center;\n\talign-items: flex-start;\n\tborder: none;\n\tfont-weight: inherit;\n\tbox-shadow: none;\n\ttext-align: left;\n\tpadding: .5rem .75rem;\n\tdisplay: inline-flex;\n\tflex-wrap: nowrap;\n}\n");
 })($ || ($ = {}));
 //check.css.js.map
 ;
@@ -7295,27 +6591,23 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/text/text.view.css", "[mol_text] {\n\tline-height: 1.5;\n\tbox-sizing: border-box;\n\tmax-width: 60rem;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\tpadding: .5rem;\n\tborder-radius: var(--mol_skin_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_row] {\n\tmargin: .5rem;\n\toverflow: auto;\n\tmax-width: 100%;\n}\n\n[mol_text_type=\"block\"] {\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\tpadding: .5rem;\n\tfont-weight: 500;\n\tmargin: 0;\n}\n\n[mol_text_header_level=\"1\"] {\n\tfont-size: 1.5em;\n}\n\n[mol_text_header_level=\"2\"] {\n\tfont-size: 1.3em;\n}\n\n[mol_text_header_level=\"3\"] {\n\tfont-size: 1.1em;\n}\n\n[mol_text_header_level=\"4\"] {\n\tfont-size: 1.1em;\n\tfont-style: italic;\n}\n\n[mol_text_header_level=\"5\"] {\n\tfont-size: 1.1em;\n\tfont-weight: normal;\n\tfont-style: italic;\n}\n\n[mol_text_type=\"list-item\"] {\n\tdisplay: list-item;\n}\n\n[mol_text_type=\"list-item\"]:before {\n\tcontent: '•';\n\tmargin-right: 1ch;\n}\n\n[mol_text_table] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\toverflow: auto;\n\tmargin: .5rem;\n\tflex-grow: 0;\n}\n\n[mol_text_type=\"code-indent\"] ,\n[mol_text_type=\"code\"] {\n\tfont-family: var(--mol_skin_font_monospace);\n\twhite-space: pre-wrap;\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_text_type=\"text-link\"] {\n\tcolor: var(--mol_theme_control);\n\ttext-decoration: none;\n\tpadding: 0;\n}\n\n[mol_text_link]:hover ,\n[mol_text_link]:focus {\n\toutline: none;\n}\n\n[mol_text_image] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\tobject-fit: scale-down;\n}\n\n[mol_text_type=\"strong\"] {\n\tfont-weight: bolder;\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"strike\"] {\n\ttext-decoration: line-through;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"code-keyword\"] {\n\tcolor: hsl(0, 70%, 60%);\n}\n\n[mol_text_type=\"code-field\"] {\n\tcolor: hsl(300, 70%, 60%);\n}\n\n[mol_text_type=\"code-tag\"] {\n\tcolor: hsl(330, 70%, 60%);\n}\n\n[mol_text_type=\"code-global\"] {\n\tcolor: hsl(210, 80%, 60%);\n}\n\n[mol_text_type=\"code-decorator\"] {\n\tcolor: hsl(180, 40%, 60%);\n}\n\n[mol_text_type=\"code-punctuation\"] {\n\topacity: .5;\n}\n\n[mol_text_type=\"code-string\"] {\n\tcolor: hsl(90, 40%, 50%);\n}\n\n[mol_text_type=\"code-number\"] {\n\tcolor: hsl(60, 70%, 30%);\n}\n\n[mol_text_type=\"code-call\"] {\n\tcolor: hsl(270, 60%, 60%);\n}\n\n[mol_text_type=\"code-link\"] {\n\tcolor: hsl(240, 60%, 60%);\n}\n\n[mol_text_type=\"code-comment-inline\"] ,\n[mol_text_type=\"code-comment-block\"] {\n\topacity: .5;\n}\n\n[mol_text_type=\"code-docs\"] {\n\topacity: .75;\n}\n");
+    $.$mol_style_attach("mol/text/text.view.css", "[mol_text] {\n\tline-height: 1.5;\n\tbox-sizing: border-box;\n\tmax-width: 60rem;\n\tpadding: .75rem;\n\tborder-radius: var(--mol_skin_round);\n\twhite-space: pre-line;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex: 0 0 auto;\n\ttab-size: 4;\n}\n\n[mol_text_row] {\n\tmargin: .5rem .75rem;\n\toverflow: auto;\n\tmax-width: 100%;\n}\n\n[mol_text_type=\"block\"] {\n}\n\n[mol_text_header] {\n\tdisplay: block;\n\tpadding: .75rem;\n\tfont-weight: 500;\n\tmargin: 0;\n}\n\n[mol_text_header_level=\"1\"] {\n\tfont-size: 1.5em;\n}\n\n[mol_text_header_level=\"2\"] {\n\tfont-size: 1.3em;\n}\n\n[mol_text_header_level=\"3\"] {\n\tfont-size: 1.1em;\n}\n\n[mol_text_header_level=\"4\"] {\n\tfont-size: 1.1em;\n\tfont-style: italic;\n}\n\n[mol_text_header_level=\"5\"] {\n\tfont-size: 1.1em;\n\tfont-weight: normal;\n\tfont-style: italic;\n}\n\n[mol_text_type=\"list-item\"] {\n\tdisplay: list-item;\n}\n\n[mol_text_type=\"list-item\"]:before {\n\tcontent: '•';\n\tmargin-right: 1ch;\n}\n\n[mol_text_table] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\toverflow: auto;\n\tmargin: .5rem;\n\tflex-grow: 0;\n}\n\n[mol_text_type=\"code-indent\"] ,\n[mol_text_type=\"code\"] {\n\tfont-family: var(--mol_skin_font_monospace);\n\twhite-space: pre-wrap;\n\tborder-radius: var(--mol_skin_round);\n}\n\n[mol_text_type=\"text-link\"] {\n\tcolor: var(--mol_theme_control);\n\ttext-decoration: none;\n\tpadding: 0;\n}\n\n[mol_text_link]:hover ,\n[mol_text_link]:focus {\n\toutline: none;\n}\n\n[mol_text_image] {\n\tmax-width: 100%;\n\tmax-height: 75vh;\n\tobject-fit: scale-down;\n}\n\n[mol_text_type=\"strong\"] {\n\tfont-weight: bolder;\n}\n\n[mol_text_type=\"emphasis\"] {\n\tfont-style: italic;\n}\n\n[mol_text_type=\"strike\"] {\n\ttext-decoration: line-through;\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_text_type=\"code-keyword\"] {\n\tcolor: hsl(0, 70%, 60%);\n}\n\n[mol_text_type=\"code-field\"] {\n\tcolor: hsl(300, 70%, 60%);\n}\n\n[mol_text_type=\"code-tag\"] {\n\tcolor: hsl(330, 70%, 60%);\n}\n\n[mol_text_type=\"code-global\"] {\n\tcolor: hsl(210, 80%, 60%);\n}\n\n[mol_text_type=\"code-decorator\"] {\n\tcolor: hsl(180, 40%, 60%);\n}\n\n[mol_text_type=\"code-punctuation\"] {\n\topacity: .5;\n}\n\n[mol_text_type=\"code-string\"] {\n\tcolor: hsl(90, 40%, 50%);\n}\n\n[mol_text_type=\"code-number\"] {\n\tcolor: hsl(60, 70%, 30%);\n}\n\n[mol_text_type=\"code-call\"] {\n\tcolor: hsl(270, 60%, 60%);\n}\n\n[mol_text_type=\"code-link\"] {\n\tcolor: hsl(240, 60%, 60%);\n}\n\n[mol_text_type=\"code-comment-inline\"] ,\n[mol_text_type=\"code-comment-block\"] {\n\topacity: .5;\n}\n\n[mol_text_type=\"code-docs\"] {\n\topacity: .75;\n}\n");
 })($ || ($ = {}));
 //text.view.css.js.map
 ;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_habhub extends $.$mol_book {
+    class $hyoo_habhub extends $.$mol_book2 {
         attr() {
             return ({
                 "mol_theme": "$mol_theme_auto",
             });
         }
-        pages() {
-            return [this.Menu_page(), this.Details()];
-        }
         Menu_page() {
             return ((obj) => {
                 obj.minimal_width = () => 400;
                 obj.title = () => this.menu_title();
-                obj.event_top = (val) => this.event_front_up(val);
                 obj.tools = () => this.tools_root();
                 obj.body = () => [this.Menu()];
                 return obj;
@@ -7336,11 +6628,10 @@ var $;
         menu_rows() {
             return [];
         }
-        Details() {
+        Details(id) {
             return ((obj) => {
                 obj.minimal_width = () => 600;
                 obj.title = () => this.gist_current_title();
-                obj.event_top = (val) => this.event_front_up(val);
                 obj.tools = () => [this.Close()];
                 obj.body_scroll_top = (val) => this.details_scroll_top(val);
                 obj.body = () => [this.Details_content()];
@@ -7406,7 +6697,7 @@ var $;
         $.$mol_mem
     ], $hyoo_habhub.prototype, "Menu", null);
     __decorate([
-        $.$mol_mem
+        $.$mol_mem_key
     ], $hyoo_habhub.prototype, "Details", null);
     __decorate([
         $.$mol_mem
@@ -7458,11 +6749,8 @@ var $;
             pages() {
                 return [
                     this.Menu_page(),
-                    ...this.gist_current() ? [this.Details()] : []
+                    ...this.gist_current() ? [this.Details(this.gist_current())] : []
                 ];
-            }
-            Placeholder() {
-                return this.gist_current() ? null : super.Placeholder();
             }
             menu_rows() {
                 return this.gists().map((gist, index) => this.Menu_row(gist.uri()));
@@ -7495,7 +6783,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/habhub/habhub.view.css", "[hyoo_habhub] {\n\tmargin: 0;\n}\n\n[hyoo_habhub_menu_page] {\n\tflex: 1 1000 400px;\n\twidth: 100%;\n}\n\n[hyoo_habhub_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding: .5rem;\n}\n\n[hyoo_habhub_placeholder] {\n\tflex: 1000 1 600px;\n}\n\n[hyoo_habhub_details] {\n\tflex: 1000 1 600px;\n}\n\n[hyoo_habhub_details_text] {\n}\n\n[hyoo_habhub_details_chat] {\n\tbox-shadow: none;\n}\n");
+    $.$mol_style_attach("hyoo/habhub/habhub.view.css", "[hyoo_habhub] {\n\tmargin: 0;\n}\n\n[hyoo_habhub_menu_page] {\n\tflex: 0 0 30rem;\n\twidth: 100%;\n}\n\n[hyoo_habhub_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n\tpadding: .75rem;\n}\n\n[hyoo_habhub_placeholder] {\n\t/* flex: 1 1 600px; */\n}\n\n[hyoo_habhub_details] {\n\tflex: 1000 0 60rem;\n}\n\n[hyoo_habhub_details_text] {\n}\n\n[hyoo_habhub_details_chat] {\n\tbox-shadow: none;\n}\n");
 })($ || ($ = {}));
 //habhub.view.css.js.map
 ;
@@ -7593,5 +6881,35 @@ var $;
     $.$mol_github_repository_issues = $mol_github_repository_issues;
 })($ || ($ = {}));
 //repository.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_plugin extends $.$mol_view {
+        dom_node(next) {
+            const node = next || $.$mol_owning_get(this, $.$mol_view).dom_node();
+            $.$mol_dom_render_attributes(node, this.attr_static());
+            const events = this.event();
+            for (let event_name in events) {
+                node.addEventListener(event_name, $.$mol_log2.func($.$mol_fiber_root(events[event_name])), { passive: false });
+            }
+            return node;
+        }
+        attr_static() {
+            return {};
+        }
+        event() {
+            return {};
+        }
+        render() {
+            this.dom_node_actual();
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_plugin.prototype, "dom_node", null);
+    $.$mol_plugin = $mol_plugin;
+})($ || ($ = {}));
+//plugin.js.map
 
 //# sourceMappingURL=node.js.map
