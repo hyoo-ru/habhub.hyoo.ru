@@ -3,22 +3,22 @@
 }
 
 [hyoo_habhub_menu_page] {
-	flex: 1 1000 400px;
+	flex: 0 0 30rem;
 	width: 100%;
 }
 
 [hyoo_habhub_menu] {
 	display: flex;
 	flex-direction: column;
-	padding: .5rem;
+	padding: .75rem;
 }
 
 [hyoo_habhub_placeholder] {
-	flex: 1000 1 600px;
+	/* flex: 1 1 600px; */
 }
 
 [hyoo_habhub_details] {
-	flex: 1000 1 600px;
+	flex: 1000 0 60rem;
 }
 
 [hyoo_habhub_details_text] {

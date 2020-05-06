@@ -29,14 +29,10 @@ namespace $.$$ {
 		pages() {
 			return [
 				this.Menu_page() ,
-				... this.gist_current() ? [ this.Details() ] : []
+				... this.gist_current() ? [ this.Details( this.gist_current() ) ] : []
 			]
 		}
 		
-		Placeholder() {
-			return this.gist_current() ? null as any : super.Placeholder()
-		}
-
 		menu_rows() : $mol_view[] {
 			return this.gists().map( ( gist , index ) => this.Menu_row( gist.uri() ) )
 		}
