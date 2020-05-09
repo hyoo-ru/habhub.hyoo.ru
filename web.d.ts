@@ -54,6 +54,113 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_after_tick extends $mol_object2 {
+        task: () => void;
+        promise: any;
+        cancelled: boolean;
+        constructor(task: () => void);
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    var $mol_dom_context: typeof globalThis;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    function $mol_style_attach(id: string, text: string): HTMLStyleElement | null;
+}
+
+declare namespace $ {
+    class $mol_decor<Value> {
+        readonly value: Value;
+        constructor(value: Value);
+        prefix(): string;
+        valueOf(): Value;
+        postfix(): string;
+        toString(): string;
+    }
+}
+
+declare namespace $ {
+    type $mol_style_unit_length = '%' | 'px' | 'cm' | 'mm' | 'Q' | 'in' | 'pc' | 'pt' | 'cap' | 'ch' | 'em' | 'rem' | 'ex' | 'ic' | 'lh' | 'rlh' | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax';
+    type $mol_style_unit_angle = 'deg' | 'rad' | 'grad' | 'turn';
+    type $mol_style_unit_time = 's' | 'ms';
+    type $mol_style_unit_any = $mol_style_unit_length | $mol_style_unit_angle | $mol_style_unit_time;
+    class $mol_style_unit<Literal extends $mol_style_unit_any> extends $mol_decor<number> {
+        readonly literal: Literal;
+        constructor(value: number, literal: Literal);
+        postfix(): Literal;
+        static per(value: number): $mol_style_unit<"%">;
+        static px(value: number): $mol_style_unit<"px">;
+        static mm(value: number): $mol_style_unit<"mm">;
+        static cm(value: number): $mol_style_unit<"cm">;
+        static Q(value: number): $mol_style_unit<"Q">;
+        static in(value: number): $mol_style_unit<"in">;
+        static pc(value: number): $mol_style_unit<"pc">;
+        static pt(value: number): $mol_style_unit<"pt">;
+        static cap(value: number): $mol_style_unit<"cap">;
+        static ch(value: number): $mol_style_unit<"ch">;
+        static em(value: number): $mol_style_unit<"em">;
+        static rem(value: number): $mol_style_unit<"rem">;
+        static ex(value: number): $mol_style_unit<"ex">;
+        static ic(value: number): $mol_style_unit<"ic">;
+        static lh(value: number): $mol_style_unit<"lh">;
+        static rlh(value: number): $mol_style_unit<"rlh">;
+        static vh(value: number): $mol_style_unit<"vh">;
+        static vw(value: number): $mol_style_unit<"vw">;
+        static vi(value: number): $mol_style_unit<"vi">;
+        static vb(value: number): $mol_style_unit<"vb">;
+        static vmin(value: number): $mol_style_unit<"vmin">;
+        static vmax(value: number): $mol_style_unit<"vmax">;
+        static deg(value: number): $mol_style_unit<"deg">;
+        static rad(value: number): $mol_style_unit<"rad">;
+        static grad(value: number): $mol_style_unit<"grad">;
+        static turn(value: number): $mol_style_unit<"turn">;
+        static s(value: number): $mol_style_unit<"s">;
+        static ms(value: number): $mol_style_unit<"ms">;
+    }
+}
+
+declare namespace $ {
+    type $mol_style_func_name = 'calc' | 'hsla' | 'rgba' | 'var' | 'url';
+    class $mol_style_func<Name extends $mol_style_func_name, Value = unknown> extends $mol_decor<Value> {
+        readonly name: Name;
+        constructor(name: Name, value: Value);
+        prefix(): string;
+        postfix(): string;
+        static calc<Value>(value: Value): $mol_style_func<"calc", Value>;
+        static vary<Name extends string>(name: Name): $mol_style_func<"var", Name>;
+        static url<Href extends string>(href: Href): $mol_style_func<"url", string>;
+        static hsla(hue: number, saturation: number, lightness: number, alpha: number): $mol_style_func<"hsla", (number | $mol_style_unit<"%">)[]>;
+        static rgba(red: number, green: number, blue: number, alpha: number): $mol_style_func<"rgba", number[]>;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    const $mol_theme: {
+        back: $mol_style_func<"var", "--mol_theme_back">;
+        hover: $mol_style_func<"var", "--mol_theme_hover">;
+        current: $mol_style_func<"var", "--mol_theme_current">;
+        text: $mol_style_func<"var", "--mol_theme_text">;
+        control: $mol_style_func<"var", "--mol_theme_control">;
+        shade: $mol_style_func<"var", "--mol_theme_shade">;
+        line: $mol_style_func<"var", "--mol_theme_line">;
+        focus: $mol_style_func<"var", "--mol_theme_focus">;
+        field: $mol_style_func<"var", "--mol_theme_field">;
+    };
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     namespace $$ { }
     const $mol_object_field: unique symbol;
     class $mol_object extends $mol_object2 {
@@ -111,10 +218,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_log_group<Task extends Function, This>(name: string, task: Task): Task;
-}
-
-declare namespace $ {
     function $mol_log_context(next?: (() => void) | null): (() => void) | null;
 }
 
@@ -124,6 +227,10 @@ declare namespace $ {
 
 declare namespace $ {
     var $mol_log_filter: (next?: string | null | undefined) => string | null;
+}
+
+declare namespace $ {
+    function $mol_log_group<Task extends Function, This>(name: string, task: Task): Task;
 }
 
 declare namespace $ {
@@ -165,16 +272,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_after_tick extends $mol_object2 {
-        task: () => void;
-        promise: any;
-        cancelled: boolean;
-        constructor(task: () => void);
-        destructor(): void;
-    }
 }
 
 declare namespace $ {
@@ -328,6 +425,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_window extends $mol_object {
+        static size(next?: {
+            width: number;
+            height: number;
+        }, force?: $mol_mem_force): {
+            width: number;
+            height: number;
+        };
+    }
+}
+
+declare namespace $ {
     type $mol_type_param<Func, Index extends number> = Func extends (...params: infer Params) => any ? Params[Index] : Func extends new (...params: infer Params2) => any ? Params2[Index] : never;
 }
 
@@ -355,383 +464,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    var $mol_dom_context: typeof globalThis;
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    function $mol_dom_parse(text: string, type?: SupportedType): Document;
-}
-
-declare var $node: any;
-
-declare namespace $ {
-    class $mol_fetch_response extends $mol_object2 {
-        readonly native: Response;
-        constructor(native: Response);
-        headers(): Headers;
-        mime(): string | null;
-        stream(): ReadableStream<Uint8Array> | null;
-        text(): string;
-        json(): unknown;
-        buffer(): ArrayBuffer;
-        xml(): Document;
-        xhtml(): Document;
-        html(): Document;
-    }
-    class $mol_fetch extends $mol_object2 {
-        static request: (input: RequestInfo, init?: RequestInit | undefined) => Response;
-        static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
-        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array> | null;
-        static text(input: RequestInfo, init?: RequestInit): string;
-        static json(input: RequestInfo, init?: RequestInit): unknown;
-        static buffer(input: RequestInfo, init?: RequestInit): void;
-        static xml(input: RequestInfo, init?: RequestInit): Document;
-        static xhtml(input: RequestInfo, init?: RequestInit): Document;
-        static html(input: RequestInfo, init?: RequestInit): Document;
-    }
-}
-
-declare namespace $ {
-    function $mol_merge_dict<Target, Source>(target: Target, source: Source): Target & Source;
-}
-
-declare namespace $ {
-    class $mol_model<Raw extends Object> extends $mol_object {
-        static item<Instance extends $mol_model<{}>>(this: {
-            new (): Instance;
-        }, uri: string): Instance;
-        static cache<Raw extends Object>(): {};
-        uri(): string;
-        resource_url(): string;
-        method_put(): string;
-        json(next?: Partial<Raw>, force?: $mol_mem_force): Raw;
-        json_update(patch: Partial<Raw>): Raw;
-    }
-    function $mol_model_prop<Value, Json>(field: string, make: (json: Json) => Value): <Raw extends Object, Host extends $mol_model<Raw>>(host: Host, prop: string, descr: TypedPropertyDescriptor<(next?: Value | undefined) => Value>) => void;
-}
-
-declare namespace $ {
-    class $mol_time_base {
-        static patterns: any;
-        static formatter(pattern: string): any;
-        toString(pattern: string): string;
-    }
-}
-
-declare namespace $ {
-    type $mol_time_duration_config = number | string | {
-        year?: number;
-        month?: number;
-        day?: number;
-        hour?: number;
-        minute?: number;
-        second?: number;
-    };
-    class $mol_time_duration extends $mol_time_base {
-        constructor(config?: $mol_time_duration_config);
-        readonly year: number;
-        readonly month: number;
-        readonly day: number;
-        readonly hour: number;
-        readonly minute: number;
-        readonly second: number;
-        summ(config: $mol_time_duration_config): $mol_time_duration;
-        mult(numb: number): $mol_time_duration;
-        count(config: $mol_time_duration_config): number;
-        valueOf(): number;
-        toJSON(): string;
-        toString(pattern?: string): string;
-        static patterns: {
-            '#Y': (duration: $mol_time_duration) => string;
-            '#M': (duration: $mol_time_duration) => string;
-            '#D': (duration: $mol_time_duration) => string;
-            '#h': (duration: $mol_time_duration) => string;
-            '#m': (duration: $mol_time_duration) => string;
-            '#s': (duration: $mol_time_duration) => string;
-            '+hh': (duration: $mol_time_duration) => string;
-            mm: (duration: $mol_time_duration) => string;
-        };
-    }
-}
-
-declare namespace $ {
-    type $mol_time_moment_config = number | Date | string | {
-        year?: number;
-        month?: number;
-        day?: number;
-        hour?: number;
-        minute?: number;
-        second?: number;
-        offset?: $mol_time_duration_config;
-    };
-    class $mol_time_moment extends $mol_time_base {
-        constructor(config?: $mol_time_moment_config);
-        readonly year: number | undefined;
-        readonly month: number | undefined;
-        readonly day: number | undefined;
-        readonly hour: number | undefined;
-        readonly minute: number | undefined;
-        readonly second: number | undefined;
-        readonly offset: $mol_time_duration | undefined;
-        get weekday(): number;
-        private _native;
-        get native(): Date;
-        private _normal;
-        get normal(): $mol_time_moment;
-        merge(config: $mol_time_moment_config): $mol_time_moment;
-        shift(config: $mol_time_duration_config): $mol_time_moment;
-        toOffset(config: $mol_time_duration_config): $mol_time_moment;
-        valueOf(): number;
-        toJSON(): string;
-        toString(pattern?: string): string;
-        static patterns: {
-            YYYY: (moment: $mol_time_moment) => string;
-            AD: (moment: $mol_time_moment) => string;
-            YY: (moment: $mol_time_moment) => string;
-            Month: (moment: $mol_time_moment) => string;
-            'DD Month': (moment: $mol_time_moment) => string;
-            'D Month': (moment: $mol_time_moment) => string;
-            Mon: (moment: $mol_time_moment) => string;
-            'DD Mon': (moment: $mol_time_moment) => string;
-            'D Mon': (moment: $mol_time_moment) => string;
-            '-MM': (moment: $mol_time_moment) => string;
-            MM: (moment: $mol_time_moment) => string;
-            M: (moment: $mol_time_moment) => string;
-            WeekDay: (moment: $mol_time_moment) => string;
-            WD: (moment: $mol_time_moment) => string;
-            '-DD': (moment: $mol_time_moment) => string;
-            DD: (moment: $mol_time_moment) => string;
-            D: (moment: $mol_time_moment) => string;
-            Thh: (moment: $mol_time_moment) => string;
-            hh: (moment: $mol_time_moment) => string;
-            h: (moment: $mol_time_moment) => string;
-            ':mm': (moment: $mol_time_moment) => string;
-            mm: (moment: $mol_time_moment) => string;
-            m: (moment: $mol_time_moment) => string;
-            ':ss': (moment: $mol_time_moment) => string;
-            ss: (moment: $mol_time_moment) => string;
-            s: (moment: $mol_time_moment) => string;
-            '.sss': (moment: $mol_time_moment) => string;
-            sss: (moment: $mol_time_moment) => string;
-            Z: (moment: $mol_time_moment) => string;
-        };
-    }
-}
-
-declare namespace $ {
-    class $mol_state_local<Value> extends $mol_object {
-        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
-        static native(): Storage | {
-            getItem(key: string): any;
-            setItem(key: string, value: string): void;
-            removeItem(key: string): void;
-        };
-        static value<Value>(key: string, next?: Value, force?: $mol_mem_force): Value | null;
-        prefix(): string;
-        value(key: string, next?: Value): Value | null;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_atom_wait extends Promise<void> {
-        message: string;
-        constructor(message?: string);
-    }
-}
-
-declare namespace $ {
-    class $mol_github_auth extends $mol_object {
-        static id(): string;
-        static secret(): string;
-        static code_uri(): string;
-        static token_uri(): string;
-        static cache(next?: {
-            scopes: string[];
-            token: string;
-        }): {
-            scopes: string[];
-            token: string;
-        };
-        static scopes(next?: string[]): string[];
-        static code(next?: string, force?: $mol_mem_force): string;
-        static token_last(next?: string, force?: $mol_mem_force): string;
-        static token(scopes: string[]): string;
-    }
-}
-
-declare namespace $ {
-    interface $mol_github_entity_json {
-        url?: string;
-        html_url?: string;
-        id?: number;
-        created_at?: string;
-        updated_at?: string;
-    }
-    class $mol_github_entity<Raw extends $mol_github_entity_json> extends $mol_model<Raw> {
-        link(): string | undefined;
-        id(): number | undefined;
-        moment_created(): $mol_time_moment;
-        moment_updated(): $mol_time_moment;
-        method_put(): string;
-        resource_url(): string;
-    }
-}
-
-declare namespace $ {
-    interface $mol_github_user_json extends $mol_github_entity_json {
-        login: string;
-        avatar_url: string;
-        gravatar_id: string;
-        followers_url: string;
-        following_url: string;
-        gists_url: string;
-        starred_url: string;
-        subscriptions_url: string;
-        organizations_url: string;
-        repos_url: string;
-        events_url: string;
-        received_events_url: string;
-        type: string;
-        site_admin: false;
-    }
-    class $mol_github_user extends $mol_github_entity<$mol_github_user_json> {
-        name(): string;
-        avatar(): string;
-    }
-}
-
-declare namespace $ {
-    interface $mol_github_label_json extends $mol_github_entity_json {
-        name?: string;
-        color?: string;
-        default?: boolean;
-    }
-    class $mol_github_label extends $mol_github_entity<$mol_github_label_json> {
-        name(): string | undefined;
-        color(): string | undefined;
-        default(): boolean | undefined;
-    }
-}
-
-declare namespace $ {
-    interface $mol_github_comment_json extends $mol_github_entity_json {
-        issue_url: string;
-        user: $mol_github_user_json;
-        author_association: string;
-        body: string;
-    }
-    class $mol_github_comment extends $mol_github_entity<$mol_github_comment_json> {
-        json_update(patch: Partial<$mol_github_comment_json>): $mol_github_comment_json;
-        issue(): $mol_github_issue;
-        user(): $mol_github_user;
-        text(next?: string): string;
-    }
-}
-
-declare namespace $ {
-    interface $mol_github_issue_json extends $mol_github_entity_json {
-        repository_url: string;
-        labels_url: string;
-        comments_url: string;
-        events_url: string;
-        number: number;
-        title: string;
-        user: $mol_github_user_json;
-        labels: $mol_github_label_json[];
-        state: string;
-        locked: string;
-        assignees: $mol_github_user_json[];
-        milestone: {
-            url: string;
-        };
-        comments: 2;
-        closed_at: string;
-        author_association: string;
-        body: string;
-        closed_by: $mol_github_user_json;
-    }
-    class $mol_github_issue extends $mol_model<$mol_github_issue_json> {
-        json_update(patch: Partial<$mol_github_issue_json>): $mol_github_issue_json;
-        repository(): $mol_github_repository;
-        author(): $mol_github_user;
-        title(): string;
-        text(): string;
-        closer(): $mol_github_user;
-        assignees(): $mol_github_user[];
-        labels(): $mol_github_label[];
-        moment_closed(): $mol_time_moment;
-        comments(): $mol_github_issue_comments;
-    }
-    class $mol_github_issue_comments extends $mol_model<$mol_github_comment_json[]> {
-        json_update(patch: Partial<$mol_github_repository_json[]>): $mol_github_comment_json[];
-        items(next?: $mol_github_comment[], force?: $mol_mem_force): $mol_github_comment[];
-        add(config: {
-            text: string;
-        }, next?: $mol_github_comment, force?: $mol_mem_force): $mol_github_comment | undefined;
-    }
-}
-
-declare namespace $ {
-    interface $mol_github_search_issues_json {
-        incomplete_results: boolean;
-        items: $mol_github_issue_json[];
-        total_count: number;
-    }
-    class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
-        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
-        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
-        resource_url(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_state_arg extends $mol_object {
-        prefix: string;
-        static href(next?: string, force?: $mol_mem_force): string;
-        static dict(next?: {
-            [key: string]: string | null;
-        }): {
-            [key: string]: string;
-        };
-        static dict_cut(except: string[]): {
-            [key: string]: string;
-        };
-        static value(key: string, next?: string | null): string | null;
-        static link(next: {
-            [key: string]: string;
-        }): string;
-        static make_link(next: {
-            [key: string]: string | null;
-        }): string;
-        static encode(str: string): string;
-        constructor(prefix?: string);
-        value(key: string, next?: string): string | null;
-        sub(postfix: string): $mol_state_arg;
-        link(next: {
-            [key: string]: string;
-        }): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_window extends $mol_object {
-        static size(next?: {
-            width: number;
-            height: number;
-        }, force?: $mol_mem_force): {
-            width: number;
-            height: number;
-        };
-    }
-}
-
-declare namespace $ {
     function $mol_atom2_autorun(calculate: () => any): $mol_atom2<unknown>;
 }
 
@@ -752,20 +484,20 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_view_selection extends $mol_object {
+        static focused(next?: Element[]): Element[];
+        static focus(event: FocusEvent): void;
+        static blur(event: FocusEvent): void;
+    }
+}
+
+declare namespace $ {
     class $mol_after_timeout extends $mol_object2 {
         delay: number;
         task: () => void;
         id: any;
         constructor(delay: number, task: () => void);
         destructor(): void;
-    }
-}
-
-declare namespace $ {
-    class $mol_view_selection extends $mol_object {
-        static focused(next?: Element[]): Element[];
-        static focus(event: FocusEvent): void;
-        static blur(event: FocusEvent): void;
     }
 }
 
@@ -829,105 +561,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_style_attach(id: string, text: string): HTMLStyleElement | null;
-}
-
-declare namespace $ {
-    class $mol_decor<Value> {
-        readonly value: Value;
-        constructor(value: Value);
-        prefix(): string;
-        valueOf(): Value;
-        postfix(): string;
-        toString(): string;
-    }
-}
-
-declare namespace $ {
-    type $mol_style_unit_length = '%' | 'px' | 'cm' | 'mm' | 'Q' | 'in' | 'pc' | 'pt' | 'cap' | 'ch' | 'em' | 'rem' | 'ex' | 'ic' | 'lh' | 'rlh' | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax';
-    type $mol_style_unit_angle = 'deg' | 'rad' | 'grad' | 'turn';
-    type $mol_style_unit_time = 's' | 'ms';
-    type $mol_style_unit_any = $mol_style_unit_length | $mol_style_unit_angle | $mol_style_unit_time;
-    class $mol_style_unit<Literal extends $mol_style_unit_any> extends $mol_decor<number> {
-        readonly literal: Literal;
-        constructor(value: number, literal: Literal);
-        postfix(): Literal;
-        static per(value: number): $mol_style_unit<"%">;
-        static px(value: number): $mol_style_unit<"px">;
-        static mm(value: number): $mol_style_unit<"mm">;
-        static cm(value: number): $mol_style_unit<"cm">;
-        static Q(value: number): $mol_style_unit<"Q">;
-        static in(value: number): $mol_style_unit<"in">;
-        static pc(value: number): $mol_style_unit<"pc">;
-        static pt(value: number): $mol_style_unit<"pt">;
-        static cap(value: number): $mol_style_unit<"cap">;
-        static ch(value: number): $mol_style_unit<"ch">;
-        static em(value: number): $mol_style_unit<"em">;
-        static rem(value: number): $mol_style_unit<"rem">;
-        static ex(value: number): $mol_style_unit<"ex">;
-        static ic(value: number): $mol_style_unit<"ic">;
-        static lh(value: number): $mol_style_unit<"lh">;
-        static rlh(value: number): $mol_style_unit<"rlh">;
-        static vh(value: number): $mol_style_unit<"vh">;
-        static vw(value: number): $mol_style_unit<"vw">;
-        static vi(value: number): $mol_style_unit<"vi">;
-        static vb(value: number): $mol_style_unit<"vb">;
-        static vmin(value: number): $mol_style_unit<"vmin">;
-        static vmax(value: number): $mol_style_unit<"vmax">;
-        static deg(value: number): $mol_style_unit<"deg">;
-        static rad(value: number): $mol_style_unit<"rad">;
-        static grad(value: number): $mol_style_unit<"grad">;
-        static turn(value: number): $mol_style_unit<"turn">;
-        static s(value: number): $mol_style_unit<"s">;
-        static ms(value: number): $mol_style_unit<"ms">;
-    }
-}
-
-declare namespace $ {
-    type $mol_style_func_name = 'calc' | 'hsla' | 'rgba' | 'var' | 'url';
-    class $mol_style_func<Name extends $mol_style_func_name, Value = unknown> extends $mol_decor<Value> {
-        readonly name: Name;
-        constructor(name: Name, value: Value);
-        prefix(): string;
-        postfix(): string;
-        static calc<Value>(value: Value): $mol_style_func<"calc", Value>;
-        static vary<Name extends string>(name: Name): $mol_style_func<"var", Name>;
-        static url<Href extends string>(href: Href): $mol_style_func<"url", string>;
-        static hsla(hue: number, saturation: number, lightness: number, alpha: number): $mol_style_func<"hsla", (number | $mol_style_unit<"%">)[]>;
-        static rgba(red: number, green: number, blue: number, alpha: number): $mol_style_func<"rgba", number[]>;
-    }
-}
-
-declare namespace $ {
-    const $mol_theme: {
-        back: $mol_style_func<"var", "--mol_theme_back">;
-        hover: $mol_style_func<"var", "--mol_theme_hover">;
-        current: $mol_style_func<"var", "--mol_theme_current">;
-        text: $mol_style_func<"var", "--mol_theme_text">;
-        control: $mol_style_func<"var", "--mol_theme_control">;
-        shade: $mol_style_func<"var", "--mol_theme_shade">;
-        line: $mol_style_func<"var", "--mol_theme_line">;
-        focus: $mol_style_func<"var", "--mol_theme_focus">;
-        field: $mol_style_func<"var", "--mol_theme_field">;
-    };
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_after_frame extends $mol_object2 {
-        task: () => void;
-        id: any;
-        constructor(task: () => void);
-        destructor(): void;
-    }
-}
-
-declare namespace $ {
     type $mol_view_content = $mol_view | Node | string | number | boolean;
     function $mol_view_visible_width(): number;
     function $mol_view_visible_height(): number;
@@ -982,32 +615,21 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_after_frame extends $mol_object2 {
+        task: () => void;
+        id: any;
+        constructor(task: () => void);
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
 }
 
 interface Window {
     cordova: any;
 }
 declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_state_session<Value> extends $mol_object {
-        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
-        static native(): Storage | {
-            getItem(key: string): any;
-            setItem(key: string, value: string): void;
-            removeItem(key: string): void;
-        };
-        static value<Value>(key: string, next?: Value): Value;
-        prefix(): string;
-        value(key: string, next?: Value): Value;
-    }
-}
-
-declare namespace $ {
-    class $mol_memo extends $mol_wrapper {
-        static wrap<This extends object, Value>(task: (this: This, next?: Value) => Value): (this: This, next?: Value | undefined) => Value | undefined;
-    }
 }
 
 declare namespace $ {
@@ -1283,6 +905,29 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+    class $mol_state_session<Value> extends $mol_object {
+        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+        static native(): Storage | {
+            getItem(key: string): any;
+            setItem(key: string, value: string): void;
+            removeItem(key: string): void;
+        };
+        static value<Value>(key: string, next?: Value): Value;
+        prefix(): string;
+        value(key: string, next?: Value): Value;
+    }
+}
+
+declare namespace $ {
+    class $mol_memo extends $mol_wrapper {
+        static wrap<This extends object, Value>(task: (this: This, next?: Value) => Value): (this: This, next?: Value | undefined) => Value | undefined;
+    }
+}
+
+declare namespace $.$$ {
+}
+
 declare namespace $.$$ {
     class $mol_scroll extends $.$mol_scroll {
         scroll_top(next?: number): number;
@@ -1290,9 +935,6 @@ declare namespace $.$$ {
         _event_scroll_timer(next?: $mol_after_timeout | null): $mol_after_timeout | null | undefined;
         event_scroll(next?: Event): void;
     }
-}
-
-declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -1304,6 +946,9 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $mol_book2 extends $.$mol_book2 {
         title(): string;
@@ -1312,6 +957,28 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_button extends $mol_view {
+        enabled(): boolean;
+        minimal_height(): number;
+        click(event?: any, force?: $mol_mem_force): any;
+        event_click(event?: any, force?: $mol_mem_force): any;
+        event(): {
+            click: (event?: any) => any;
+            keypress: (event?: any) => any;
+        };
+        event_activate(event?: any, force?: $mol_mem_force): any;
+        event_key_press(event?: any, force?: $mol_mem_force): any;
+        attr(): {
+            disabled: boolean;
+            role: string;
+            tabindex: number;
+            title: string;
+        };
+        disabled(): boolean;
+        tab_index(): number;
+        hint(): string;
+        sub(): readonly (string | number | boolean | Node | $mol_view)[];
+    }
 }
 
 declare namespace $ {
@@ -1420,28 +1087,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_button extends $mol_view {
-        enabled(): boolean;
-        minimal_height(): number;
-        click(event?: any, force?: $mol_mem_force): any;
-        event_click(event?: any, force?: $mol_mem_force): any;
-        event(): {
-            click: (event?: any) => any;
-            keypress: (event?: any) => any;
-        };
-        event_activate(event?: any, force?: $mol_mem_force): any;
-        event_key_press(event?: any, force?: $mol_mem_force): any;
-        attr(): {
-            disabled: boolean;
-            role: string;
-            tabindex: number;
-            title: string;
-        };
-        disabled(): boolean;
-        tab_index(): number;
-        hint(): string;
-        sub(): readonly (string | number | boolean | Node | $mol_view)[];
-    }
 }
 
 declare namespace $.$$ {
@@ -1450,29 +1095,6 @@ declare namespace $.$$ {
         event_activate(next: Event): void;
         event_key_press(event: KeyboardEvent): void;
         tab_index(): number;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_button_typed extends $mol_button {
-    }
-}
-declare namespace $ {
-    class $mol_button_major extends $mol_button_typed {
-        attr(): {
-            mol_theme: string;
-            disabled: boolean;
-            role: string;
-            tabindex: number;
-            title: string;
-        };
-    }
-}
-declare namespace $ {
-    class $mol_button_minor extends $mol_button_typed {
     }
 }
 
@@ -1494,13 +1116,32 @@ declare namespace $ {
 }
 
 declare namespace $.$$ {
+}
+
+declare namespace $.$$ {
     class $mol_page extends $.$mol_page {
         body_scroll_top(next?: number): number;
     }
 }
 
-declare namespace $.$$ {
+declare namespace $ {
+    class $mol_state_local<Value> extends $mol_object {
+        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+        static native(): Storage | {
+            getItem(key: string): any;
+            setItem(key: string, value: string): void;
+            removeItem(key: string): void;
+        };
+        static value<Value>(key: string, next?: Value, force?: $mol_mem_force): Value | null;
+        prefix(): string;
+        value(key: string, next?: Value): Value | null;
+    }
 }
+
+declare namespace $ {
+}
+
+declare var $node: any;
 
 declare namespace $ {
     type $mol_charset_encoding = 'utf8' | 'ibm866' | 'iso-8859-2' | 'iso-8859-3' | 'iso-8859-4' | 'iso-8859-5' | 'iso-8859-6' | 'iso-8859-7' | 'iso-8859-8' | 'iso-8859-8i' | 'iso-8859-10' | 'iso-8859-13' | 'iso-8859-14' | 'iso-8859-15' | 'iso-8859-16' | 'koi8-r' | 'koi8-u' | 'koi8-r' | 'macintosh' | 'windows-874' | 'windows-1250' | 'windows-1251' | 'windows-1252' | 'windows-1253' | 'windows-1254' | 'windows-1255' | 'windows-1256' | 'windows-1257' | 'windows-1258' | 'x-mac-cyrillic' | 'gbk' | 'gb18030' | 'hz-gb-2312' | 'big5' | 'euc-jp' | 'iso-2022-jp' | 'shift-jis' | 'euc-kr' | 'iso-2022-kr';
@@ -1552,6 +1193,37 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_dom_parse(text: string, type?: SupportedType): Document;
+}
+
+declare namespace $ {
+    class $mol_fetch_response extends $mol_object2 {
+        readonly native: Response;
+        constructor(native: Response);
+        headers(): Headers;
+        mime(): string | null;
+        stream(): ReadableStream<Uint8Array> | null;
+        text(): string;
+        json(): unknown;
+        buffer(): ArrayBuffer;
+        xml(): Document;
+        xhtml(): Document;
+        html(): Document;
+    }
+    class $mol_fetch extends $mol_object2 {
+        static request: (input: RequestInfo, init?: RequestInit | undefined) => Response;
+        static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
+        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array> | null;
+        static text(input: RequestInfo, init?: RequestInit): string;
+        static json(input: RequestInfo, init?: RequestInit): unknown;
+        static buffer(input: RequestInfo, init?: RequestInit): void;
+        static xml(input: RequestInfo, init?: RequestInit): Document;
+        static xhtml(input: RequestInfo, init?: RequestInit): Document;
+        static html(input: RequestInfo, init?: RequestInit): Document;
+    }
+}
+
+declare namespace $ {
     class $mol_file_web extends $mol_file {
         static absolute(path: string): $mol_file_web;
         static relative(path: string): $mol_file_web;
@@ -1597,6 +1269,9 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $mol_list extends $.$mol_list {
         sub(): readonly $mol_view[];
@@ -1607,9 +1282,6 @@ declare namespace $.$$ {
         sub_visible(): $mol_view[];
         minimal_height(): number;
     }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -1637,6 +1309,42 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+    function $mol_merge_dict<Target, Source>(target: Target, source: Source): Target & Source;
+}
+
+declare namespace $ {
+    class $mol_state_arg extends $mol_object {
+        prefix: string;
+        static href(next?: string, force?: $mol_mem_force): string;
+        static dict(next?: {
+            [key: string]: string | null;
+        }): {
+            [key: string]: string;
+        };
+        static dict_cut(except: string[]): {
+            [key: string]: string;
+        };
+        static value(key: string, next?: string | null): string | null;
+        static link(next: {
+            [key: string]: string;
+        }): string;
+        static make_link(next: {
+            [key: string]: string | null;
+        }): string;
+        static encode(str: string): string;
+        constructor(prefix?: string);
+        value(key: string, next?: string): string | null;
+        sub(postfix: string): $mol_state_arg;
+        link(next: {
+            [key: string]: string;
+        }): string;
+    }
+}
+
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $mol_link extends $.$mol_link {
         uri(): string;
@@ -1648,6 +1356,13 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_svg extends $mol_view {
+        dom_name(): string;
+        dom_name_space(): string;
+        text_width(text?: any, force?: $mol_mem_force): any;
+        font_size(): number;
+        font_family(): string;
+    }
 }
 
 declare namespace $ {
@@ -1662,16 +1377,6 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_font_measure(size: number, face: string, text: string): number;
-}
-
-declare namespace $ {
-    class $mol_svg extends $mol_view {
-        dom_name(): string;
-        dom_name_space(): string;
-        text_width(text?: any, force?: $mol_mem_force): any;
-        font_size(): number;
-        font_family(): string;
-    }
 }
 
 declare namespace $.$$ {
@@ -1709,9 +1414,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_icon extends $mol_svg_root {
         view_box(): string;
         minimal_width(): number;
@@ -1723,64 +1425,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
+}
+
+declare namespace $ {
     class $mol_icon_cross extends $mol_icon {
         path(): string;
     }
-}
-
-declare namespace $ {
-    class $mol_syntax2<Lexems extends {
-        [name: string]: RegExp;
-    }> {
-        lexems: Lexems;
-        constructor(lexems: Lexems);
-        rules: {
-            regExp: RegExp;
-            name: string;
-            size: number;
-        }[];
-        regexp: RegExp;
-        tokenize(text: string, handle: (name: string, found: string, chunks: string[], offset: number) => void): void;
-        parse(text: string, handlers: {
-            [key in keyof Lexems | '']: (found: string, chunks: string[], offset: number) => void;
-        }): void;
-    }
-}
-
-declare namespace $ {
-    var $mol_syntax2_md_flow: $mol_syntax2<{
-        quote: RegExp;
-        header: RegExp;
-        list: RegExp;
-        code: RegExp;
-        'code-indent': RegExp;
-        table: RegExp;
-        block: RegExp;
-    }>;
-    var $mol_syntax2_md_line: $mol_syntax2<{
-        strong: RegExp;
-        emphasis: RegExp;
-        code3: RegExp;
-        code: RegExp;
-        strike: RegExp;
-        'text-link': RegExp;
-        'image-link': RegExp;
-    }>;
-    const $mol_syntax2_md_code: $mol_syntax2<{
-        'code-docs': RegExp;
-        'code-comment-block': RegExp;
-        'code-link': RegExp;
-        'code-comment-inline': RegExp;
-        'code-string': RegExp;
-        'code-number': RegExp;
-        'code-call': RegExp;
-        'code-field': RegExp;
-        'code-keyword': RegExp;
-        'code-global': RegExp;
-        'code-decorator': RegExp;
-        'code-tag': RegExp;
-        'code-punctuation': RegExp;
-    }>;
 }
 
 declare namespace $ {
@@ -1789,6 +1439,19 @@ declare namespace $ {
 }
 
 declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_button_typed extends $mol_button {
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_button_minor extends $mol_button_typed {
+    }
 }
 
 declare namespace $ {
@@ -1811,6 +1474,9 @@ declare namespace $ {
         Title(): $mol_view;
         title(): string;
     }
+}
+
+declare namespace $ {
 }
 
 declare namespace $.$$ {
@@ -1842,14 +1508,14 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $mol_check_expand extends $.$mol_check_expand {
         level_style(): string;
         expandable(): boolean;
     }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -1863,15 +1529,15 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $mol_dimmer extends $.$mol_dimmer {
         parts(): any[];
         strings(): string[];
         string(index: number): string;
     }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -1932,6 +1598,9 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     interface $mol_grid_node {
         id: string;
@@ -1943,7 +1612,7 @@ declare namespace $.$$ {
         col_head_content(colId: string): readonly string[];
         rows(): readonly $mol_view[];
         cells(row_id: string[]): readonly $mol_view[];
-        col_type(col_id: string): "text" | "number" | "branch";
+        col_type(col_id: string): "number" | "text" | "branch";
         Cell(id: {
             row: string[];
             col: string;
@@ -1972,9 +1641,6 @@ declare namespace $.$$ {
             row: string[];
         }, next?: boolean): boolean | null;
     }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -2017,6 +1683,9 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $mol_link_iconed extends $.$mol_link_iconed {
         icon(): string;
@@ -2024,9 +1693,6 @@ declare namespace $.$$ {
         title(): string;
         sub(): any[];
     }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -2116,6 +1782,64 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+    class $mol_syntax2<Lexems extends {
+        [name: string]: RegExp;
+    }> {
+        lexems: Lexems;
+        constructor(lexems: Lexems);
+        rules: {
+            regExp: RegExp;
+            name: string;
+            size: number;
+        }[];
+        regexp: RegExp;
+        tokenize(text: string, handle: (name: string, found: string, chunks: string[], offset: number) => void): void;
+        parse(text: string, handlers: {
+            [key in keyof Lexems | '']: (found: string, chunks: string[], offset: number) => void;
+        }): void;
+    }
+}
+
+declare namespace $ {
+    var $mol_syntax2_md_flow: $mol_syntax2<{
+        quote: RegExp;
+        header: RegExp;
+        list: RegExp;
+        code: RegExp;
+        'code-indent': RegExp;
+        table: RegExp;
+        block: RegExp;
+    }>;
+    var $mol_syntax2_md_line: $mol_syntax2<{
+        strong: RegExp;
+        emphasis: RegExp;
+        code3: RegExp;
+        code: RegExp;
+        strike: RegExp;
+        'text-link': RegExp;
+        'image-link': RegExp;
+    }>;
+    const $mol_syntax2_md_code: $mol_syntax2<{
+        'code-docs': RegExp;
+        'code-comment-block': RegExp;
+        'code-link': RegExp;
+        'code-comment-inline': RegExp;
+        'code-string': RegExp;
+        'code-number': RegExp;
+        'code-call': RegExp;
+        'code-field': RegExp;
+        'code-keyword': RegExp;
+        'code-global': RegExp;
+        'code-decorator': RegExp;
+        'code-tag': RegExp;
+        'code-punctuation': RegExp;
+    }>;
+}
+
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $mol_text extends $.$mol_text {
         tokens(): readonly {
@@ -2149,9 +1873,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
     class $hyoo_habhub extends $mol_book2 {
         attr(): {
             mol_theme: string;
@@ -2178,6 +1899,284 @@ declare namespace $ {
     }
 }
 
+declare namespace $ {
+    class $mol_model<Raw extends Object> extends $mol_object {
+        static item<Instance extends $mol_model<{}>>(this: {
+            new (): Instance;
+        }, uri: string): Instance;
+        static cache<Raw extends Object>(): {};
+        uri(): string;
+        resource_url(): string;
+        method_put(): string;
+        json(next?: Partial<Raw>, force?: $mol_mem_force): Raw;
+        json_update(patch: Partial<Raw>): Raw;
+    }
+    function $mol_model_prop<Value, Json>(field: string, make: (json: Json) => Value): <Raw extends Object, Host extends $mol_model<Raw>>(host: Host, prop: string, descr: TypedPropertyDescriptor<(next?: Value | undefined) => Value>) => void;
+}
+
+declare namespace $ {
+    class $mol_time_base {
+        static patterns: any;
+        static formatter(pattern: string): any;
+        toString(pattern: string): string;
+    }
+}
+
+declare namespace $ {
+    type $mol_time_duration_config = number | string | {
+        year?: number;
+        month?: number;
+        day?: number;
+        hour?: number;
+        minute?: number;
+        second?: number;
+    };
+    class $mol_time_duration extends $mol_time_base {
+        constructor(config?: $mol_time_duration_config);
+        readonly year: number;
+        readonly month: number;
+        readonly day: number;
+        readonly hour: number;
+        readonly minute: number;
+        readonly second: number;
+        summ(config: $mol_time_duration_config): $mol_time_duration;
+        mult(numb: number): $mol_time_duration;
+        count(config: $mol_time_duration_config): number;
+        valueOf(): number;
+        toJSON(): string;
+        toString(pattern?: string): string;
+        static patterns: {
+            '#Y': (duration: $mol_time_duration) => string;
+            '#M': (duration: $mol_time_duration) => string;
+            '#D': (duration: $mol_time_duration) => string;
+            '#h': (duration: $mol_time_duration) => string;
+            '#m': (duration: $mol_time_duration) => string;
+            '#s': (duration: $mol_time_duration) => string;
+            '+hh': (duration: $mol_time_duration) => string;
+            mm: (duration: $mol_time_duration) => string;
+        };
+    }
+}
+
+declare namespace $ {
+    type $mol_time_moment_config = number | Date | string | {
+        year?: number;
+        month?: number;
+        day?: number;
+        hour?: number;
+        minute?: number;
+        second?: number;
+        offset?: $mol_time_duration_config;
+    };
+    class $mol_time_moment extends $mol_time_base {
+        constructor(config?: $mol_time_moment_config);
+        readonly year: number | undefined;
+        readonly month: number | undefined;
+        readonly day: number | undefined;
+        readonly hour: number | undefined;
+        readonly minute: number | undefined;
+        readonly second: number | undefined;
+        readonly offset: $mol_time_duration | undefined;
+        get weekday(): number;
+        private _native;
+        get native(): Date;
+        private _normal;
+        get normal(): $mol_time_moment;
+        merge(config: $mol_time_moment_config): $mol_time_moment;
+        shift(config: $mol_time_duration_config): $mol_time_moment;
+        toOffset(config: $mol_time_duration_config): $mol_time_moment;
+        valueOf(): number;
+        toJSON(): string;
+        toString(pattern?: string): string;
+        static patterns: {
+            YYYY: (moment: $mol_time_moment) => string;
+            AD: (moment: $mol_time_moment) => string;
+            YY: (moment: $mol_time_moment) => string;
+            Month: (moment: $mol_time_moment) => string;
+            'DD Month': (moment: $mol_time_moment) => string;
+            'D Month': (moment: $mol_time_moment) => string;
+            Mon: (moment: $mol_time_moment) => string;
+            'DD Mon': (moment: $mol_time_moment) => string;
+            'D Mon': (moment: $mol_time_moment) => string;
+            '-MM': (moment: $mol_time_moment) => string;
+            MM: (moment: $mol_time_moment) => string;
+            M: (moment: $mol_time_moment) => string;
+            WeekDay: (moment: $mol_time_moment) => string;
+            WD: (moment: $mol_time_moment) => string;
+            '-DD': (moment: $mol_time_moment) => string;
+            DD: (moment: $mol_time_moment) => string;
+            D: (moment: $mol_time_moment) => string;
+            Thh: (moment: $mol_time_moment) => string;
+            hh: (moment: $mol_time_moment) => string;
+            h: (moment: $mol_time_moment) => string;
+            ':mm': (moment: $mol_time_moment) => string;
+            mm: (moment: $mol_time_moment) => string;
+            m: (moment: $mol_time_moment) => string;
+            ':ss': (moment: $mol_time_moment) => string;
+            ss: (moment: $mol_time_moment) => string;
+            s: (moment: $mol_time_moment) => string;
+            '.sss': (moment: $mol_time_moment) => string;
+            sss: (moment: $mol_time_moment) => string;
+            Z: (moment: $mol_time_moment) => string;
+        };
+    }
+}
+
+declare namespace $ {
+    class $mol_atom_wait extends Promise<void> {
+        message: string;
+        constructor(message?: string);
+    }
+}
+
+declare namespace $ {
+    class $mol_github_auth extends $mol_object {
+        static id(): string;
+        static secret(): string;
+        static code_uri(): string;
+        static token_uri(): string;
+        static cache(next?: {
+            scopes: string[];
+            token: string;
+        }): {
+            scopes: string[];
+            token: string;
+        };
+        static scopes(next?: string[]): string[];
+        static code(next?: string, force?: $mol_mem_force): string;
+        static token_last(next?: string, force?: $mol_mem_force): string;
+        static token(scopes: string[]): string;
+    }
+}
+
+declare namespace $ {
+    interface $mol_github_entity_json {
+        url?: string;
+        html_url?: string;
+        id?: number;
+        created_at?: string;
+        updated_at?: string;
+    }
+    class $mol_github_entity<Raw extends $mol_github_entity_json> extends $mol_model<Raw> {
+        link(): string | undefined;
+        id(): number | undefined;
+        moment_created(): $mol_time_moment;
+        moment_updated(): $mol_time_moment;
+        method_put(): string;
+        resource_url(): string;
+    }
+}
+
+declare namespace $ {
+    interface $mol_github_user_json extends $mol_github_entity_json {
+        login: string;
+        avatar_url: string;
+        gravatar_id: string;
+        followers_url: string;
+        following_url: string;
+        gists_url: string;
+        starred_url: string;
+        subscriptions_url: string;
+        organizations_url: string;
+        repos_url: string;
+        events_url: string;
+        received_events_url: string;
+        type: string;
+        site_admin: false;
+    }
+    class $mol_github_user extends $mol_github_entity<$mol_github_user_json> {
+        name(): string;
+        avatar(): string;
+    }
+}
+
+declare namespace $ {
+    interface $mol_github_label_json extends $mol_github_entity_json {
+        name?: string;
+        color?: string;
+        default?: boolean;
+    }
+    class $mol_github_label extends $mol_github_entity<$mol_github_label_json> {
+        name(): string | undefined;
+        color(): string | undefined;
+        default(): boolean | undefined;
+    }
+}
+
+declare namespace $ {
+    interface $mol_github_comment_json extends $mol_github_entity_json {
+        issue_url: string;
+        user: $mol_github_user_json;
+        author_association: string;
+        body: string;
+    }
+    class $mol_github_comment extends $mol_github_entity<$mol_github_comment_json> {
+        json_update(patch: Partial<$mol_github_comment_json>): $mol_github_comment_json;
+        issue(): $mol_github_issue;
+        user(): $mol_github_user;
+        text(next?: string): string;
+    }
+}
+
+declare namespace $ {
+    interface $mol_github_issue_json extends $mol_github_entity_json {
+        repository_url: string;
+        labels_url: string;
+        comments_url: string;
+        events_url: string;
+        number: number;
+        title: string;
+        user: $mol_github_user_json;
+        labels: $mol_github_label_json[];
+        state: string;
+        locked: string;
+        assignees: $mol_github_user_json[];
+        milestone: {
+            url: string;
+        };
+        comments: 2;
+        closed_at: string;
+        author_association: string;
+        body: string;
+        closed_by: $mol_github_user_json;
+    }
+    class $mol_github_issue extends $mol_model<$mol_github_issue_json> {
+        json_update(patch: Partial<$mol_github_issue_json>): $mol_github_issue_json;
+        repository(): $mol_github_repository;
+        author(): $mol_github_user;
+        title(): string;
+        text(): string;
+        closer(): $mol_github_user;
+        assignees(): $mol_github_user[];
+        labels(): $mol_github_label[];
+        moment_closed(): $mol_time_moment;
+        comments(): $mol_github_issue_comments;
+    }
+    class $mol_github_issue_comments extends $mol_model<$mol_github_comment_json[]> {
+        json_update(patch: Partial<$mol_github_repository_json[]>): $mol_github_comment_json[];
+        items(next?: $mol_github_comment[], force?: $mol_mem_force): $mol_github_comment[];
+        add(config: {
+            text: string;
+        }, next?: $mol_github_comment, force?: $mol_mem_force): $mol_github_comment | undefined;
+    }
+}
+
+declare namespace $ {
+    interface $mol_github_search_issues_json {
+        incomplete_results: boolean;
+        items: $mol_github_issue_json[];
+        total_count: number;
+    }
+    class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
+        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
+        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
+        resource_url(): string;
+    }
+}
+
+declare namespace $ {
+}
+
 declare namespace $.$$ {
     class $hyoo_habhub extends $.$hyoo_habhub {
         uriSource(): string;
@@ -2201,6 +2200,16 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_plugin extends $mol_view {
+        dom_node(next?: Element): Element;
+        attr_static(): {
+            [key: string]: string | number | boolean;
+        };
+        event(): {
+            [key: string]: (event: Event) => void;
+        };
+        render(): void;
+    }
 }
 
 declare namespace $ {
@@ -2286,18 +2295,5 @@ declare namespace $ {
             title: string;
             text?: string;
         }, next?: $mol_github_issue, force?: $mol_mem_force): $mol_github_issue | undefined;
-    }
-}
-
-declare namespace $ {
-    class $mol_plugin extends $mol_view {
-        dom_node(next?: Element): Element;
-        attr_static(): {
-            [key: string]: string | number | boolean;
-        };
-        event(): {
-            [key: string]: (event: Event) => void;
-        };
-        render(): void;
     }
 }
