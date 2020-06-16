@@ -1,10 +1,12 @@
 $hyoo_habhub $mol_book2
-	attr *
-		mol_theme \$mol_theme_auto
+	plugins /
+		<= Theme $mol_theme_auto
 	Menu_page $mol_page
 		minimal_width 400
 		title <= menu_title @ \HabHub
 		tools <= tools_root /
+			<= Source_link $mol_link_source
+				uri \https://github.com/hyoo-ru/habhub.hyoo.ru
 		body /
 			<= Menu $mol_list
 				rows <= menu_rows /
