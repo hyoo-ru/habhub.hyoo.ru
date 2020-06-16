@@ -1238,67 +1238,61 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_link extends $mol_view {
-        dom_name(): string;
-        attr(): {
-            href: string;
-            title: string;
-            target: string;
-            download: string;
-            mol_link_current: boolean;
-            mol_theme: any;
-        };
-        uri(): string;
-        hint(): string;
-        target(): string;
-        file_name(): string;
-        current(): boolean;
-        theme(): any;
-        sub(): readonly (string | number | boolean | $mol_view | Node)[];
-        arg(): {};
-        event(): {
-            click: (event?: any) => any;
-        };
-        click(event?: any, force?: $mol_mem_force): any;
-        event_click(event?: any, force?: $mol_mem_force): any;
+    class $mol_button_typed extends $mol_button {
     }
 }
 
 declare namespace $ {
-    class $mol_state_arg extends $mol_object {
-        prefix: string;
-        static href(next?: string): string;
-        static dict(next?: {
-            [key: string]: string | null;
-        }): {
-            [key: string]: string;
-        };
-        static value(key: string, next?: string | null): string | null;
-        static link(next: any): string;
-        static make_link(next: {
-            [key: string]: any;
-        }): string;
-        constructor(prefix?: string);
-        value(key: string, next?: string): string | null;
-        sub(postfix: string): $mol_state_arg;
-        link(next: {
-            [key: string]: string;
-        }): string;
+}
+
+declare namespace $ {
+    class $mol_button_minor extends $mol_button_typed {
     }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_check extends $mol_button_minor {
+        attr(): {
+            mol_check_checked: any;
+            "aria-checked": any;
+            role: string;
+            disabled: boolean;
+            tabindex: number;
+            title: string;
+        };
+        checked(val?: any, force?: $mol_mem_force): any;
+        sub(): readonly any[];
+        Icon(): any;
+        label(): readonly any[];
+        Title(): $mol_view;
+        title(): string;
+    }
+}
+
+declare namespace $ {
+    function $mol_maybe<Value>(value: Value | null | undefined): Value[];
 }
 
 declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $mol_link extends $.$mol_link {
-        uri(): string;
-        current(): boolean;
-        event_click(event?: Event): void;
-        file_name(): string;
-        minimal_height(): number;
-        theme(): "$mol_theme_base" | null;
+    class $mol_check extends $.$mol_check {
+        click(next?: Event): void;
+        sub(): any[];
+        label(): readonly any[];
     }
+}
+
+declare namespace $ {
+    class $mol_check_icon extends $mol_check {
+    }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -1381,6 +1375,95 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_brightness_6 extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_lights_toggle extends $mol_check_icon {
+        Icon(): $mol_icon_brightness_6;
+        Lights_icon(): $mol_icon_brightness_6;
+        hint(): string;
+        checked(val?: any, force?: $mol_mem_force): any;
+        lights(val?: any, force?: $mol_mem_force): any;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_lights_toggle extends $.$mol_lights_toggle {
+        lights(next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+    class $mol_link extends $mol_view {
+        dom_name(): string;
+        attr(): {
+            href: string;
+            title: string;
+            target: string;
+            download: string;
+            mol_link_current: boolean;
+            mol_theme: any;
+        };
+        uri(): string;
+        hint(): string;
+        target(): string;
+        file_name(): string;
+        current(): boolean;
+        theme(): any;
+        sub(): readonly (string | number | boolean | $mol_view | Node)[];
+        arg(): {};
+        event(): {
+            click: (event?: any) => any;
+        };
+        click(event?: any, force?: $mol_mem_force): any;
+        event_click(event?: any, force?: $mol_mem_force): any;
+    }
+}
+
+declare namespace $ {
+    class $mol_state_arg extends $mol_object {
+        prefix: string;
+        static href(next?: string): string;
+        static dict(next?: {
+            [key: string]: string | null;
+        }): {
+            [key: string]: string;
+        };
+        static value(key: string, next?: string | null): string | null;
+        static link(next: any): string;
+        static make_link(next: {
+            [key: string]: any;
+        }): string;
+        constructor(prefix?: string);
+        value(key: string, next?: string): string | null;
+        sub(postfix: string): $mol_state_arg;
+        link(next: {
+            [key: string]: string;
+        }): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_link extends $.$mol_link {
+        uri(): string;
+        current(): boolean;
+        event_click(event?: Event): void;
+        file_name(): string;
+        minimal_height(): number;
+        theme(): "$mol_theme_base" | null;
+    }
+}
+
+declare namespace $ {
     class $mol_icon_github_circle extends $mol_icon {
         path(): string;
     }
@@ -1459,56 +1542,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_button_typed extends $mol_button {
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_button_minor extends $mol_button_typed {
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_check extends $mol_button_minor {
-        attr(): {
-            mol_check_checked: any;
-            "aria-checked": any;
-            role: string;
-            disabled: boolean;
-            tabindex: number;
-            title: string;
-        };
-        checked(val?: any, force?: $mol_mem_force): any;
-        sub(): readonly any[];
-        Icon(): any;
-        label(): readonly any[];
-        Title(): $mol_view;
-        title(): string;
-    }
-}
-
-declare namespace $ {
-    function $mol_maybe<Value>(value: Value | null | undefined): Value[];
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $mol_check extends $.$mol_check {
-        click(next?: Event): void;
-        sub(): any[];
-        label(): readonly any[];
-    }
 }
 
 declare namespace $ {
@@ -1905,6 +1938,7 @@ declare namespace $ {
         Menu_page(): $$.$mol_page;
         menu_title(): string;
         tools_root(): readonly any[];
+        Lights(): $$.$mol_lights_toggle;
         Source_link(): $mol_link_source;
         Menu(): $$.$mol_list;
         menu_rows(): readonly any[];
