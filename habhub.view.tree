@@ -5,6 +5,7 @@ $hyoo_habhub $mol_book2
 		minimal_width 400
 		title <= menu_title @ \HabHub
 		tools <= tools_root /
+			<= Lights $mol_lights_toggle
 			<= Source_link $mol_link_source
 				uri \https://github.com/hyoo-ru/habhub.hyoo.ru
 		body /
