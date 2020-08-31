@@ -302,7 +302,7 @@ $mol_text_link $mol_link_iconed
 		^
 		mol_text_type <= type?val \
 	uri <= link?val \
-	content <= content?val /
+	content?val /
 
 $mol_text_image $mol_view
 	dom_name \object
@@ -313,6 +313,101 @@ $mol_text_image $mol_view
 		data <= link?val \
 	sub /
 		<= title?val \
+
+$mol_status $mol_view
+	status null
+	minimal_height 24
+	minimal_width 0
+	sub /
+		<= message \
+
+$mol_bar $mol_view
+
+$mol_hotkey $mol_plugin
+	event *
+		^
+		keydown?event <=> keydown?event null
+	key *
+	mod_ctrl false
+	mod_alt false
+	mod_shift false
+
+$mol_string $mol_view
+	dom_name \input
+	enabled true
+	minimal_height 40
+	autocomplete false
+	field *
+		^
+		disabled <= disabled false
+		value <= value_changed?val <=> value?val \
+		placeholder <= hint \
+		type <= type?val \text
+		spellcheck <= spellcheck false
+		autocomplete <= autocomplete_native \
+	attr *
+		^
+		maxlength <= length_max Infinity
+	event *
+		^
+		input?event <=> event_change?event null
+		keydown?event <=> event_key_press?event null
+	plugins /
+		<= Submit $mol_hotkey
+			key * enter?event <=> submit?event null
+
+$mol_button_major $mol_button_typed
+	attr *
+		^
+		mol_theme \$mol_theme_accent
+
+$mol_row $mol_view
+
+$mol_message $mol_view
+	moment $mol_time_moment
+	sub /
+		<= Info $mol_row
+			sub /
+				<= Name $mol_view
+					sub /
+						<= name \ 
+				<= Moment $mol_view
+					sub /
+						<= moment_string \
+		<= Avatar_link $mol_link
+			uri <= avatar_link \
+			sub /
+				<= Avatar $mol_image
+					title \
+					uri <= avatar \
+		<= Text $mol_text
+			text <= text \
+
+$mol_chat $mol_list
+	rows /
+		<= posts /
+		<= Add_status $mol_status status <= adding?next null
+		<= Add $mol_bar
+			sub /
+				<= Add_body $mol_string
+					hint <= add_hint @ \New message...
+					value?val <=> add_body?val \
+				<= Add_submit $mol_button_major
+					enabled <= add_submit_enabled false
+					title <= add_submit_label @ \Post
+					event_click?event <=> add?event null
+	Post!index $mol_message
+		name <= post_user_name!index \
+		moment <= post_updated!index $mol_time_moment
+		avatar_link <= post_user_link!index \
+		avatar <= post_user_ava!index \
+		text <= post_body!index \
+	repository $mol_github_repository
+	repository_name \
+	link \
+	seed \
+	teaser \
+	issue $mol_github_issue
 
 $hyoo_habhub $mol_book2
 	plugins /
@@ -346,3 +441,39 @@ $hyoo_habhub $mol_book2
 	Menu_row!id $mol_link
 		title <= gist_title!id \
 		arg <= gist_arg!id *
+
+$mol_view_tree_test_attributes_super $mol_view
+	some *
+		a 0
+		b 2
+
+$mol_view_tree_test_attributes $mol_view_tree_test_attributes_super
+	some *
+		^
+		a 1
+
+$mol_view_tree_test_binding $mol_view
+	value?val <=> task_title_new?val \123
+	enabled <= head_complete_enabled false
+
+$mol_view_tree_test_binding_right $mol_view
+	Test $mol_view_tree_test_binding_right_test
+		width?v => outer_width?v
+
+$mol_view_tree_test_binding_right_test $mol_view
+	width?val 0
+
+$mol_view_tree_test_simple $mol_view
+	some 1
+	bool true
+	str \test
+	arr /
+	arr_string /string
+
+$mol_view_tree_test_attributes_subcomponent $mol_view
+	- Comment
+	Page!index $mol_view_tree_test_attributes_subcomponent_page
+		Sub <= page!index null
+
+$mol_view_tree_test_attributes_subcomponent_page $mol_view
+	Sub null
