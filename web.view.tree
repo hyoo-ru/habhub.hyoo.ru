@@ -80,25 +80,6 @@ $mol_link $mol_view
 $mol_theme_auto $mol_plugin
 	attr * mol_theme <= theme \
 
-$mol_button_typed $mol_button
-
-$mol_button_minor $mol_button_typed
-
-$mol_check $mol_button_minor
-	attr *
-		^
-		mol_check_checked <= checked?val false
-		aria-checked <= checked?val false
-		role \checkbox
-	sub /
-		<= Icon null
-		<= label /
-			<= Title $mol_view
-				sub /
-					<= title \
-
-$mol_check_icon $mol_check
-
 $mol_svg $mol_view
 	dom_name \svg
 	dom_name_space \http://www.w3.org/2000/svg
@@ -127,49 +108,85 @@ $mol_icon $mol_svg_root
 		<= Path $mol_svg_path
 			geometry <= path \
 
-$mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
-$mol_lights_toggle $mol_check_icon
-	Icon <= Lights_icon $mol_icon_brightness_6
-	hint @ \Toggle lights
-	checked?val <=> lights?val false
+$mol_bar $mol_view
 
-$mol_icon_github_circle $mol_icon path \M12,2C6.48,2 2,6.48 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12C22,6.48 17.52,2 12,2Z
+$mol_hotkey $mol_plugin
+	event *
+		^
+		keydown?event <=> keydown?event null
+	key *
+	mod_ctrl false
+	mod_alt false
+	mod_shift false
 
-$mol_link_source $mol_link
-	hint @ \Source code
+$mol_meter $mol_plugin
+	zoom 1
+	-
+	width?val 0
+	height?val 0
+	-
+	left?val 0
+	right?val 0
+	bottom?val 0
+	top?val 0
+
+$mol_pop $mol_view
+	event * keydown?event <=> keydown?event null
+	showed?val false
+	plugins /$mol_plugin
+		<= Meter $mol_meter
+			top => top
+			bottom => bottom
+			left => left
+			right => right
 	sub /
-		<= Icon $mol_icon_github_circle
+		<= Anchor null
+		<= Bubble $mol_pop_bubble
+			align <= align \bottom_center
+			content <= bubble_content /$mol_view_content
+			height_max <= height_max 9999
 
-$mol_list $mol_view
-	render_visible_only true
-	render_over 0
-	sub <= rows /$mol_view
-	Empty $mol_view
-	Gap_before $mol_view style * paddingTop <= gap_before 0
-	Gap_after $mol_view style * paddingTop <= gap_after 0
-	view_window /
-		0
-		0
-
-$mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
-
-$mol_float $mol_view
+$mol_pop_bubble $mol_scroll
+	sub <= content /$mol_view_content
 	style *
 		^
-		minHeight \auto
+		maxHeight <= height_max 9999
+	attr *
+		^
+		mol_pop_align <= align \
+		tabindex 0
+
+$mol_button_typed $mol_button
+
+$mol_button_minor $mol_button_typed
+
+$mol_string $mol_view
+	dom_name \input
+	enabled true
+	minimal_height 40
+	autocomplete false
+	field *
+		^
+		disabled <= disabled false
+		value <= value_changed?val <=> value?val \
+		placeholder <= hint \
+		type <= type?val \text
+		spellcheck <= spellcheck false
+		autocomplete <= autocomplete_native \
+	attr *
+		^
+		maxlength <= length_max Infinity
+	event *
+		^
+		input?event <=> event_change?event null
+		keydown?event <=> event_key_press?event null
+	plugins /
+		<= Submit $mol_hotkey
+			key * enter?event <=> submit?event null
 
 $mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
-
-$mol_check_expand $mol_check
-	minimal_height 40
-	Icon $mol_icon_chevron
-	level 0
-	style *
-		^
-		paddingLeft <= level_style \0px
-	checked?val <=> expanded?val false
-	enabled <= expandable false
 
 $mol_paragraph $mol_view
 	line_height 24
@@ -185,6 +202,141 @@ $mol_dimmer $mol_paragraph
 	High!id $mol_paragraph
 		sub /
 			<= string!id \
+
+$mol_nav $mol_plugin
+	cycle?val false
+	-
+	mod_ctrl false
+	mod_shift false
+	mod_alt false
+	-
+	keys_x?val /
+	keys_y?val /
+	-
+	current_x?val \
+	current_y?val \
+	-
+	event_up?event null
+	event_down?event null
+	event_left?event null
+	event_right?event null
+	event *
+		^
+		keydown?event <=> event_key?event null
+
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
+
+$mol_select $mol_pop
+	dictionary *
+	options /string
+	value?val \
+	Option_row!id $mol_button_minor
+		event_click?event <=> event_select!id?event null
+		sub <= option_content!id /
+			<= Option_label!id $mol_dimmer
+				haystack <= option_label!id \
+				needle <= filter_pattern?val \
+	No_options $mol_view
+		sub /
+			<= no_options_message @ \No options
+	plugins /
+		^
+		<= Nav $mol_nav
+			keys_y <= nav_components /$mol_view
+			current_y?component <=> option_focused?component null
+			cycle?val <=> nav_cycle?val true
+	showed?val <=> options_showed?val false
+	Anchor <= Trigger $mol_button_minor
+		click?event <=> open?event null
+		sub <= trigger_content /$mol_view_content
+	bubble_content /
+		<= Menu $mol_list
+			rows <= menu_content /$mol_view
+	option_content_current /$mol_view_content
+	Filter $mol_string
+		value?val <=> filter_pattern?val \
+		hint <= filter_hint <= hint @ \Search..
+		submit?event <=> submit?event null
+		enabled <= enabled true
+	Trigger_icon $mol_icon_chevron
+
+$mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
+
+$mol_search $mol_bar
+	query?val \
+	plugins /
+		<= Hotkey $mol_hotkey
+			key * escape?val <=> event_clear?val null
+	sub /
+		<= Suggest $mol_select
+			value?val <=> suggest_selected?val \
+			filter_pattern?val <=> suggest_selected?val \
+			hint <= hint @ \Search...
+			filter_pattern?val <=> query?val
+			options_showed <= suggests_showed false
+			options <= suggests /string
+			Trigger_icon null
+			submit?event <=> submit?event null
+			No_options null
+			enabled <= enabled true
+		<= Clear $mol_button_minor
+			sub /
+				<= Clear_icon $mol_icon_cross
+			event_click?val <=> event_clear?val null
+			hint <= clear_hint @ \Clear
+
+$mol_check $mol_button_minor
+	attr *
+		^
+		mol_check_checked <= checked?val false
+		aria-checked <= checked?val false
+		role \checkbox
+	sub /
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
+$mol_check_icon $mol_check
+
+$mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
+
+$mol_lights_toggle $mol_check_icon
+	Icon <= Lights_icon $mol_icon_brightness_6
+	hint @ \Toggle lights
+	checked?val <=> lights?val false
+
+$mol_icon_github_circle $mol_icon path \M12,2C6.48,2 2,6.48 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12C22,6.48 17.52,2 12,2Z
+
+$mol_link_source $mol_link
+	hint @ \Source code
+	sub /
+		<= Icon $mol_icon_github_circle
+
+$mol_float $mol_view
+	style *
+		^
+		minHeight \auto
+
+$mol_check_expand $mol_check
+	minimal_height 40
+	Icon $mol_icon_chevron
+	level 0
+	style *
+		^
+		paddingLeft <= level_style \0px
+	checked?val <=> expanded?val false
+	enabled <= expandable false
 
 $mol_grid $mol_scroll
 	row_height 32
@@ -343,45 +495,10 @@ $mol_status $mol_view
 	sub /
 		<= message \
 
-$mol_hotkey $mol_plugin
-	event *
-		^
-		keydown?event <=> keydown?event null
-	key *
-	mod_ctrl false
-	mod_alt false
-	mod_shift false
-
-$mol_string $mol_view
-	dom_name \input
-	enabled true
-	minimal_height 40
-	autocomplete false
-	field *
-		^
-		disabled <= disabled false
-		value <= value_changed?val <=> value?val \
-		placeholder <= hint \
-		type <= type?val \text
-		spellcheck <= spellcheck false
-		autocomplete <= autocomplete_native \
-	attr *
-		^
-		maxlength <= length_max Infinity
-	event *
-		^
-		input?event <=> event_change?event null
-		keydown?event <=> event_key_press?event null
-	plugins /
-		<= Submit $mol_hotkey
-			key * enter?event <=> submit?event null
-
 $mol_button_major $mol_button_typed
 	attr *
 		^
 		mol_theme \$mol_theme_accent
-
-$mol_bar $mol_view
 
 $mol_chat $mol_list
 	rows /
@@ -416,6 +533,12 @@ $hyoo_habhub $mol_book2
 		minimal_width 400
 		title <= menu_title @ \HabHub
 		tools <= tools_root /
+			<= Add $mol_link
+				uri \https://github.com/nin-jin/habhub
+				sub /
+					<= Add_icon $mol_icon_plus
+			<= Search $mol_search
+				query?val <=> search?val \
 			<= Lights $mol_lights_toggle
 			<= Source_link $mol_link_source
 				uri \https://github.com/hyoo-ru/habhub.hyoo.ru
@@ -427,7 +550,11 @@ $hyoo_habhub $mol_book2
 		title <= gist_current_title \
 		tools /
 			<= Close $mol_link
-				arg <= close_arg * gist null
+				arg <= close_arg *
+					author null
+					repo null
+					article null
+					gist null
 				sub /
 					<= Close_icon $mol_icon_cross
 		body_scroll_top?val <=> details_scroll_top?val 0
@@ -439,7 +566,10 @@ $hyoo_habhub $mol_book2
 					- <= Details_chat $mol_chat
 						issue <= gist_current_issue $mol_github_issue
 	Menu_row!id $mol_link
-		title <= gist_title!id \
+		sub /
+			<= Menu_row_title!id $mol_dimmer
+				needle <= search
+				haystack <= gist_title!id \
 		arg <= gist_arg!id *
 
 $mol_view_tree_test_attributes_super $mol_view
