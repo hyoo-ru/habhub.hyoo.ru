@@ -39,6 +39,11 @@ namespace $.$$ {
 			return this.gists_dict()[ `https://api.github.com/repos/${ this.author() }/${ this.repo() }/issues/${ this.article() }` ] ?? null
 		}
 		
+		@ $mol_mem
+		details_link() {
+			return `https://github.com/${ this.author() }/${ this.repo() }/issues/${ this.article() }`
+		}
+		
 		author() {
 			return $mol_state_arg.value( 'author' )
 		}

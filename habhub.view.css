@@ -2,6 +2,15 @@
 	margin: 0;
 }
 
+[hyoo_habhub_search] {
+	flex: none;
+	align-self: stretch;
+}
+
+[hyoo_habhub_menu_page_body] {
+	padding: var(--mol_gap_block);
+}
+
 [hyoo_habhub_menu_page] {
 	flex: 0 0 30rem;
 	width: 100%;
@@ -10,7 +19,6 @@
 [hyoo_habhub_menu] {
 	display: flex;
 	flex-direction: column;
-	padding: .75rem;
 }
 
 [hyoo_habhub_placeholder] {
