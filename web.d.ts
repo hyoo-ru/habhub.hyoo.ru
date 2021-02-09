@@ -1094,10 +1094,12 @@ declare namespace $ {
 declare namespace $.$$ {
     class $mol_link extends $.$mol_link {
         uri(): string;
+        uri_native(): URL;
         current(): boolean;
         event_click(event?: Event): void;
         file_name(): string;
         minimal_height(): number;
+        target(): "_self" | "_blank";
     }
 }
 
@@ -2581,13 +2583,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_atom_wait extends Promise<void> {
-        message: string;
-        constructor(message?: string);
-    }
-}
-
-declare namespace $ {
     class $mol_github_auth extends $mol_object {
         static id(): string;
         static secret(): string;
@@ -2682,6 +2677,7 @@ declare namespace $ {
         labels_url: string;
         comments_url: string;
         events_url: string;
+        html_url: string;
         number: number;
         title: string;
         user: $mol_github_user_json;
@@ -2701,6 +2697,7 @@ declare namespace $ {
     class $mol_github_issue extends $mol_model<$mol_github_issue_json> {
         json_update(patch: Partial<$mol_github_issue_json>): $mol_github_issue_json;
         repository(): $mol_github_repository;
+        web_uri(): string;
         author(): $mol_github_user;
         number(): number;
         title(): string;
@@ -2732,15 +2729,15 @@ declare namespace $ {
     class $mol_message extends $mol_view {
         moment(): $mol_time_moment;
         sub(): readonly any[];
-        name(): string;
-        Name(): $mol_view;
-        moment_string(): string;
-        Moment(): $mol_view;
-        Info(): $mol_row;
         avatar_link(): string;
         avatar(): string;
         Avatar(): $mol_image;
-        Avatar_link(): $$.$mol_link;
+        name(): string;
+        Name(): $mol_view;
+        Author(): $$.$mol_link;
+        moment_string(): string;
+        Moment(): $mol_view;
+        Info(): $mol_row;
         text(): string;
         Text(): $$.$mol_text;
     }
@@ -2861,6 +2858,106 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_text_code_token extends $mol_dimmer {
+        attr(): {
+            mol_text_code_token_type: string;
+        };
+        type(): string;
+    }
+    class $mol_text_code_token_link extends $mol_text_code_token {
+        dom_name(): string;
+        type(): string;
+        attr(): {
+            href: string;
+            target: string;
+            mol_text_code_token_type: string;
+        };
+        haystack(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    class $mol_text_code_row extends $mol_paragraph {
+        text(): string;
+        minimal_height(): number;
+        Token(id: any): $mol_text_code_token;
+        Token_link(id: any): $mol_text_code_token_link;
+        token_type(id: any): string;
+        token_text(id: any): string;
+        highlight(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_text_code_row extends $.$mol_text_code_row {
+        maximal_width(): number;
+        tokens(path: number[]): readonly {
+            name: string;
+            found: string;
+            chunks: string[];
+        }[];
+        sub(): $mol_text_code_token[];
+        row_content(path: number[]): $mol_text_code_token[];
+        Token(path: number[]): $mol_text_code_token;
+        token_type(path: number[]): string;
+        token_content(path: number[]): (string | $mol_text_code_token)[];
+        token_text(path: number[]): string;
+        view_find(check: (path: $mol_view, text?: string) => boolean, path?: $mol_view[]): Generator<$mol_view[]>;
+    }
+}
+
+declare namespace $ {
+    class $mol_text_code extends $mol_list {
+        text(): string;
+        text_lines(): readonly string[];
+        Row(id: any): $$.$mol_text_code_row;
+        row_text(id: any): string;
+        highlight(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $.$$ {
+    class $mol_text_code extends $.$mol_text_code {
+        text_lines(): readonly string[];
+        rows(): $mol_text_code_row[];
+        row_text(index: number): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_textarea extends $mol_view {
+        event(): {
+            keydown: (event?: any) => any;
+        };
+        sub(): readonly any[];
+        press(event?: any): any;
+        value(val?: any): any;
+        hint(): string;
+        enabled(): boolean;
+        length_max(): number;
+        Edit(): $$.$mol_string;
+        View(): $$.$mol_text_code;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_textarea extends $.$mol_textarea {
+        indent_inc(): void;
+        indent_dec(): void;
+        press(event: KeyboardEvent): void;
+    }
+}
+
+declare namespace $ {
     class $mol_button_major extends $mol_button_typed {
         attr(): {
             mol_theme: string;
@@ -2885,17 +2982,20 @@ declare namespace $ {
         seed(): string;
         teaser(): string;
         issue(): $mol_github_issue;
-        posts(): readonly any[];
+        add_uri(): string;
+        add_label(): string;
+        Add_link(): $$.$mol_link;
         adding(next?: any): any;
         Add_status(): $$.$mol_status;
         add_hint(): string;
         add_body(val?: any): any;
-        Add_body(): $$.$mol_string;
+        Add_body(): $$.$mol_textarea;
         add_submit_enabled(): boolean;
         add_submit_label(): string;
         add(event?: any): any;
         Add_submit(): $mol_button_major;
-        Add(): $mol_bar;
+        add_content(): readonly any[];
+        Add(): $mol_view;
         post_user_name(index: any): string;
         post_updated(index: any): $mol_time_moment;
         post_user_link(index: any): string;
@@ -2918,43 +3018,24 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_rpc_client_frame<Handlers> extends $mol_object {
-        static item<Handlers>(uri: string): $mol_rpc_client_frame<Handlers>;
-        uri(): string;
-        frame(): HTMLIFrameElement;
-        call({ name, args }: {
-            name: string;
-            args: any[];
-        }): unknown;
-        proxy(): any;
-    }
-}
-
-declare namespace $ {
 }
 
 declare namespace $.$$ {
     class $mol_chat extends $.$mol_chat {
         repository(): $mol_github_repository;
         issue(next?: $mol_github_issue, force?: $mol_mem_force): $mol_github_issue;
-        issue_ensured(): $mol_github_issue;
+        add_uri(): string;
         seed(): string;
         teaser(): string;
         posts_data(): $mol_github_comment[];
-        posts(): $mol_message[];
+        rows(): ($mol_link | $mol_message)[];
+        add_content(): ($mol_textarea | $mol_button_major)[];
         post_user_ava(index: number): string;
         post_user_name(index: number): string;
         post_user_link(index: number): string;
         post_body(index: number): string;
         post_updated(index: number): $mol_time_moment;
         add_submit_enabled(): boolean;
-        service(): {
-            issue_add: (repo_uri: string, title: string, text: string) => $mol_github_issue_json;
-            comment_add: (issue_uri: string, text: string) => $mol_github_comment_json;
-            comment_list: (issue_uri: string) => $mol_github_comment_json[];
-        };
-        adding(text?: string, force?: $mol_mem_force): string;
-        add(): void;
     }
 }
 

@@ -475,18 +475,18 @@ $mol_message $mol_view
 	sub /
 		<= Info $mol_row
 			sub /
-				<= Name $mol_view
+				<= Author $mol_link
+					uri <= avatar_link \
 					sub /
-						<= name \ 
+						<= Avatar $mol_image
+							title \
+							uri <= avatar \
+						<= Name $mol_view
+							sub /
+								<= name \ 
 				<= Moment $mol_view
 					sub /
 						<= moment_string \
-		<= Avatar_link $mol_link
-			uri <= avatar_link \
-			sub /
-				<= Avatar $mol_image
-					title \
-					uri <= avatar \
 		<= Text $mol_text
 			text <= text \
 
@@ -497,6 +497,51 @@ $mol_status $mol_view
 	sub /
 		<= message \
 
+$mol_text_code_token $mol_dimmer
+	attr *
+		^
+		mol_text_code_token_type <= type \
+
+$mol_text_code_token_link $mol_text_code_token
+	dom_name \a
+	type \code-link
+	attr *
+		^
+		href <= haystack \
+		target \_blank
+
+$mol_text_code_row $mol_paragraph
+	text \
+	minimal_height 24
+	Token!id $mol_text_code_token
+		type <= token_type!id \
+		haystack <= token_text!id \
+		needle <= highlight \
+	Token_link!id $mol_text_code_token_link
+		haystack <= token_text!id \
+		needle <= highlight \
+
+$mol_text_code $mol_list
+	text \
+	text_lines /string
+	Row!id $mol_text_code_row
+		text <= row_text!id \
+		highlight <= highlight \
+
+$mol_textarea $mol_view
+	event *
+		keydown?event <=> press?event null
+	sub /
+		<= Edit $mol_string
+			dom_name \textarea
+			value?val <=> value?val \
+			hint <= hint \
+			enabled <= enabled true
+			length_max <= length_max Infinity
+		<= View $mol_text_code
+			text <= value
+			render_visible_only false
+
 $mol_button_major $mol_button_typed
 	attr *
 		^
@@ -504,12 +549,14 @@ $mol_button_major $mol_button_typed
 
 $mol_chat $mol_list
 	rows /
-		<= posts /
-		<= Add_status $mol_status status <= adding?next null
-		<= Add $mol_bar
-			sub /
-				<= Add_body $mol_string
-					hint <= add_hint @ \New message...
+		<= Add_link $mol_link
+			uri <= add_uri \
+			title <= add_label @ \Add comment..
+		- <= Add_status $mol_status status <= adding?next null
+		- <= Add $mol_view
+			sub <= add_content /
+				<= Add_body $mol_textarea
+					hint <= add_hint @ \New message..
 					value?val <=> add_body?val \
 				<= Add_submit $mol_button_major
 					enabled <= add_submit_enabled false
@@ -567,7 +614,7 @@ $hyoo_habhub $mol_book2
 				rows /
 					<= Datails_text $mol_text
 						text <= gist_current_content \
-					- <= Details_chat $mol_chat
+					<= Details_chat $mol_chat
 						issue <= gist_current_issue $mol_github_issue
 	Menu_row!id $mol_link
 		sub /
