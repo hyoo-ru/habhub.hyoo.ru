@@ -37,7 +37,7 @@ $hyoo_habhub $mol_book2
 				rows /
 					<= Datails_text $mol_text
 						text <= gist_current_content \
-					- <= Details_chat $mol_chat
+					<= Details_chat $mol_chat
 						issue <= gist_current_issue $mol_github_issue
 	Menu_row!id $mol_link
 		sub /
