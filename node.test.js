@@ -25,6 +25,21 @@ module.exports = $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_offline(uri = 'web.js') { }
+    $.$mol_offline = $mol_offline;
+})($ || ($ = {}));
+//offline.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_offline();
+})($ || ($ = {}));
+//install.js.map
+;
+"use strict";
+var $;
+(function ($) {
     $.$mol_ambient_ref = Symbol('$mol_ambient_ref');
     function $mol_ambient(overrides) {
         return Object.setPrototypeOf(overrides, this || $);
@@ -8837,6 +8852,7 @@ var $;
         }
         Add() {
             const obj = new this.$.$mol_link();
+            obj.hint = () => "Add article";
             obj.uri = () => "https://github.com/nin-jin/habhub";
             obj.sub = () => [
                 this.Add_icon()
