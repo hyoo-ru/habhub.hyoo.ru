@@ -6,10 +6,6 @@ namespace $.$$ {
 			return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=reactions'
 		}
 
-		search( next?: string ) {
-			return this.$.$mol_state_arg.value( 'search', next ) ?? ''
-		}
-		
 		gists() {
 			return $mol_github_search_issues.item( this.uriSource() ).items()
 		}
