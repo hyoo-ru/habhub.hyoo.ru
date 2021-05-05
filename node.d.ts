@@ -2882,7 +2882,6 @@ declare namespace $ {
 declare namespace $.$$ {
     class $hyoo_habhub extends $.$hyoo_habhub {
         uriSource(): string;
-        search(next?: string): string;
         gists(): $mol_github_issue[];
         gists_dict(): {
             [key: string]: $mol_github_issue;

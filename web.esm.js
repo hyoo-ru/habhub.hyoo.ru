@@ -8760,10 +8760,6 @@ var $;
             uriSource() {
                 return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=reactions';
             }
-            search(next) {
-                var _a;
-                return (_a = this.$.$mol_state_arg.value('search', next)) !== null && _a !== void 0 ? _a : '';
-            }
             gists() {
                 return $.$mol_github_search_issues.item(this.uriSource()).items();
             }
