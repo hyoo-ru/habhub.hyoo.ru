@@ -5488,6 +5488,11 @@ var $;
         autocomplete() {
             return false;
         }
+        selection(val) {
+            if (val !== undefined)
+                return val;
+            return [];
+        }
         auto() {
             return [
                 this.selection_watcher()
@@ -5547,14 +5552,10 @@ var $;
         autocomplete_native() {
             return "";
         }
-        selection_end(val) {
-            if (val !== undefined)
-                return val;
+        selection_end() {
             return 0;
         }
-        selection_start(val) {
-            if (val !== undefined)
-                return val;
+        selection_start() {
             return 0;
         }
         length_max() {
@@ -5590,13 +5591,10 @@ var $;
     }
     __decorate([
         $.$mol_mem
+    ], $mol_string.prototype, "selection", null);
+    __decorate([
+        $.$mol_mem
     ], $mol_string.prototype, "value", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_string.prototype, "selection_end", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_string.prototype, "selection_start", null);
     __decorate([
         $.$mol_mem
     ], $mol_string.prototype, "type", null);
@@ -5646,8 +5644,16 @@ var $;
             }
             selection_change(event) {
                 const el = this.dom_node();
-                this.selection_start(el.selectionStart);
-                this.selection_end(el.selectionEnd);
+                this.selection([
+                    el.selectionStart,
+                    el.selectionEnd,
+                ]);
+            }
+            selection_start() {
+                return this.selection()[0];
+            }
+            selection_end() {
+                return this.selection()[1];
             }
         }
         __decorate([
@@ -7314,7 +7320,7 @@ var $;
     $.$mol_syntax2_md_code = new $.$mol_syntax2({
         'code-docs': /\/\/\/.*?$/,
         'code-comment-block': /(?:\/\*[^]*?\*\/|\/\+[^]*?\+\/|<![^]*?>)/,
-        'code-link': /\w+:\S+?(?=\s|\\\\|""|$)/,
+        'code-link': /(?:\w+:|#|\?|\/)\S+?(?=\s|\\\\|""|$)/,
         'code-comment-inline': /\/\/.*?$/,
         'code-string': /(?:".*?"|'.*?'|`.*?`|\/.+?\/[gmi]*\b|(?:^|[ \t])\\[^\n]*\n)/,
         'code-number': /[+-]?(?:\d*\.)?\d+\w*/,
