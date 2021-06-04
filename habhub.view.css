@@ -29,7 +29,8 @@
 	flex: 1000 0 60rem;
 }
 
-[hyoo_habhub_details_text] {
+[hyoo_habhub_details_body] {
+	padding: 0;
 }
 
 [hyoo_habhub_details_chat] {
