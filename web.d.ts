@@ -2943,7 +2943,7 @@ declare namespace $.$$ {
         gist_arg(id: number): {
             author: string;
             repo: string;
-            article: number;
+            article: string;
             gist: null;
         };
         gist_current_title(): string;
