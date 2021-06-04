@@ -78,7 +78,7 @@ namespace $.$$ {
 			return {
 				author: gist.author().name(),
 				repo: gist.repository().name(),
-				article: gist.number(),
+				article: String( gist.number() ),
 				gist: null,
 			}
 		}
