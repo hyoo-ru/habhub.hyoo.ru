@@ -2,5 +2,6 @@
 	"$mol_chat_add_label": "Добавить комментарий..",
 	"$mol_lights_toggle_hint": "Переключатель света",
 	"$mol_link_source_hint": "Исходные коды",
+	"$mol_search_Clear_hint": "Очистить",
 	"$mol_search_hint": "Поиск.."
 }

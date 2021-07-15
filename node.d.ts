@@ -1686,6 +1686,12 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_icon_cross extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
     class $mol_list extends $mol_view {
         render_visible_only(): boolean;
         render_over(): number;
@@ -1865,7 +1871,7 @@ declare namespace $ {
         suggests(): readonly string[];
         plugins(): readonly $mol_plugin[];
         showed(val?: any): boolean;
-        Anchor(): $$.$mol_string;
+        Anchor(): $mol_view;
         bubble_content(): readonly $mol_view_content[];
         Suggest(id: any): $mol_button_minor;
         clear(val?: any): any;
@@ -1878,6 +1884,9 @@ declare namespace $ {
         submit(event?: any): any;
         enabled(): boolean;
         Query(): $$.$mol_string;
+        Clear_icon(): $mol_icon_cross;
+        Clear(): $mol_button_minor;
+        anchor_content(): readonly any[];
         menu_items(): readonly $mol_view[];
         Menu(): $$.$mol_list;
         suggest_select(id: any, event?: any): any;
@@ -1892,6 +1901,7 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_search extends $.$mol_search {
+        anchor_content(): ($mol_button_minor | $mol_string)[];
         suggests_showed(next?: boolean): boolean;
         suggest_selected(next?: string): void;
         nav_components(): ($mol_button_minor | $mol_string)[];
@@ -1900,12 +1910,6 @@ declare namespace $.$$ {
         menu_items(): $mol_button_minor[];
         suggest_select(id: string, event?: MouseEvent): void;
         clear(event?: Event): void;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_cross extends $mol_icon {
-        path(): string;
     }
 }
 
