@@ -1,7 +1,4 @@
-deploy \/hyoo/habhub/logo/logo_16.png
-deploy \/hyoo/habhub/logo/logo_48.png
-deploy \/hyoo/habhub/logo/logo_96.png
-deploy \/hyoo/habhub/logo/logo_192.png
+deploy \/hyoo/habhub/logo/logo.svg
 deploy \/hyoo/habhub/manifest.json
 
 include \/mol/offline/install
