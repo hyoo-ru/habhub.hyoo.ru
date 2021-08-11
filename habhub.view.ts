@@ -91,6 +91,10 @@ namespace $.$$ {
 			return this.gist_current()!
 		}
 		
+		gist_current_created() {
+			return this.gist_current()!.moment_created().toString( 'YYYY-MM-DD' )
+		}
+		
 		details_scroll_top( next? : number ) {
 			const current = this.gist_current()!
 			return $mol_state_session.value( `${ this }.details_scroll_top(${ current.uri() })` , next )

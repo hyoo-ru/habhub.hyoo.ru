@@ -2,6 +2,10 @@
 	margin: 0;
 }
 
+[hyoo_habhub_created] {
+	padding: var(--mol_gap_text);
+}
+
 [hyoo_habhub_search] {
 	flex: none;
 	align-self: stretch;
