@@ -1910,6 +1910,72 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_icon_chevron extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_left extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_right extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_paginator extends $mol_view {
+        sub(): readonly any[];
+        backward_hint(): string;
+        backward(event?: any): any;
+        Backward_icon(): $mol_icon_chevron_left;
+        Backward(): $mol_button_minor;
+        value(val?: any): number;
+        Value(): $mol_view;
+        forward_hint(): string;
+        forward(event?: any): any;
+        Forward_icon(): $mol_icon_chevron_right;
+        Forward(): $mol_button_minor;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_paginator extends $.$mol_paginator {
+        backward(event: Event): void;
+        forward(event: Event): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_search_jumper extends $mol_search {
+        Root(): $mol_view;
+        forward(event?: any): void;
+        backward(event?: any): void;
+        Index(): $$.$mol_paginator;
+        plugins(): readonly any[];
+        index(val?: any): number;
+        Backward(): $$.$mol_hotkey;
+        escape(val?: any): any;
+        Forward(): $$.$mol_hotkey;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_search_jumper extends $.$mol_search_jumper {
+        results(): $mol_view[][];
+        index(next?: number): number;
+        sub(): ($mol_button_minor | $mol_string | $mol_paginator)[];
+    }
+}
+
+declare namespace $ {
     class $mol_float extends $mol_view {
         style(): {
             minHeight: string;
@@ -1918,12 +1984,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_icon_chevron extends $mol_icon {
-        path(): string;
-    }
 }
 
 declare namespace $ {
@@ -2092,6 +2152,7 @@ declare namespace $ {
         Quote(id: any): $$.$mol_text;
         Row(id: any): $mol_text_row;
         Span(id: any): $mol_text_span;
+        String(id: any): $mol_text_string;
         Link(id: any): $mol_text_link;
         Image(id: any): $mol_text_image;
         Header(id: any): $mol_text_header;
@@ -2102,6 +2163,7 @@ declare namespace $ {
         quote_text(id: any): string;
         block_content(id: any): readonly any[];
         block_type(id: any): string;
+        highlight(): string;
         link_target(id: any): string;
         header_level(id: any): number;
         header_content(id: any): readonly any[];
@@ -2133,6 +2195,10 @@ declare namespace $ {
         sub(): readonly any[];
         type(val?: any): string;
         content(val?: any): readonly any[];
+    }
+    class $mol_text_string extends $mol_dimmer {
+        dom_name(): string;
+        haystack(val?: any): string;
     }
     class $mol_text_link extends $mol_link_iconed {
         attr(): {
@@ -2738,7 +2804,8 @@ declare namespace $ {
         Lights(): $$.$mol_lights_toggle;
         tools_root(): readonly any[];
         search(val?: any): string;
-        Search(): $$.$mol_search;
+        Details_body(): $mol_view;
+        Search(): $$.$mol_search_jumper;
         menu_rows(): readonly any[];
         Menu(): $$.$mol_list;
         gist_current_title(): string;
@@ -2783,6 +2850,7 @@ declare namespace $.$$ {
         gist(id: number): $mol_github_issue;
         gist_current(): $mol_github_issue | null;
         details_link(): string;
+        Details_body(): $mol_scroll;
         author(): string | null;
         repo(): string | null;
         article(): string | null;
