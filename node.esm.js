@@ -9265,7 +9265,7 @@ var $;
     (function ($$) {
         class $hyoo_habhub extends $.$hyoo_habhub {
             uriSource() {
-                return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=reactions';
+                return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=created';
             }
             gists() {
                 return $.$mol_github_search_issues.item(this.uriSource()).items();
