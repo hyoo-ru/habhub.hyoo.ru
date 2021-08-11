@@ -40,6 +40,10 @@ namespace $.$$ {
 			return `https://github.com/${ this.author() }/${ this.repo() }/issues/${ this.article() }`
 		}
 		
+		Details_body() {
+			return this.Details( this.gist_current() ).Body()
+		}
+		
 		author() {
 			return $mol_state_arg.value( 'author' )
 		}
