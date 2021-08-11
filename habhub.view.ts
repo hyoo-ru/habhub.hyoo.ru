@@ -41,7 +41,8 @@ namespace $.$$ {
 		}
 		
 		Details_body() {
-			return this.Details( this.gist_current() ).Body()
+			const gist = this.gist_current()
+			return gist ? this.Details( gist ).Body() : null!
 		}
 		
 		author() {
