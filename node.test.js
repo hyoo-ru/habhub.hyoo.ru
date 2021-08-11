@@ -6641,8 +6641,11 @@ var $;
                 const needle = this.query();
                 if (needle.length < 2)
                     return [];
+                const root = this.Root();
+                if (!root)
+                    return [];
                 const regexp = $.$mol_regexp.from({ needle }, { ignoreCase: true });
-                return [...this.Root().view_find((_, text = '') => regexp.test(text))];
+                return [...root.view_find((_, text = '') => regexp.test(text))];
             }
             index(next) {
                 this.query();
@@ -9601,7 +9604,8 @@ var $;
                 return `https://github.com/${this.author()}/${this.repo()}/issues/${this.article()}`;
             }
             Details_body() {
-                return this.Details(this.gist_current()).Body();
+                const gist = this.gist_current();
+                return gist ? this.Details(gist).Body() : null;
             }
             author() {
                 return $.$mol_state_arg.value('author');
