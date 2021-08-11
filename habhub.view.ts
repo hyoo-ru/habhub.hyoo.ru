@@ -3,7 +3,7 @@ namespace $.$$ {
 	export class $hyoo_habhub extends $.$hyoo_habhub {
 		
 		uriSource(){
-			return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=created'
+			return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=created&per_page=100'
 		}
 
 		gists() {
