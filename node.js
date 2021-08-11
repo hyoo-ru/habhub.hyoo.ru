@@ -4830,13 +4830,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/lights/toggle/toggle.view.css", "[mol_lights_toggle] {\n\ttransform: rotate(-90deg);\n}\n");
-})($ || ($ = {}));
-//toggle.view.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
     var $$;
     (function ($$) {
         class $mol_lights_toggle extends $.$mol_lights_toggle {
@@ -8522,7 +8515,10 @@ var $;
         labels() {
             return this.json().labels.map(json => $.$mol_github_label.item(json.url));
         }
-        moment_closed() {
+        moment_created() {
+            return new $.$mol_time_moment(this.json().created_at);
+        }
+        moment_updated() {
             return new $.$mol_time_moment(this.json().updated_at);
         }
         comments() {
@@ -8537,7 +8533,10 @@ var $;
     ], $mol_github_issue.prototype, "labels", null);
     __decorate([
         $.$mol_mem
-    ], $mol_github_issue.prototype, "moment_closed", null);
+    ], $mol_github_issue.prototype, "moment_created", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_github_issue.prototype, "moment_updated", null);
     __decorate([
         $.$mol_mem
     ], $mol_github_issue.prototype, "comments", null);
@@ -9015,6 +9014,7 @@ var $;
             obj.minimal_width = () => 600;
             obj.title = () => this.gist_current_title();
             obj.tools = () => [
+                this.Created(),
                 this.Details_link(),
                 this.Close()
             ];
@@ -9088,6 +9088,14 @@ var $;
         }
         gist_current_title() {
             return "";
+        }
+        gist_current_created() {
+            return "";
+        }
+        Created() {
+            const obj = new this.$.$mol_paragraph();
+            obj.title = () => this.gist_current_created();
+            return obj;
         }
         details_link() {
             return "";
@@ -9195,6 +9203,9 @@ var $;
     ], $hyoo_habhub.prototype, "Menu", null);
     __decorate([
         $.$mol_mem
+    ], $hyoo_habhub.prototype, "Created", null);
+    __decorate([
+        $.$mol_mem
     ], $hyoo_habhub.prototype, "Details_link", null);
     __decorate([
         $.$mol_mem
@@ -9243,7 +9254,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/habhub/habhub.view.css", "[hyoo_habhub] {\n\tmargin: 0;\n}\n\n[hyoo_habhub_search] {\n\tflex: none;\n\talign-self: stretch;\n}\n\n[hyoo_habhub_menu_page_body] {\n\tpadding: var(--mol_gap_block);\n}\n\n[hyoo_habhub_menu_page] {\n\tflex: 0 0 30rem;\n\twidth: 100%;\n}\n\n[hyoo_habhub_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n[hyoo_habhub_placeholder] {\n\t/* flex: 1 1 600px; */\n}\n\n[hyoo_habhub_details] {\n\tflex: 1000 0 60rem;\n}\n\n[hyoo_habhub_details_body] {\n\tpadding: 0;\n}\n\n[hyoo_habhub_details_chat] {\n\tbox-shadow: none;\n}\n");
+    $.$mol_style_attach("hyoo/habhub/habhub.view.css", "[hyoo_habhub] {\n\tmargin: 0;\n}\n\n[hyoo_habhub_created] {\n\tpadding: var(--mol_gap_text);\n}\n\n[hyoo_habhub_search] {\n\tflex: none;\n\talign-self: stretch;\n}\n\n[hyoo_habhub_menu_page_body] {\n\tpadding: var(--mol_gap_block);\n}\n\n[hyoo_habhub_menu_page] {\n\tflex: 0 0 30rem;\n\twidth: 100%;\n}\n\n[hyoo_habhub_menu] {\n\tdisplay: flex;\n\tflex-direction: column;\n}\n\n[hyoo_habhub_placeholder] {\n\t/* flex: 1 1 600px; */\n}\n\n[hyoo_habhub_details] {\n\tflex: 1000 0 60rem;\n}\n\n[hyoo_habhub_details_body] {\n\tpadding: 0;\n}\n\n[hyoo_habhub_details_chat] {\n\tbox-shadow: none;\n}\n");
 })($ || ($ = {}));
 //habhub.view.css.js.map
 ;
@@ -9324,6 +9335,9 @@ var $;
             }
             gist_current_issue() {
                 return this.gist_current();
+            }
+            gist_current_created() {
+                return this.gist_current().moment_created().toString('YYYY-MM-DD');
             }
             details_scroll_top(next) {
                 const current = this.gist_current();

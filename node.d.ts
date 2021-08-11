@@ -1415,9 +1415,6 @@ declare namespace $ {
     }
 }
 
-declare namespace $ {
-}
-
 declare namespace $.$$ {
     class $mol_lights_toggle extends $.$mol_lights_toggle {
         lights(next?: boolean): boolean;
@@ -2524,7 +2521,6 @@ declare namespace $ {
             url: string;
         };
         comments: 2;
-        closed_at: string;
         author_association: string;
         body: string;
         closed_by: $mol_github_user_json;
@@ -2540,7 +2536,8 @@ declare namespace $ {
         closer(): $mol_github_user;
         assignees(): $mol_github_user[];
         labels(): $mol_github_label[];
-        moment_closed(): $mol_time_moment;
+        moment_created(): $mol_time_moment;
+        moment_updated(): $mol_time_moment;
         comments(): $mol_github_issue_comments;
     }
     class $mol_github_issue_comments extends $mol_model<$mol_github_comment_json[]> {
@@ -2745,6 +2742,8 @@ declare namespace $ {
         menu_rows(): readonly any[];
         Menu(): $$.$mol_list;
         gist_current_title(): string;
+        gist_current_created(): string;
+        Created(): $$.$mol_paragraph;
         details_link(): string;
         Details_link(): $mol_link_source;
         close_arg(): {
@@ -2799,6 +2798,7 @@ declare namespace $.$$ {
         gist_current_title(): string;
         gist_current_content(): string;
         gist_current_issue(): $mol_github_issue;
+        gist_current_created(): string;
         details_scroll_top(next?: number): number;
     }
 }

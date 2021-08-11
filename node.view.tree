@@ -507,6 +507,8 @@ $hyoo_habhub $mol_book2
 		minimal_width 600
 		title <= gist_current_title \
 		tools /
+			<= Created $mol_paragraph
+				title <= gist_current_created \
 			<= Details_link $mol_link_source
 				uri <= details_link \
 			<= Close $mol_link
