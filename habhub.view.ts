@@ -61,7 +61,7 @@ namespace $.$$ {
 		
 		menu_rows() : $mol_view[] {
 			return this.gists()
-				.filter( $mol_match_text( this.search(), gist => [ gist.title() ] ) )
+				.filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
 				.map( ( gist , index ) => this.Menu_row( gist.uri() ) )
 		}
 		
