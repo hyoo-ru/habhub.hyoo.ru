@@ -1976,6 +1976,97 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_icon_forum extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_forum_outline extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_open_in_new extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_frame extends $mol_scroll {
+        dom_name(): string;
+        attr(): {
+            src: string;
+            srcdoc: any;
+            allow: string;
+        };
+        fullscreen(): boolean;
+        accelerometer(): boolean;
+        autoplay(): boolean;
+        encription(): boolean;
+        gyroscope(): boolean;
+        pip(): boolean;
+        uri(val?: any): string;
+        html(): any;
+        allow(): string;
+    }
+}
+
+declare namespace $ {
+    const $mol_wait_timeout: (timeout: number) => unknown;
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_frame extends $.$mol_frame {
+        window(): Window;
+        uri_resource(): string;
+        _uri_sync: $mol_fiber | undefined;
+        uri_listener(): $mol_dom_listener;
+        render(): void;
+        allow(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_chat extends $mol_link {
+        seed(): string;
+        opened(): boolean;
+        arg(): {
+            mol_chat: string;
+        };
+        hint(): string;
+        sub(): readonly any[];
+        pages(): readonly any[];
+        Icon(): $mol_icon_forum_outline;
+        title(): string;
+        external(): string;
+        External_icon(): $mol_icon_open_in_new;
+        Esternal(): $$.$mol_link;
+        Close_icon(): $mol_icon_cross;
+        Close(): $$.$mol_link;
+        embed(): string;
+        Embed(): $$.$mol_frame;
+        Page(): $$.$mol_page;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_chat extends $.$mol_chat {
+        opened(): boolean;
+        pages(): $mol_page[];
+        external(): string;
+        embed(): string;
+    }
+}
+
+declare namespace $ {
     class $mol_text_code_token extends $mol_dimmer {
         attr(): {
             mol_text_code_token_type: string;
@@ -2407,6 +2498,49 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $hyoo_habhub extends $mol_book2 {
+        plugins(): readonly any[];
+        Menu_page(): $$.$mol_page;
+        Details(id: any): $$.$mol_page;
+        Menu_row(id: any): $$.$mol_link;
+        Theme(): $$.$mol_theme_auto;
+        menu_title(): string;
+        Add_icon(): $mol_icon_plus;
+        Add(): $$.$mol_link;
+        Source_link(): $mol_link_source;
+        Lights(): $$.$mol_lights_toggle;
+        tools_root(): readonly any[];
+        search(val?: any): string;
+        Details_body(): $mol_view;
+        Search(): $$.$mol_search_jumper;
+        menu_rows(): readonly any[];
+        Menu(): $$.$mol_list;
+        gist_current_title(): string;
+        chat_seed(id: any): string;
+        chat_pages(id: any): $$.$mol_page[];
+        Details_chat(id: any): $$.$mol_chat;
+        gist_current_created(): string;
+        Created(): $$.$mol_paragraph;
+        details_link(): string;
+        Details_link(): $mol_link_source;
+        close_arg(): {
+            author: any;
+            repo: any;
+            article: any;
+            gist: any;
+        };
+        Close_icon(): $mol_icon_cross;
+        Close(): $$.$mol_link;
+        details_scroll_top(val?: any): number;
+        gist_current_content(): string;
+        Datails_text(): $$.$mol_text;
+        gist_title(id: any): string;
+        Menu_row_title(id: any): $$.$mol_dimmer;
+        gist_arg(id: any): {};
+    }
+}
+
+declare namespace $ {
     function $mol_dom_parse(text: string, type?: DOMParserSupportedType): Document;
 }
 
@@ -2704,38 +2838,66 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_row extends $mol_view {
+    interface $mol_github_search_issues_json {
+        incomplete_results: boolean;
+        items: $mol_github_issue_json[];
+        total_count: number;
+    }
+    class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
+        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
+        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
+        resource_url(): string;
     }
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_message extends $mol_view {
-        moment(): $mol_time_moment;
-        sub(): readonly any[];
-        avatar_link(): string;
-        avatar(): string;
-        Avatar(): $mol_image;
-        name(): string;
-        Name(): $mol_view;
-        Author(): $$.$mol_link;
-        moment_string(): string;
-        Moment(): $mol_view;
-        Info(): $mol_row;
-        text(): string;
-        Text(): $$.$mol_text;
-    }
+    function $mol_match_text<Variant>(query: string, values: (variant: Variant) => string[]): (variant: Variant) => boolean;
 }
 
 declare namespace $ {
 }
 
 declare namespace $.$$ {
-    class $mol_message extends $.$mol_message {
-        moment_string(): string;
+    class $hyoo_habhub extends $.$hyoo_habhub {
+        uriSource(): string;
+        gists(): $mol_github_issue[];
+        gists_dict(): {
+            [key: string]: $mol_github_issue;
+        };
+        gist(id: number): $mol_github_issue;
+        gist_current(): $mol_github_issue | null;
+        details_link(): string;
+        Details_body(): $mol_scroll;
+        author(): string | null;
+        repo(): string | null;
+        article(): string | null;
+        pages(): $mol_page[];
+        chat_seed(issue: $mol_github_issue): string;
+        menu_rows(): $mol_view[];
+        gist_title(id: number): string;
+        gist_arg(id: number): {
+            author: string;
+            repo: string;
+            article: string;
+            gist: null;
+        };
+        gist_current_title(): string;
+        gist_current_content(): string;
+        gist_current_issue(): $mol_github_issue;
+        gist_current_created(): string;
+        details_scroll_top(next?: number): number;
     }
+}
+
+declare namespace $ {
+    function $mol_env(): Record<string, string | undefined>;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    function $mol_exec(this: $, dir: string, command: string, ...args: string[]): any;
 }
 
 declare namespace $ {
@@ -2822,152 +2984,6 @@ declare namespace $ {
             text?: string;
         }, next?: $mol_github_issue, force?: $mol_mem_force): $mol_github_issue | undefined;
     }
-}
-
-declare namespace $ {
-    class $mol_chat extends $mol_list {
-        rows(): readonly any[];
-        Post(index: any): $$.$mol_message;
-        repository(): $mol_github_repository;
-        repository_name(): string;
-        link(): string;
-        seed(): string;
-        teaser(): string;
-        issue(): $mol_github_issue;
-        add_uri(): string;
-        add_label(): string;
-        Add_link(): $$.$mol_link;
-        post_user_name(index: any): string;
-        post_updated(index: any): $mol_time_moment;
-        post_user_link(index: any): string;
-        post_user_ava(index: any): string;
-        post_body(index: any): string;
-    }
-}
-
-declare namespace $ {
-    interface $mol_github_search_issues_json {
-        incomplete_results: boolean;
-        items: $mol_github_issue_json[];
-        total_count: number;
-    }
-    class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
-        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
-        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
-        resource_url(): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $mol_chat extends $.$mol_chat {
-        repository(): $mol_github_repository;
-        issue(next?: $mol_github_issue, force?: $mol_mem_force): $mol_github_issue;
-        add_uri(): string;
-        seed(): string;
-        teaser(): string;
-        posts_data(): $mol_github_comment[];
-        rows(): ($mol_link | $mol_message)[];
-        post_user_ava(index: number): string;
-        post_user_name(index: number): string;
-        post_user_link(index: number): string;
-        post_body(index: number): string;
-        post_updated(index: number): $mol_time_moment;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_habhub extends $mol_book2 {
-        plugins(): readonly any[];
-        Menu_page(): $$.$mol_page;
-        Details(id: any): $$.$mol_page;
-        Menu_row(id: any): $$.$mol_link;
-        Theme(): $$.$mol_theme_auto;
-        menu_title(): string;
-        Add_icon(): $mol_icon_plus;
-        Add(): $$.$mol_link;
-        Source_link(): $mol_link_source;
-        Lights(): $$.$mol_lights_toggle;
-        tools_root(): readonly any[];
-        search(val?: any): string;
-        Details_body(): $mol_view;
-        Search(): $$.$mol_search_jumper;
-        menu_rows(): readonly any[];
-        Menu(): $$.$mol_list;
-        gist_current_title(): string;
-        gist_current_created(): string;
-        Created(): $$.$mol_paragraph;
-        details_link(): string;
-        Details_link(): $mol_link_source;
-        close_arg(): {
-            author: any;
-            repo: any;
-            article: any;
-            gist: any;
-        };
-        Close_icon(): $mol_icon_cross;
-        Close(): $$.$mol_link;
-        details_scroll_top(val?: any): number;
-        gist_current_content(): string;
-        Datails_text(): $$.$mol_text;
-        gist_current_issue(): $mol_github_issue;
-        Details_chat(): $$.$mol_chat;
-        Details_content(): $$.$mol_list;
-        gist_title(id: any): string;
-        Menu_row_title(id: any): $$.$mol_dimmer;
-        gist_arg(id: any): {};
-    }
-}
-
-declare namespace $ {
-    function $mol_match_text<Variant>(query: string, values: (variant: Variant) => string[]): (variant: Variant) => boolean;
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $hyoo_habhub extends $.$hyoo_habhub {
-        uriSource(): string;
-        gists(): $mol_github_issue[];
-        gists_dict(): {
-            [key: string]: $mol_github_issue;
-        };
-        gist(id: number): $mol_github_issue;
-        gist_current(): $mol_github_issue | null;
-        details_link(): string;
-        Details_body(): $mol_scroll;
-        author(): string | null;
-        repo(): string | null;
-        article(): string | null;
-        pages(): $mol_page[];
-        menu_rows(): $mol_view[];
-        gist_title(id: number): string;
-        gist_arg(id: number): {
-            author: string;
-            repo: string;
-            article: string;
-            gist: null;
-        };
-        gist_current_title(): string;
-        gist_current_content(): string;
-        gist_current_issue(): $mol_github_issue;
-        gist_current_created(): string;
-        details_scroll_top(next?: number): number;
-    }
-}
-
-declare namespace $ {
-    function $mol_env(): Record<string, string | undefined>;
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    function $mol_exec(this: $, dir: string, command: string, ...args: string[]): any;
 }
 
 export = $;
