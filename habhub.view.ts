@@ -58,10 +58,19 @@ namespace $.$$ {
 		}
 		
 		pages() {
+			const gist = this.gist_current()
 			return [
 				this.Menu_page() ,
-				... this.gist_current() ? [ this.Details( this.gist_current() ) ] : []
+				... gist ? [
+					this.Details( gist ),
+					... this.chat_pages( gist ),
+				] : []
 			]
+		}
+		
+		@ $mol_mem_key
+		chat_seed( issue: $mol_github_issue ) {
+			return issue.uri().replace( /.*\/repos\//, '' )
 		}
 		
 		menu_rows() : $mol_view[] {

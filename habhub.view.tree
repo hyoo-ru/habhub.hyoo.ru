@@ -23,6 +23,9 @@ $hyoo_habhub $mol_book2
 		minimal_width 600
 		title <= gist_current_title \
 		tools /
+			<= Details_chat!id $mol_chat
+				seed <= chat_seed!id \
+				pages => chat_pages!id
 			<= Created $mol_paragraph
 				title <= gist_current_created \
 			<= Details_link $mol_link_source
@@ -37,13 +40,9 @@ $hyoo_habhub $mol_book2
 					<= Close_icon $mol_icon_cross
 		body_scroll_top?val <=> details_scroll_top?val 0
 		body /
-			<= Details_content $mol_list
-				rows /
-					<= Datails_text $mol_text
-						highlight <= search
-						text <= gist_current_content \
-					<= Details_chat $mol_chat
-						issue <= gist_current_issue $mol_github_issue
+			<= Datails_text $mol_text
+				highlight <= search
+				text <= gist_current_content \
 	Menu_row!id $mol_link
 		sub /
 			<= Menu_row_title!id $mol_dimmer
