@@ -150,6 +150,8 @@ $mol_pop $mol_view
 	align_hor \
 	sub /
 		<= Anchor null
+	sub_visible /
+		<= Anchor
 		<= Bubble $mol_pop_bubble
 			align <= align \bottom_center
 			content <= bubble_content /$mol_view_content
@@ -474,6 +476,7 @@ $mol_image $mol_view
 		^
 		src <= uri \
 		alt <= title
+		loading <= loading \lazy
 
 $mol_link_iconed $mol_link
 	sub /
