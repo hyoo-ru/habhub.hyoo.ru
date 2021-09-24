@@ -40,3 +40,7 @@
 [hyoo_habhub_details_chat] {
 	box-shadow: none;
 }
+
+[hyoo_habhub_datails_text] {
+	padding: var(---mol_gap_block);
+}
