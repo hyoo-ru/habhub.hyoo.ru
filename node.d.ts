@@ -14,6 +14,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    let $mol_report_bugsnag: string;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     function $mol_offline(uri?: string): void;
 }
 
@@ -1973,7 +1980,7 @@ declare namespace $.$$ {
     class $mol_search_jumper extends $.$mol_search_jumper {
         results(): $mol_view[][];
         index(next?: number): number;
-        sub(): ($mol_button_minor | $mol_string | $mol_paginator)[];
+        anchor_content(): ($mol_button_minor | $mol_string | $mol_paginator)[];
     }
 }
 
