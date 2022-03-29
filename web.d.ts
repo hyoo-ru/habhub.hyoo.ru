@@ -341,17 +341,14 @@ declare namespace $ {
         cache: Result | Error | Promise<Result | Error>;
         get args(): Args;
         result(): Result | undefined;
-        persistent(): boolean;
         field(): string;
         constructor(id: string, task: (this: Host, ...args: Args) => Result, host?: Host | undefined, ...args: Args);
-        destructor(): void;
         plan(): void;
         reap(): void;
         toString(): any;
         toJSON(): any;
         get $(): any;
         emit(quant?: $mol_wire_cursor): void;
-        commit(): void;
         refresh(): void;
         put(next: Result | Error | Promise<Result | Error>): Result | Error | Promise<Result | Error>;
         sync(): Awaited<Result>;
@@ -359,10 +356,13 @@ declare namespace $ {
     }
     class $mol_wire_fiber_temp<Host, Args extends readonly unknown[], Result> extends $mol_wire_fiber<Host, Args, Result> {
         static getter<Host, Args extends readonly unknown[], Result>(task: (this: Host, ...args: Args) => Result): (host: Host, args: Args) => $mol_wire_fiber_temp<Host, [...Args], Result>;
+        commit(): void;
     }
     class $mol_wire_fiber_persist<Host, Args extends readonly unknown[], Result> extends $mol_wire_fiber<Host, Args, Result> {
         static getter<Host, Args extends readonly unknown[], Result>(task: (this: Host, ...args: Args) => Result, keys: number): (host: Host, args: Args) => $mol_wire_fiber_persist<Host, [...Args], Result>;
-        recall(...args: Args): Result;
+        recall(...args: Args): Error | Result | Promise<Error | Result>;
+        commit(): void;
+        destructor(): void;
     }
 }
 
@@ -727,6 +727,19 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_plugin extends $mol_view {
+        dom_node(next?: Element): Element;
+        attr_static(): {
+            [key: string]: string | number | boolean;
+        };
+        event(): {
+            [key: string]: (event: Event) => void;
+        };
+        render(): void;
+    }
+}
+
+declare namespace $ {
     function $mol_style_define<Component extends $mol_view, Config extends $mol_style_guard<Component, Config>>(Component: new () => Component, config: Config): HTMLStyleElement | null;
 }
 
@@ -910,19 +923,6 @@ declare namespace $.$$ {
         file_name(): string;
         minimal_height(): number;
         target(): '_self' | '_blank' | '_top' | '_parent' | string;
-    }
-}
-
-declare namespace $ {
-    class $mol_plugin extends $mol_view {
-        dom_node(next?: Element): Element;
-        attr_static(): {
-            [key: string]: string | number | boolean;
-        };
-        event(): {
-            [key: string]: (event: Event) => void;
-        };
-        render(): void;
     }
 }
 
@@ -2909,58 +2909,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    interface $mol_github_search_issues_json {
-        incomplete_results: boolean;
-        items: $mol_github_issue_json[];
-        total_count: number;
-    }
-    class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
-        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
-        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
-        resource_url(): string;
-    }
-}
-
-declare namespace $ {
-    function $mol_match_text<Variant>(query: string, values: (variant: Variant) => string[]): (variant: Variant) => boolean;
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $hyoo_habhub extends $.$hyoo_habhub {
-        uriSource(): string;
-        gists(): $mol_github_issue[];
-        gists_dict(): {
-            [key: string]: $mol_github_issue;
-        };
-        gist(id: number): $mol_github_issue;
-        gist_current(): $mol_github_issue | null;
-        details_link(): string;
-        Details_body(): $mol_scroll;
-        author(): string | null;
-        repo(): string | null;
-        article(): string | null;
-        pages(): $mol_page[];
-        chat_seed(issue: $mol_github_issue): string;
-        menu_rows(): $mol_view[];
-        gist_title(id: number): string;
-        gist_arg(id: number): {
-            author: string;
-            repo: string;
-            article: string;
-            gist: null;
-        };
-        gist_current_title(): string;
-        gist_current_content(): string;
-        gist_current_issue(): $mol_github_issue;
-        gist_current_created(): string;
-        details_scroll_top(next?: number): number;
-    }
-}
-
-declare namespace $ {
     interface $mol_github_repository_json extends $mol_github_entity_json {
         name?: string;
         full_name?: string;
@@ -3043,6 +2991,58 @@ declare namespace $ {
             title: string;
             text?: string;
         }, next?: $mol_github_issue, force?: $mol_mem_force): $mol_github_issue | undefined;
+    }
+}
+
+declare namespace $ {
+    interface $mol_github_search_issues_json {
+        incomplete_results: boolean;
+        items: $mol_github_issue_json[];
+        total_count: number;
+    }
+    class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
+        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
+        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
+        resource_url(): string;
+    }
+}
+
+declare namespace $ {
+    function $mol_match_text<Variant>(query: string, values: (variant: Variant) => string[]): (variant: Variant) => boolean;
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $hyoo_habhub extends $.$hyoo_habhub {
+        uriSource(): string;
+        gists(): $mol_github_issue[];
+        gists_dict(): {
+            [key: string]: $mol_github_issue;
+        };
+        gist(id: number): $mol_github_issue;
+        gist_current(): $mol_github_issue | null;
+        details_link(): string;
+        Details_body(): $mol_scroll;
+        author(): string | null;
+        repo(): string | null;
+        article(): string | null;
+        pages(): $mol_page[];
+        chat_seed(issue: $mol_github_issue): string;
+        menu_rows(): $mol_view[];
+        gist_title(id: number): string;
+        gist_arg(id: number): {
+            author: string;
+            repo: string;
+            article: string;
+            gist: null;
+        };
+        gist_current_title(): string;
+        gist_current_content(): string;
+        gist_current_issue(): $mol_github_issue;
+        gist_current_created(): string;
+        details_scroll_top(next?: number): number;
     }
 }
 

@@ -1155,9 +1155,6 @@ var $;
                 return;
             return this.cache;
         }
-        persistent() {
-            return this instanceof $mol_wire_fiber_persist;
-        }
         field() {
             return this.task.name + '()';
         }
@@ -1169,23 +1166,6 @@ var $;
             this.pop();
             this.pub_from = this.sub_from = args.length;
             this[Symbol.toStringTag] = id;
-        }
-        destructor() {
-            super.destructor();
-            const prev = this.cache;
-            if ($mol_owning_check(this, prev)) {
-                prev.destructor();
-            }
-            if (this instanceof $mol_wire_fiber_persist) {
-                if (this.pub_from === 0) {
-                    ;
-                    (this.host ?? this.task)[this.field()] = null;
-                }
-                else {
-                    ;
-                    (this.host ?? this.task)[this.field()].delete(this[Symbol.toStringTag]);
-                }
-            }
         }
         plan() {
             $mol_wire_fiber.planning.push(this);
@@ -1218,15 +1198,6 @@ var $;
                 this.plan();
             else
                 super.emit(quant);
-        }
-        commit() {
-            if (this instanceof $mol_wire_fiber_persist)
-                return;
-            super.commit();
-            if (this.host instanceof $mol_wire_fiber) {
-                this.host.put(this.cache);
-            }
-            this.destructor();
         }
         refresh() {
             if (this.cursor === $mol_wire_cursor.fresh)
@@ -1370,6 +1341,10 @@ var $;
                 return new $mol_wire_fiber_temp(`${host?.[Symbol.toStringTag] ?? host}.${task.name}(#)`, task, host, ...args);
             };
         }
+        commit() {
+            super.commit();
+            this.destructor();
+        }
     }
     $.$mol_wire_fiber_temp = $mol_wire_fiber_temp;
     class $mol_wire_fiber_persist extends $mol_wire_fiber {
@@ -1406,7 +1381,23 @@ var $;
             }
         }
         recall(...args) {
-            return this.task.call(this.host, ...args);
+            return this.put(this.task.call(this.host, ...args));
+        }
+        commit() { }
+        destructor() {
+            super.destructor();
+            const prev = this.cache;
+            if ($mol_owning_check(this, prev)) {
+                prev.destructor();
+            }
+            if (this.pub_from === 0) {
+                ;
+                (this.host ?? this.task)[this.field()] = null;
+            }
+            else {
+                ;
+                (this.host ?? this.task)[this.field()].delete(this[Symbol.toStringTag]);
+            }
         }
     }
     __decorate([
@@ -2323,6 +2314,36 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_plugin extends $mol_view {
+        dom_node(next) {
+            const node = next || $mol_owning_get(this).host.dom_node();
+            $mol_dom_render_attributes(node, this.attr_static());
+            const events = $mol_wire_async(this.event());
+            for (let event_name in events) {
+                node.addEventListener(event_name, events[event_name], { passive: false });
+            }
+            return node;
+        }
+        attr_static() {
+            return {};
+        }
+        event() {
+            return {};
+        }
+        render() {
+            this.dom_node_actual();
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_plugin.prototype, "dom_node", null);
+    $.$mol_plugin = $mol_plugin;
+})($ || ($ = {}));
+//mol/plugin/plugin.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_style_define(Component, config) {
         return $mol_style_attach(Component.name, $mol_style_sheet(Component, config));
     }
@@ -3128,36 +3149,6 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //mol/link/link.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_plugin extends $mol_view {
-        dom_node(next) {
-            const node = next || $mol_owning_get(this).host.dom_node();
-            $mol_dom_render_attributes(node, this.attr_static());
-            const events = $mol_wire_async(this.event());
-            for (let event_name in events) {
-                node.addEventListener(event_name, events[event_name], { passive: false });
-            }
-            return node;
-        }
-        attr_static() {
-            return {};
-        }
-        event() {
-            return {};
-        }
-        render() {
-            this.dom_node_actual();
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_plugin.prototype, "dom_node", null);
-    $.$mol_plugin = $mol_plugin;
-})($ || ($ = {}));
-//mol/plugin/plugin.ts
 ;
 "use strict";
 var $;
@@ -9646,6 +9637,80 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_github_repository extends $mol_github_entity {
+        json_update(patch) {
+            if (patch.owner)
+                $mol_github_user.item(patch.owner.url).json_update(patch.owner);
+            return super.json_update(patch);
+        }
+        owner() {
+            return $mol_github_user.item(this.json().owner.url);
+        }
+        name() {
+            return this.uri().match(/[^\/]+$/)[0];
+        }
+        name_full() {
+            return this.uri().match(/[^\/]+\/[^\/]+$/)[0];
+        }
+        issues() {
+            return $mol_github_repository_issues.item(`${this.uri()}/issues`);
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_github_repository.prototype, "issues", null);
+    $.$mol_github_repository = $mol_github_repository;
+    class $mol_github_repository_issues extends $mol_model {
+        json_update(patch) {
+            if (patch) {
+                for (let issue of patch) {
+                    $mol_github_issue.item(issue.url).json_update(issue);
+                }
+            }
+            const cache = $mol_model.cache();
+            return cache[this.uri()] = patch;
+        }
+        items(next, force) {
+            return this.json(undefined, force).map(json => $mol_github_issue.item(json.url));
+        }
+        add(config, next, force) {
+            if (!config)
+                return;
+            try {
+                const json = $mol_fetch.json(this.uri() + '?', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${$mol_github_auth.token(['public_repo'])}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title: config.title, body: config.text })
+                });
+                const comment = $mol_github_issue.item(json.url);
+                comment.json_update(json);
+                this.json(undefined, $mol_mem_force_cache);
+                return comment;
+            }
+            catch (error) {
+                if (error.message === 'Unauthorized') {
+                    $mol_github_auth.token_last(undefined, $mol_mem_force_update);
+                }
+                throw error;
+            }
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $mol_github_repository_issues.prototype, "items", null);
+    __decorate([
+        $mol_mem_key
+    ], $mol_github_repository_issues.prototype, "add", null);
+    $.$mol_github_repository_issues = $mol_github_repository_issues;
+})($ || ($ = {}));
+//mol/github/repository/repository.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_github_search_issues extends $mol_model {
         json_update(patch) {
             if (patch) {
@@ -9803,79 +9868,5 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //hyoo/habhub/habhub.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_github_repository extends $mol_github_entity {
-        json_update(patch) {
-            if (patch.owner)
-                $mol_github_user.item(patch.owner.url).json_update(patch.owner);
-            return super.json_update(patch);
-        }
-        owner() {
-            return $mol_github_user.item(this.json().owner.url);
-        }
-        name() {
-            return this.uri().match(/[^\/]+$/)[0];
-        }
-        name_full() {
-            return this.uri().match(/[^\/]+\/[^\/]+$/)[0];
-        }
-        issues() {
-            return $mol_github_repository_issues.item(`${this.uri()}/issues`);
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_github_repository.prototype, "issues", null);
-    $.$mol_github_repository = $mol_github_repository;
-    class $mol_github_repository_issues extends $mol_model {
-        json_update(patch) {
-            if (patch) {
-                for (let issue of patch) {
-                    $mol_github_issue.item(issue.url).json_update(issue);
-                }
-            }
-            const cache = $mol_model.cache();
-            return cache[this.uri()] = patch;
-        }
-        items(next, force) {
-            return this.json(undefined, force).map(json => $mol_github_issue.item(json.url));
-        }
-        add(config, next, force) {
-            if (!config)
-                return;
-            try {
-                const json = $mol_fetch.json(this.uri() + '?', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `token ${$mol_github_auth.token(['public_repo'])}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ title: config.title, body: config.text })
-                });
-                const comment = $mol_github_issue.item(json.url);
-                comment.json_update(json);
-                this.json(undefined, $mol_mem_force_cache);
-                return comment;
-            }
-            catch (error) {
-                if (error.message === 'Unauthorized') {
-                    $mol_github_auth.token_last(undefined, $mol_mem_force_update);
-                }
-                throw error;
-            }
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $mol_github_repository_issues.prototype, "items", null);
-    __decorate([
-        $mol_mem_key
-    ], $mol_github_repository_issues.prototype, "add", null);
-    $.$mol_github_repository_issues = $mol_github_repository_issues;
-})($ || ($ = {}));
-//mol/github/repository/repository.ts
 
 //# sourceMappingURL=web.js.map
