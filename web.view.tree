@@ -33,25 +33,6 @@ $mol_page $mol_view
 			dom_name \footer
 			sub <= foot /$mol_view
 
-$mol_link $mol_view
-	dom_name \a
-	attr *
-		^
-		href <= uri \
-		title <= hint \
-		target <= target \_self
-		download <= file_name \
-		mol_link_current <= current false
-	sub /$mol_view_content
-		<= title
-	arg *
-	event *
-		^
-		click?event <=> click?event <=> event_click?event null
-
-$mol_theme_auto $mol_plugin
-	attr * mol_theme <= theme \
-
 $mol_svg $mol_view
 	dom_name \svg
 	dom_name_space \http://www.w3.org/2000/svg
@@ -80,6 +61,25 @@ $mol_icon $mol_svg_root
 	sub /
 		<= Path $mol_svg_path
 			geometry <= path \
+
+$mol_link $mol_view
+	dom_name \a
+	attr *
+		^
+		href <= uri \
+		title <= hint \
+		target <= target \_self
+		download <= file_name \
+		mol_link_current <= current false
+	sub /$mol_view_content
+		<= title
+	arg *
+	event *
+		^
+		click?event <=> click?event <=> event_click?event null
+
+$mol_theme_auto $mol_plugin
+	attr * mol_theme <= theme \
 
 $mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
 
