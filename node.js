@@ -10351,13 +10351,37 @@ var $;
         }
         __decorate([
             $mol_mem
+        ], $hyoo_habhub.prototype, "gists_dict", null);
+        __decorate([
+            $mol_mem
         ], $hyoo_habhub.prototype, "gist_current", null);
         __decorate([
             $mol_mem
         ], $hyoo_habhub.prototype, "details_link", null);
         __decorate([
+            $mol_mem
+        ], $hyoo_habhub.prototype, "Details_body", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_habhub.prototype, "pages", null);
+        __decorate([
             $mol_mem_key
         ], $hyoo_habhub.prototype, "chat_seed", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_habhub.prototype, "menu_rows", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_habhub.prototype, "gist_title", null);
+        __decorate([
+            $mol_mem_key
+        ], $hyoo_habhub.prototype, "gist_arg", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_habhub.prototype, "gist_current_created", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_habhub.prototype, "details_scroll_top", null);
         $$.$hyoo_habhub = $hyoo_habhub;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
