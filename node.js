@@ -10036,6 +10036,12 @@ var $;
         author() {
             return $mol_github_user.item(this.json().user.url);
         }
+        owner() {
+            const url = this.json().repository_url
+                .replace(/\/[^\/]+$/, '')
+                .replace(/\/repos\//, '/users/');
+            return $mol_github_user.item(url);
+        }
         number() {
             return this.json().number;
         }
@@ -10278,22 +10284,22 @@ var $;
                 const uri = this.$.$mol_state_arg.value('gist');
                 if (uri)
                     return this.gists_dict()[uri] ?? null;
-                if (!this.author())
+                if (!this.owner())
                     return null;
                 if (!this.repo())
                     return null;
                 if (!this.article())
                     return null;
-                return this.gists_dict()[`https://api.github.com/repos/${this.author()}/${this.repo()}/issues/${this.article()}`] ?? null;
+                return this.gists_dict()[`https://api.github.com/repos/${this.owner()}/${this.repo()}/issues/${this.article()}`] ?? null;
             }
             details_link() {
-                return `https://github.com/${this.author()}/${this.repo()}/issues/${this.article()}`;
+                return `https://github.com/${this.owner()}/${this.repo()}/issues/${this.article()}`;
             }
             Details_body() {
                 const gist = this.gist_current();
                 return gist ? this.Details(gist).Body() : null;
             }
-            author() {
+            owner() {
                 return this.$.$mol_state_arg.value('author');
             }
             repo() {
@@ -10326,7 +10332,7 @@ var $;
             gist_arg(id) {
                 const gist = this.gist(id);
                 return {
-                    author: gist.author().name(),
+                    author: gist.owner().name(),
                     repo: gist.repository().name(),
                     article: String(gist.number()),
                     gist: null,
