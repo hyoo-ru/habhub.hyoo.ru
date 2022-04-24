@@ -29,16 +29,16 @@ namespace $.$$ {
 			const uri = this.$.$mol_state_arg.value( 'gist' )
 			if( uri ) return this.gists_dict()[ uri ] ?? null
 
-			if( !this.author() ) return null
+			if( !this.owner() ) return null
 			if( !this.repo() ) return null
 			if( !this.article() ) return null
 			
-			return this.gists_dict()[ `https://api.github.com/repos/${ this.author() }/${ this.repo() }/issues/${ this.article() }` ] ?? null
+			return this.gists_dict()[ `https://api.github.com/repos/${ this.owner() }/${ this.repo() }/issues/${ this.article() }` ] ?? null
 		}
 		
 		@ $mol_mem
 		details_link() {
-			return `https://github.com/${ this.author() }/${ this.repo() }/issues/${ this.article() }`
+			return `https://github.com/${ this.owner() }/${ this.repo() }/issues/${ this.article() }`
 		}
 		
 		@ $mol_mem
@@ -47,7 +47,7 @@ namespace $.$$ {
 			return gist ? this.Details( gist ).Body() : null!
 		}
 		
-		author() {
+		owner() {
 			return this.$.$mol_state_arg.value( 'author' )
 		}
 		
@@ -92,7 +92,7 @@ namespace $.$$ {
 		gist_arg( id : number ) {
 			const gist = this.gist( id )
 			return {
-				author: gist.author().name(),
+				author: gist.owner().name(),
 				repo: gist.repository().name(),
 				article: String( gist.number() ),
 				gist: null,
