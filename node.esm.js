@@ -10294,13 +10294,13 @@ var $;
                 return gist ? this.Details(gist).Body() : null;
             }
             author() {
-                return $mol_state_arg.value('author');
+                return this.$.$mol_state_arg.value('author');
             }
             repo() {
-                return $mol_state_arg.value('repo');
+                return this.$.$mol_state_arg.value('repo');
             }
             article() {
-                return $mol_state_arg.value('article');
+                return this.$.$mol_state_arg.value('article');
             }
             pages() {
                 const gist = this.gist_current();
