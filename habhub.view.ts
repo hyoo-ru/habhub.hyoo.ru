@@ -10,6 +10,7 @@ namespace $.$$ {
 			return $mol_github_search_issues.item( this.uriSource() ).items()
 		}
 		
+		@ $mol_mem
 		gists_dict() {
 			const dict = {} as { [ key : string ] : $mol_github_issue }
 			for( let gist of this.gists() ) {
@@ -40,6 +41,7 @@ namespace $.$$ {
 			return `https://github.com/${ this.author() }/${ this.repo() }/issues/${ this.article() }`
 		}
 		
+		@ $mol_mem
 		Details_body() {
 			const gist = this.gist_current()
 			return gist ? this.Details( gist ).Body() : null!
@@ -57,6 +59,7 @@ namespace $.$$ {
 			return $mol_state_arg.value( 'article' )
 		}
 		
+		@ $mol_mem
 		pages() {
 			const gist = this.gist_current()
 			return [
@@ -73,16 +76,19 @@ namespace $.$$ {
 			return issue.uri().replace( /.*\/repos\//, '' )
 		}
 		
+		@ $mol_mem
 		menu_rows() : $mol_view[] {
 			return this.gists()
 				.filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
 				.map( ( gist , index ) => this.Menu_row( gist.uri() ) )
 		}
 		
+		@ $mol_mem_key
 		gist_title( id : number ) {
 			return this.gist( id ).title()
 		}
 		
+		@ $mol_mem_key
 		gist_arg( id : number ) {
 			const gist = this.gist( id )
 			return {
@@ -105,10 +111,12 @@ namespace $.$$ {
 			return this.gist_current()!
 		}
 		
+		@ $mol_mem
 		gist_current_created() {
 			return this.gist_current()!.moment_created().toString( 'YYYY-MM-DD' )
 		}
 		
+		@ $mol_mem
 		details_scroll_top( next? : number ) {
 			const current = this.gist_current()!
 			return $mol_state_session.value( `${ this }.details_scroll_top(${ current.uri() })` , next )
