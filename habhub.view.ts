@@ -78,9 +78,16 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		menu_rows() : $mol_view[] {
-			return this.gists()
-				.filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
-				.map( ( gist , index ) => this.Menu_row( gist.uri() ) )
+			try {
+				
+				return this.gists()
+					.filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
+					.map( gist => this.Menu_row( gist.uri() ) )
+				
+			} catch( error: unknown ) {
+				// skeleton
+				return Array.from( { length: 20 }, (_,i)=> this.Menu_row( i ) )
+			}
 		}
 		
 		@ $mol_mem_key
