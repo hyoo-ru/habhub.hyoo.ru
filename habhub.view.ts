@@ -7,6 +7,7 @@ namespace $.$$ {
 			return 'hyoo/habhub/data/issues.json?'
 		}
 
+		@ $mol_mem
 		gists() {
 			return $mol_github_search_issues.item( this.uriSource() ).items()
 		}
