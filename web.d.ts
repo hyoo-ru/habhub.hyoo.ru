@@ -2630,16 +2630,19 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_wire_solid(): void;
+}
+
+declare namespace $ {
     class $mol_model<Raw extends Object> extends $mol_object {
         static item<Instance extends $mol_model<{}>>(this: {
             new (): Instance;
         }, uri: string): Instance;
-        static cache<Raw extends Object>(): {};
         uri(): string;
         resource_url(): string;
         method_put(): string;
         json(next?: null | Partial<Raw>): Raw;
-        json_update(patch: Partial<Raw>): Raw;
+        json_update(patch?: Partial<Raw>): Raw;
     }
     function $mol_model_prop<Value, Json>(field: string, make: (json: Json) => Value): <Raw extends Object, Host extends $mol_model<Raw>>(host: Host, prop: string, descr: TypedPropertyDescriptor<(next?: Value | undefined) => Value>) => void;
 }
@@ -2859,7 +2862,7 @@ declare namespace $ {
         body: string;
     }
     class $mol_github_comment extends $mol_github_entity<$mol_github_comment_json> {
-        json_update(patch: Partial<$mol_github_comment_json>): $mol_github_comment_json;
+        json_update(patch?: Partial<$mol_github_comment_json>): $mol_github_comment_json;
         issue(): $mol_github_issue;
         user(): $mol_github_user;
         text(next?: string): string;
@@ -2889,7 +2892,7 @@ declare namespace $ {
         closed_by: $mol_github_user_json;
     }
     class $mol_github_issue extends $mol_model<$mol_github_issue_json> {
-        json_update(patch: Partial<$mol_github_issue_json>): $mol_github_issue_json;
+        json_update(patch?: Partial<$mol_github_issue_json>): $mol_github_issue_json;
         repository(): $mol_github_repository;
         web_uri(): string;
         author(): $mol_github_user;
@@ -2905,11 +2908,11 @@ declare namespace $ {
         comments(): $mol_github_issue_comments;
     }
     class $mol_github_issue_comments extends $mol_model<$mol_github_comment_json[]> {
-        json_update(patch: Partial<$mol_github_repository_json[]>): $mol_github_comment_json[];
-        items(next?: $mol_github_comment[], force?: $mol_mem_force): $mol_github_comment[];
+        json_update(patch: Partial<$mol_github_comment_json[]>): $mol_github_comment_json[];
+        items(next?: null): $mol_github_comment[];
         add(config: {
             text: string;
-        }, next?: $mol_github_comment, force?: $mol_mem_force): $mol_github_comment | undefined;
+        }, next?: $mol_github_comment): $mol_github_comment | undefined;
     }
 }
 
@@ -2983,7 +2986,7 @@ declare namespace $ {
         subscribers_count?: number;
     }
     class $mol_github_repository extends $mol_github_entity<$mol_github_repository_json> {
-        json_update(patch: Partial<$mol_github_repository_json>): $mol_github_repository_json;
+        json_update(patch?: Partial<$mol_github_repository_json>): $mol_github_repository_json;
         owner(): $mol_github_user;
         name(): string;
         name_full(): string;
@@ -2991,7 +2994,7 @@ declare namespace $ {
     }
     class $mol_github_repository_issues extends $mol_model<$mol_github_issue_json[]> {
         json_update(patch: $mol_github_issue_json[]): $mol_github_issue_json[];
-        items(next?: $mol_github_issue[] | null): $mol_github_issue[];
+        items(next?: null): $mol_github_issue[];
         add(config: {
             title: string;
             text?: string;
@@ -3006,8 +3009,8 @@ declare namespace $ {
         total_count: number;
     }
     class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
-        json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
-        items(next?: $mol_github_issue[] | null): $mol_github_issue[];
+        json_update(patch?: $mol_github_search_issues_json): $mol_github_search_issues_json;
+        items(next?: null): $mol_github_issue[];
         resource_url(): string;
     }
 }

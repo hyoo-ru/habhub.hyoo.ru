@@ -183,6 +183,7 @@
     "$mol_github_issue",
     "$mol_github_entity",
     "$mol_model",
+    "$mol_wire_solid",
     "$mol_fetch",
     "$mol_dom_parse",
     "$mol_time_moment",

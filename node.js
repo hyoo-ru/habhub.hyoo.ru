@@ -9033,6 +9033,17 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_solid() {
+        $mol_wire_auto().reap = nothing;
+    }
+    $.$mol_wire_solid = $mol_wire_solid;
+    const nothing = () => { };
+})($ || ($ = {}));
+//mol/wire/solid/solid.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_dom_parse(text, type = 'application/xhtml+xml') {
         const parser = new $mol_dom_context.DOMParser();
         const doc = parser.parseFromString(text, type);
@@ -9187,12 +9198,10 @@ var $;
 (function ($) {
     class $mol_model extends $mol_object {
         static item(uri) {
+            $mol_wire_solid();
             const instance = new this;
             instance.uri = () => uri;
             return instance;
-        }
-        static cache() {
-            return {};
         }
         uri() {
             return '';
@@ -9204,16 +9213,12 @@ var $;
             return 'PUT';
         }
         json(next) {
-            let json;
-            let uri = this.uri();
-            const cache = $mol_model.cache();
-            if (!next && next !== null) {
-                json = cache[uri];
-                if (json != undefined)
-                    return json;
-            }
-            cache[uri] = undefined;
-            json = $mol_fetch.json(this.resource_url(), {
+            const prev = this.json_update();
+            if (next)
+                return this.json_update({ ...prev, ...next });
+            if (next === undefined && prev !== undefined)
+                return prev;
+            let json = $mol_fetch.json(this.resource_url(), {
                 method: next ? this.method_put() : 'GET',
                 body: next && JSON.stringify(next),
                 headers: {
@@ -9223,23 +9228,19 @@ var $;
             return this.json_update(json);
         }
         json_update(patch) {
-            const uri = this.uri();
-            const cache = $mol_model.cache();
-            return cache[uri] = {
-                ...cache[uri] || {},
-                ...patch,
-            };
+            $mol_wire_solid();
+            return patch;
         }
     }
     __decorate([
         $mol_mem
     ], $mol_model.prototype, "json", null);
     __decorate([
+        $mol_mem
+    ], $mol_model.prototype, "json_update", null);
+    __decorate([
         $mol_mem_key
     ], $mol_model, "item", null);
-    __decorate([
-        $mol_mem
-    ], $mol_model, "cache", null);
     $.$mol_model = $mol_model;
     function $mol_model_prop(field, make) {
         return (host, prop, descr) => {
@@ -10001,7 +10002,7 @@ var $;
 (function ($) {
     class $mol_github_comment extends $mol_github_entity {
         json_update(patch) {
-            if (patch.user)
+            if (patch?.user)
                 $mol_github_user.item(patch.user.url).json_update(patch.user);
             return super.json_update(patch);
         }
@@ -10024,16 +10025,16 @@ var $;
 (function ($) {
     class $mol_github_issue extends $mol_model {
         json_update(patch) {
-            if (patch.user)
+            if (patch?.user)
                 $mol_github_user.item(patch.user.url).json_update(patch.user);
-            if (patch.closed_by)
+            if (patch?.closed_by)
                 $mol_github_user.item(patch.closed_by.url).json_update(patch.closed_by);
-            if (patch.assignees) {
+            if (patch?.assignees) {
                 for (let assignee of patch.assignees) {
                     $mol_github_user.item(assignee.url).json_update(assignee);
                 }
             }
-            if (patch.labels) {
+            if (patch?.labels) {
                 for (let label of patch.labels) {
                     $mol_github_label.item(label.url).json_update(label);
                 }
@@ -10062,7 +10063,7 @@ var $;
             return this.json().title;
         }
         text() {
-            return this.json().body ?? this.json(null).body ?? 'x';
+            return this.json().body ?? this.json(null).body ?? '';
         }
         closer() {
             return $mol_maybe(this.json().closed_by).map(json => $mol_github_user.item(json.url))[0] || null;
@@ -10104,18 +10105,15 @@ var $;
     $.$mol_github_issue = $mol_github_issue;
     class $mol_github_issue_comments extends $mol_model {
         json_update(patch) {
-            if (patch) {
-                for (let comment of patch) {
-                    $mol_github_comment.item(comment.url).json_update(comment);
-                }
+            for (let comment of patch) {
+                $mol_github_comment.item(comment.url).json_update(comment);
             }
-            const cache = $mol_model.cache();
-            return cache[this.uri()] = patch;
+            return super.json_update(patch);
         }
-        items(next, force) {
-            return this.json(null).map(json => $mol_github_comment.item(json.url));
+        items(next) {
+            return this.json(next).map(json => $mol_github_comment.item(json.url));
         }
-        add(config, next, force) {
+        add(config, next) {
             if (!config)
                 return;
             try {
@@ -10128,7 +10126,7 @@ var $;
                     body: JSON.stringify({ body: config.text })
                 });
                 const comment = $mol_github_comment.item(json.url);
-                comment.json_update(json);
+                comment.json(json);
                 this.json(null);
                 return comment;
             }
@@ -10155,7 +10153,7 @@ var $;
 (function ($) {
     class $mol_github_repository extends $mol_github_entity {
         json_update(patch) {
-            if (patch.owner)
+            if (patch?.owner)
                 $mol_github_user.item(patch.owner.url).json_update(patch.owner);
             return super.json_update(patch);
         }
@@ -10178,16 +10176,13 @@ var $;
     $.$mol_github_repository = $mol_github_repository;
     class $mol_github_repository_issues extends $mol_model {
         json_update(patch) {
-            if (patch) {
-                for (let issue of patch) {
-                    $mol_github_issue.item(issue.url).json_update(issue);
-                }
+            for (let issue of patch) {
+                $mol_github_issue.item(issue.url).json_update(issue);
             }
-            const cache = $mol_model.cache();
-            return cache[this.uri()] = patch;
+            return super.json_update(patch);
         }
         items(next) {
-            return this.json(null).map(json => $mol_github_issue.item(json.url));
+            return this.json(next).map(json => $mol_github_issue.item(json.url));
         }
         add(config, next, force) {
             if (!config)
@@ -10202,7 +10197,7 @@ var $;
                     body: JSON.stringify({ title: config.title, body: config.text })
                 });
                 const comment = $mol_github_issue.item(json.url);
-                comment.json_update(json);
+                comment.json(json);
                 this.json(null);
                 return comment;
             }
@@ -10237,7 +10232,7 @@ var $;
             return super.json_update(patch);
         }
         items(next) {
-            return this.json(null).items.map(json => $mol_github_issue.item(json.url));
+            return this.json(next).items.map(json => $mol_github_issue.item(json.url));
         }
         resource_url() {
             const auth = this.$.$mol_github_auth;
@@ -10376,6 +10371,9 @@ var $;
                 return $mol_state_session.value(`${this}.details_scroll_top(${current.uri()})`, next);
             }
         }
+        __decorate([
+            $mol_mem
+        ], $hyoo_habhub.prototype, "gists", null);
         __decorate([
             $mol_mem
         ], $hyoo_habhub.prototype, "gists_dict", null);
