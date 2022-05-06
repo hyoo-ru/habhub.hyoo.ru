@@ -21,8 +21,8 @@ namespace $.$$ {
 			return dict
 		}
 		
-		gist( id : number ) {
-			return this.gists_dict()[ id ]
+		gist( uri : string ) {
+			return this.gists_dict()[ uri ]
 		}
 		
 		@ $mol_mem
@@ -80,16 +80,9 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		menu_rows() : $mol_view[] {
-			try {
-				
-				return this.gists()
-					.filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
-					.map( gist => this.Menu_row( gist.uri() ) )
-				
-			} catch( error: unknown ) {
-				// skeleton
-				return Array.from( { length: 20 }, (_,i)=> this.Menu_row( i ) )
-			}
+			return this.gists()
+				.filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
+				.map( gist => this.Menu_row( gist.uri() ) )
 		}
 		
 		@ $mol_mem_key
