@@ -9033,28 +9033,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_mem_force extends Object {
-        constructor() { super(); }
-        $mol_mem_force = true;
-        static $mol_mem_force = true;
-        static toString() { return this.name; }
-    }
-    $.$mol_mem_force = $mol_mem_force;
-    class $mol_mem_force_cache extends $mol_mem_force {
-    }
-    $.$mol_mem_force_cache = $mol_mem_force_cache;
-    class $mol_mem_force_update extends $mol_mem_force {
-    }
-    $.$mol_mem_force_update = $mol_mem_force_update;
-    class $mol_mem_force_fail extends $mol_mem_force_cache {
-    }
-    $.$mol_mem_force_fail = $mol_mem_force_fail;
-})($ || ($ = {}));
-//mol/mem/force/force.ts
-;
-"use strict";
-var $;
-(function ($) {
     function $mol_dom_parse(text, type = 'application/xhtml+xml') {
         const parser = new $mol_dom_context.DOMParser();
         const doc = parser.parseFromString(text, type);
@@ -9225,11 +9203,11 @@ var $;
         method_put() {
             return 'PUT';
         }
-        json(next, force) {
+        json(next) {
             let json;
             let uri = this.uri();
             const cache = $mol_model.cache();
-            if (!next && !force) {
+            if (!next && next !== null) {
                 json = cache[uri];
                 if (json != undefined)
                     return json;
@@ -9839,6 +9817,28 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_mem_force extends Object {
+        constructor() { super(); }
+        $mol_mem_force = true;
+        static $mol_mem_force = true;
+        static toString() { return this.name; }
+    }
+    $.$mol_mem_force = $mol_mem_force;
+    class $mol_mem_force_cache extends $mol_mem_force {
+    }
+    $.$mol_mem_force_cache = $mol_mem_force_cache;
+    class $mol_mem_force_update extends $mol_mem_force {
+    }
+    $.$mol_mem_force_update = $mol_mem_force_update;
+    class $mol_mem_force_fail extends $mol_mem_force_cache {
+    }
+    $.$mol_mem_force_fail = $mol_mem_force_fail;
+})($ || ($ = {}));
+//mol/mem/force/force.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_github_auth extends $mol_object {
         static id() { return '07c88ba2782884016182'; }
         static secret() { return '5874d66181f987a8bb2dc07bd431aad1c7a5cb38'; }
@@ -10062,7 +10062,7 @@ var $;
             return this.json().title;
         }
         text() {
-            return this.json().body;
+            return this.json().body ?? this.json(null).body ?? 'x';
         }
         closer() {
             return $mol_maybe(this.json().closed_by).map(json => $mol_github_user.item(json.url))[0] || null;
@@ -10083,6 +10083,9 @@ var $;
             return $mol_github_issue_comments.item(`${this.uri()}/comments`);
         }
     }
+    __decorate([
+        $mol_mem
+    ], $mol_github_issue.prototype, "text", null);
     __decorate([
         $mol_mem
     ], $mol_github_issue.prototype, "assignees", null);
@@ -10110,7 +10113,7 @@ var $;
             return cache[this.uri()] = patch;
         }
         items(next, force) {
-            return this.json(undefined, force).map(json => $mol_github_comment.item(json.url));
+            return this.json(null).map(json => $mol_github_comment.item(json.url));
         }
         add(config, next, force) {
             if (!config)
@@ -10126,7 +10129,7 @@ var $;
                 });
                 const comment = $mol_github_comment.item(json.url);
                 comment.json_update(json);
-                this.json(undefined, $mol_mem_force_cache);
+                this.json(null);
                 return comment;
             }
             catch (error) {
@@ -10183,8 +10186,8 @@ var $;
             const cache = $mol_model.cache();
             return cache[this.uri()] = patch;
         }
-        items(next, force) {
-            return this.json(undefined, force).map(json => $mol_github_issue.item(json.url));
+        items(next) {
+            return this.json(null).map(json => $mol_github_issue.item(json.url));
         }
         add(config, next, force) {
             if (!config)
@@ -10200,7 +10203,7 @@ var $;
                 });
                 const comment = $mol_github_issue.item(json.url);
                 comment.json_update(json);
-                this.json(undefined, $mol_mem_force_cache);
+                this.json(null);
                 return comment;
             }
             catch (error) {
@@ -10233,8 +10236,8 @@ var $;
             }
             return super.json_update(patch);
         }
-        items(next, force) {
-            return this.json(undefined, force).items.map(json => $mol_github_issue.item(json.url));
+        items(next) {
+            return this.json(null).items.map(json => $mol_github_issue.item(json.url));
         }
         resource_url() {
             const auth = this.$.$mol_github_auth;
@@ -10278,7 +10281,7 @@ var $;
     (function ($$) {
         class $hyoo_habhub extends $.$hyoo_habhub {
             uriSource() {
-                return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=created&per_page=100';
+                return 'hyoo/habhub/data/issues.json?';
             }
             gists() {
                 return $mol_github_search_issues.item(this.uriSource()).items();

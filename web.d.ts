@@ -2630,21 +2630,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_mem_force extends Object {
-        constructor();
-        $mol_mem_force: boolean;
-        static $mol_mem_force: boolean;
-        static toString(): string;
-    }
-    class $mol_mem_force_cache extends $mol_mem_force {
-    }
-    class $mol_mem_force_update extends $mol_mem_force {
-    }
-    class $mol_mem_force_fail extends $mol_mem_force_cache {
-    }
-}
-
-declare namespace $ {
     class $mol_model<Raw extends Object> extends $mol_object {
         static item<Instance extends $mol_model<{}>>(this: {
             new (): Instance;
@@ -2653,7 +2638,7 @@ declare namespace $ {
         uri(): string;
         resource_url(): string;
         method_put(): string;
-        json(next?: Partial<Raw>, force?: $mol_mem_force): Raw;
+        json(next?: null | Partial<Raw>): Raw;
         json_update(patch: Partial<Raw>): Raw;
     }
     function $mol_model_prop<Value, Json>(field: string, make: (json: Json) => Value): <Raw extends Object, Host extends $mol_model<Raw>>(host: Host, prop: string, descr: TypedPropertyDescriptor<(next?: Value | undefined) => Value>) => void;
@@ -2774,6 +2759,21 @@ declare namespace $ {
             sss: (moment: $mol_time_moment) => string;
             Z: (moment: $mol_time_moment) => string;
         };
+    }
+}
+
+declare namespace $ {
+    class $mol_mem_force extends Object {
+        constructor();
+        $mol_mem_force: boolean;
+        static $mol_mem_force: boolean;
+        static toString(): string;
+    }
+    class $mol_mem_force_cache extends $mol_mem_force {
+    }
+    class $mol_mem_force_update extends $mol_mem_force {
+    }
+    class $mol_mem_force_fail extends $mol_mem_force_cache {
     }
 }
 
@@ -2991,7 +2991,7 @@ declare namespace $ {
     }
     class $mol_github_repository_issues extends $mol_model<$mol_github_issue_json[]> {
         json_update(patch: $mol_github_issue_json[]): $mol_github_issue_json[];
-        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
+        items(next?: $mol_github_issue[] | null): $mol_github_issue[];
         add(config: {
             title: string;
             text?: string;
@@ -3007,7 +3007,7 @@ declare namespace $ {
     }
     class $mol_github_search_issues extends $mol_model<$mol_github_search_issues_json> {
         json_update(patch: $mol_github_search_issues_json): $mol_github_search_issues_json;
-        items(next?: $mol_github_issue[], force?: $mol_mem_force): $mol_github_issue[];
+        items(next?: $mol_github_issue[] | null): $mol_github_issue[];
         resource_url(): string;
     }
 }
