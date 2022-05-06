@@ -1,4 +1,5 @@
 deploy \/hyoo/habhub/logo/logo.svg
 deploy \/hyoo/habhub/manifest.json
+deploy \/hyoo/habhub/data/issues.json
 
 include \/mol/offline/install
