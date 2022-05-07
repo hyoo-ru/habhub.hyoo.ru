@@ -86,13 +86,13 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem_key
-		gist_title( id : number ) {
-			return this.gist( id ).title()
+		gist_title( uri : string ) {
+			return this.gist( uri ).title()
 		}
 		
 		@ $mol_mem_key
-		gist_arg( id : number ) {
-			const gist = this.gist( id )
+		gist_arg( uri : string ) {
+			const gist = this.gist( uri )
 			return {
 				author: gist.owner().name(),
 				repo: gist.repository().name(),
