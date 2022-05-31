@@ -6411,6 +6411,22 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_bar extends $mol_view {
+    }
+    $.$mol_bar = $mol_bar;
+})($ || ($ = {}));
+//mol/bar/-view.tree/bar.view.tree.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/bar/bar.view.css", "[mol_bar] {\n\tdisplay: flex;\n\t/* box-shadow: inset 0 0 0 1px var(--mol_theme_line); */\n\tborder-radius: var(--mol_gap_round);\n}\n");
+})($ || ($ = {}));
+//mol/bar/-css/bar.view.css.ts
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_icon_chevron extends $mol_icon {
         path() {
             return "M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z";
@@ -6447,7 +6463,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_paginator extends $mol_view {
+    class $mol_paginator extends $mol_bar {
         sub() {
             return [
                 this.Backward(),
@@ -6541,7 +6557,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/paginator/paginator.view.css", "[mol_paginator_value] {\n\tpadding: .5rem 0;\n}\n");
+    $mol_style_attach("mol/paginator/paginator.view.css", "[mol_paginator] {\n\talign-items: flex-start;\n}\n\n[mol_paginator_value] {\n\tpadding: .5rem 0;\n}\n");
 })($ || ($ = {}));
 //mol/paginator/-css/paginator.view.css.ts
 ;
@@ -7424,6 +7440,7 @@ var $;
         'text-link-http': /\b(https?:\/\/[^\s,.;:!?")]+(?:[,.;:!?")][^\s,.;:!?")]+)+)/,
     });
     $.$mol_syntax2_md_code = new $mol_syntax2({
+        'code-indent': /\t+/,
         'code-docs': /\/\/\/.*?$/,
         'code-comment-block': /(?:\/\*[^]*?\*\/|\/\+[^]*?\+\/|<![^]*?>)/,
         'code-link': /(?:\w+:\/\/|#)\S+?(?=\s|\\\\|""|$)/,
