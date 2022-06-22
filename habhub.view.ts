@@ -2,9 +2,17 @@ namespace $.$$ {
 	
 	export class $hyoo_habhub extends $.$hyoo_habhub {
 		
+		@ $mol_mem
 		uriSource(){
-			// return 'https://api.github.com/search/issues?q=label:HabHub+is:open&sort=updated&per_page=100'
-			return 'hyoo/habhub/data/issues.json?'
+			
+			const search = this.search()
+			if( search.length < 2 ) return 'hyoo/habhub/data/issues.json?'
+			
+			this.$.$mol_wait_timeout(500)
+			
+			const query = `label:HabHub is:open ${search}`
+			return `https://api.github.com/search/issues?q=${ encodeURIComponent(query) }&sort=updated&per_page=100`
+			
 		}
 
 		@ $mol_mem
@@ -81,7 +89,7 @@ namespace $.$$ {
 		@ $mol_mem
 		menu_rows() : $mol_view[] {
 			return this.gists()
-				.filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
+				// .filter( $mol_match_text( this.search(), gist => [ gist.title(), gist.text() ] ) )
 				.map( gist => this.Menu_row( gist.uri() ) )
 		}
 		
