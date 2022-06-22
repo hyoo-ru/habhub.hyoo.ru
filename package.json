@@ -205,8 +205,7 @@
     "$mol_github_user",
     "$mol_github_label",
     "$mol_github_repository",
-    "$mol_github_comment",
-    "$mol_match"
+    "$mol_github_comment"
   ],
   "dependencies": {
     "jsdom": "*",
