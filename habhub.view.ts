@@ -2,6 +2,13 @@ namespace $.$$ {
 	
 	export class $hyoo_habhub extends $.$hyoo_habhub {
 		
+		search_start( event?: Event ) {
+			const query = this.Search().Query()
+			query.dom_node().scrollIntoView({ behavior : 'smooth' })
+			new $mol_after_timeout( 250, ()=> query.focused( true ) )
+			event?.preventDefault()
+		}
+		
 		@ $mol_mem
 		uriSource(){
 			
@@ -10,7 +17,7 @@ namespace $.$$ {
 			
 			this.$.$mol_wait_timeout(500)
 			
-			const query = `label:HabHub is:open ${search}`
+			const query = `label:HabHub is:open "${search}"`
 			return `https://api.github.com/search/issues?q=${ encodeURIComponent(query) }&sort=updated&per_page=100`
 			
 		}
@@ -37,13 +44,13 @@ namespace $.$$ {
 		gist_current() {
 
 			const uri = this.$.$mol_state_arg.value( 'gist' )
-			if( uri ) return this.gists_dict()[ uri ] ?? null
+			if( uri ) return $mol_github_issue.item( uri)
 
 			if( !this.owner() ) return null
 			if( !this.repo() ) return null
 			if( !this.article() ) return null
 			
-			return this.gists_dict()[ `https://api.github.com/repos/${ this.owner() }/${ this.repo() }/issues/${ this.article() }` ] ?? null
+			return $mol_github_issue.item( `https://api.github.com/repos/${ this.owner() }/${ this.repo() }/issues/${ this.article() }` )
 		}
 		
 		@ $mol_mem

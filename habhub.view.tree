@@ -1,6 +1,9 @@
 $hyoo_habhub $mol_book2
 	plugins /
 		<= Theme $mol_theme_auto
+		<= Search_start $mol_hotkey
+			key * F? <=> search_start? null
+			mod_ctrl true
 	Menu_page $mol_page
 		title <= menu_title @ \HabHub
 		tools <= tools_root /
