@@ -1011,6 +1011,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_link extends $mol_view {
+        uri(): string;
         dom_name(): string;
         attr(): {
             href: string;
@@ -1024,7 +1025,7 @@ declare namespace $ {
         event(): {
             click: (event?: any) => any;
         };
-        uri(): string;
+        uri_toggle(): string;
         hint(): string;
         target(): string;
         file_name(): string;
@@ -1063,11 +1064,14 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_link extends $.$mol_link {
+        uri_toggle(): string;
         uri(): string;
+        uri_off(): string;
         uri_native(): URL;
         current(): boolean;
         file_name(): string;
         minimal_height(): number;
+        external(): boolean;
         target(): '_self' | '_blank' | '_top' | '_parent' | string;
     }
 }
@@ -2156,8 +2160,8 @@ declare namespace $ {
         pages(): readonly any[];
         Icon(): $mol_icon_forum_outline;
         title(): string;
-        external(): string;
-        External_icon(): $mol_icon_open_in_new;
+        standalone(): string;
+        Standalone_icon(): $mol_icon_open_in_new;
         Esternal(): $$.$mol_link;
         Close_icon(): $mol_icon_cross;
         Close(): $$.$mol_link;
@@ -2174,7 +2178,7 @@ declare namespace $.$$ {
     class $mol_chat extends $.$mol_chat {
         opened(): boolean;
         pages(): $mol_page[];
-        external(): string;
+        standalone(): string;
         embed(): string;
     }
 }
