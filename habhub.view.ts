@@ -3,9 +3,7 @@ namespace $.$$ {
 	export class $hyoo_habhub extends $.$hyoo_habhub {
 		
 		search_start( event?: Event ) {
-			const query = this.Search().Query()
-			query.dom_node().scrollIntoView({ behavior : 'smooth' })
-			new $mol_after_timeout( 250, ()=> query.focused( true ) )
+			this.Search().Query().focused( true )
 			event?.preventDefault()
 		}
 		
