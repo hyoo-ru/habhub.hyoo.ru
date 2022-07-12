@@ -3,8 +3,8 @@ namespace $.$$ {
 	export class $hyoo_habhub extends $.$hyoo_habhub {
 		
 		search_start( event?: Event ) {
-			this.Search().Query().focused( true )
 			event?.preventDefault()
+			this.Search().Query().bring()
 		}
 		
 		@ $mol_mem
