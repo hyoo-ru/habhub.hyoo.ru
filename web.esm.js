@@ -3774,6 +3774,18 @@ var $;
 //mol/hotkey/hotkey.view.ts
 ;
 "use strict";
+var $;
+(function ($) {
+    class $mol_icon_plus extends $mol_icon {
+        path() {
+            return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+        }
+    }
+    $.$mol_icon_plus = $mol_icon_plus;
+})($ || ($ = {}));
+//mol/icon/plus/-view.tree/plus.view.tree.ts
+;
+"use strict";
 //mol/charset/encoding/encoding.ts
 ;
 "use strict";
@@ -4255,18 +4267,6 @@ var $;
     $.$mol_locale = $mol_locale;
 })($ || ($ = {}));
 //mol/locale/locale.ts
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_icon_plus extends $mol_icon {
-        path() {
-            return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
-        }
-    }
-    $.$mol_icon_plus = $mol_icon_plus;
-})($ || ($ = {}));
-//mol/icon/plus/-view.tree/plus.view.tree.ts
 ;
 "use strict";
 var $;
@@ -9238,7 +9238,7 @@ var $;
             return obj;
         }
         menu_title() {
-            return this.$.$mol_locale.text('$hyoo_habhub_menu_title');
+            return "HabHub";
         }
         Add_icon() {
             const obj = new this.$.$mol_icon_plus();
@@ -9843,7 +9843,7 @@ var $;
                 offset: mask.offset === undefined ? undefined : this.offset,
             });
         }
-        toOffset(config) {
+        toOffset(config = new $mol_time_moment().offset) {
             const duration = new $mol_time_duration(config);
             const offset = this.offset || new $mol_time_moment().offset;
             let with_time = new $mol_time_moment('T00:00:00').merge(this);
