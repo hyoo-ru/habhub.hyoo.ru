@@ -9783,6 +9783,7 @@ var $;
         }
         Close() {
             const obj = new this.$.$mol_link();
+            obj.hint = () => "Close article";
             obj.arg = () => this.close_arg();
             obj.sub = () => [
                 this.Close_icon()
