@@ -32,6 +32,7 @@ $hyoo_habhub $mol_book2
 			<= Details_link $mol_link_source
 				uri <= details_link \
 			<= Close $mol_link
+				hint \Close article
 				arg <= close_arg *
 					author null
 					repo null
