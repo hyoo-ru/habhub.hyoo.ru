@@ -216,6 +216,7 @@
     "$mol_image",
     "$mol_embed_any",
     "$mol_embed_youtube",
+    "$mol_icon_youtube",
     "$mol_github_search_issues",
     "$mol_github_search",
     "$mol_github",
