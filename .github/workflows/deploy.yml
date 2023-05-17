@@ -20,7 +20,7 @@ jobs:
         token: ${{ secrets.GH_PAT }}
         package: 'hyoo/habhub'
     
-    - uses: hyoo-ru/gh-deploy@main
+    - uses: hyoo-ru/gh-deploy@dev
       if: github.ref == 'refs/heads/master'
       with:
         folder: 'hyoo/habhub/-'
