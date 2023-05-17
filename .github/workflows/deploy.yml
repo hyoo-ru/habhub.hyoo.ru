@@ -20,9 +20,7 @@ jobs:
         token: ${{ secrets.GH_PAT }}
         package: 'hyoo/habhub'
     
-    - name: Deploy on GitHub Pages
+    - uses: nin-jin/blazing-fast-gh-pages-deploy@master
       if: github.ref == 'refs/heads/master'
-      uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
         site-directory: 'hyoo/habhub/-'
