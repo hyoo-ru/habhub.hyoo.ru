@@ -1,4 +1,4 @@
-name: Deploy
+name: $hyoo_habhub
 
 on:
   workflow_dispatch:
@@ -14,8 +14,7 @@ jobs:
     
     steps:
     
-    - name: Build app
-      uses: hyoo-ru/mam_build@master2
+    - uses: hyoo-ru/mam_build@master2
       with:
         package: 'hyoo/habhub'
     
