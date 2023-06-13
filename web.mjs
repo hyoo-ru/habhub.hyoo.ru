@@ -11238,4 +11238,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/habhub/-css/habhub.view.css.ts
 
+export default $
 //# sourceMappingURL=web.js.map
