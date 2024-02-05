@@ -3360,6 +3360,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_offline_web(): void;
+}
+
+declare namespace $ {
 }
 
 declare namespace $.$$ {
