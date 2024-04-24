@@ -39,7 +39,7 @@ $hyoo_habhub $mol_book2
 					article null
 					gist null
 				sub /
-					<= Close_icon $mol_icon_cross
+					<= Close_icon $mol_icon_close
 		body_scroll_top?val <=> details_scroll_top?val 0
 		body /
 			<= Datails_text $mol_text
