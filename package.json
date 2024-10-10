@@ -148,6 +148,7 @@
     "$mol_svg_path",
     "$mol_link",
     "$mol_link_source",
+    "$mol_icon_script_text",
     "$mol_icon_script",
     "$mol_locale",
     "$mol_lights_toggle",

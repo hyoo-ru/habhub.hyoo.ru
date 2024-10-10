@@ -2121,19 +2121,30 @@ var $;
     $.$mol_run_error = $mol_run_error;
     const child_process = $node['child_process'];
     $.$mol_run_spawn = child_process.spawn.bind(child_process);
+    $.$mol_run_spawn_sync = child_process.spawnSync.bind(child_process);
     function $mol_run_async({ dir, timeout, command, env }) {
         const args_raw = typeof command === 'string' ? command.split(' ') : command;
         const [app, ...args] = args_raw;
-        this.$mol_log3_come({
-            place: '$mol_run_async',
-            dir: $node.path.relative('', dir),
-            message: 'Run',
-            command: args_raw.join(' '),
-        });
+        if (!env?.MOL_RUN_ASYNC) {
+            this.$mol_log3_come({
+                place: '$mol_run_sync',
+                message: 'Run',
+                command: args_raw.join(' '),
+                dir: $node.path.relative('', dir),
+            });
+            return this.$mol_run_spawn_sync(app, args, { shell: true, cwd: dir, env });
+        }
         const sub = this.$mol_run_spawn(app, args, {
             shell: true,
             cwd: dir,
             env
+        });
+        this.$mol_log3_come({
+            place: '$mol_run_async',
+            pid: sub.pid,
+            message: 'Run',
+            command: args_raw.join(' '),
+            dir: $node.path.relative('', dir),
         });
         let killed = false;
         let timer;
@@ -2170,6 +2181,14 @@ var $;
                     get stdout() { return Buffer.concat(std_data); },
                     get stderr() { return Buffer.concat(error_data); }
                 };
+                this.$mol_log3_done({
+                    place: '$mol_run_async',
+                    pid: sub.pid,
+                    message: 'Run',
+                    status,
+                    command: args_raw.join(' '),
+                    dir: $node.path.relative('', dir),
+                });
                 if (error || status || killed)
                     return fail(new $mol_run_error((res.stderr.toString() || res.stdout.toString() || 'Run error') + (killed ? ', timeout' : ''), { signal, timeout: killed }, ...error ? [error] : []));
                 done(res);
@@ -4916,6 +4935,17 @@ var $;
 	($.$mol_icon_script) = class $mol_icon_script extends ($.$mol_icon) {
 		path(){
 			return "M17.8,20C17.4,21.2 16.3,22 15,22H5C3.3,22 2,20.7 2,19V18H5L14.2,18C14.6,19.2 15.7,20 17,20H17.8M19,2H8C6.3,2 5,3.3 5,5V16H16V17C16,17.6 16.4,18 17,18H18V5C18,4.4 18.4,4 19,4C19.6,4 20,4.4 20,5V6H22V5C22,3.3 20.7,2 19,2Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_script_text) = class $mol_icon_script_text extends ($.$mol_icon) {
+		path(){
+			return "M17.8,20C17.4,21.2 16.3,22 15,22H5C3.3,22 2,20.7 2,19V18H5L14.2,18C14.6,19.2 15.7,20 17,20H17.8M19,2C20.7,2 22,3.3 22,5V6H20V5C20,4.4 19.6,4 19,4C18.4,4 18,4.4 18,5V18H17C16.4,18 16,17.6 16,17V16H5V5C5,3.3 6.3,2 8,2H19M8,6V8H15V6H8M8,10V12H14V10H8Z";
 		}
 	};
 
