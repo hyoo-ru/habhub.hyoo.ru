@@ -7868,8 +7868,9 @@ var $;
 		}
 		attr(){
 			return {
-				...(super.attr()), 
+				"tabindex": (this.tabindex()), 
 				"allow": (this.allow()), 
+				"src": (this.uri()), 
 				"srcdoc": (this.html())
 			};
 		}
@@ -9460,7 +9461,7 @@ var $;
 			return "";
 		}
 		loading(){
-			return "eager";
+			return "lazy";
 		}
 		decoding(){
 			return "async";
