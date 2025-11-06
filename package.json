@@ -239,6 +239,8 @@
     "$mol_github_entity",
     "$mol_model",
     "$mol_fetch",
+    "$mol_rest_code",
+    "$mol_rest",
     "$mol_dom_parse",
     "$mol_time_moment",
     "$mol_time",
