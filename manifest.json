@@ -1,0 +1,17 @@
+{
+	"name": "$hyoo_hubhub",
+	"short_name": "HabHub",
+	"description": "",
+	"id": "hyoo_habhub",
+	"start_url": "../..",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#000000",
+	"icons": [
+		{
+			"src": "../../hyoo/habhub/logo/logo.svg",
+			"type": "image/svg+xml",
+			"sizes": "512x512"
+		}
+	]
+}
