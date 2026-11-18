@@ -2721,6 +2721,7 @@ declare namespace $.$$ {
             left: number;
             top: number;
         } | null;
+        locale(): typeof $mol_locale;
         transform(): string;
     }
 }
